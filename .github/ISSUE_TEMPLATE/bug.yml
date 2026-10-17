@@ -1,0 +1,22 @@
+name: Fehler melden
+description: Fehler mit bereinigten Angaben beschreiben
+body:
+  - type: markdown
+    attributes:
+      value: Keine Bluetooth-Adressen oder unbereinigten Diagnoseprotokolle veröffentlichen.
+  - type: input
+    id: version
+    attributes:
+      label: Programm- und Windows-Version
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Kopfhörermodell
+  - type: textarea
+    id: problem
+    attributes:
+      label: Schritte, erwartetes und tatsächliches Ergebnis
+    validations:
+      required: true
