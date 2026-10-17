@@ -62,3 +62,7 @@ Wer noch die frühere Prototyp-Version benutzt, sollte sie vor der Installation 
 Der Quellcode ist hier im Repository. Mit `build.ps1` lässt sich das Tool selbst bauen. Hinweise dazu stehen unter [Build und Tests](docs/TESTING.md). Fehler kannst du unter [Issues](https://github.com/Aldikiller/KopfhoererAkku/issues) melden. Bitte keine persönlichen Gerätekennungen oder unbereinigten Diagnoseprotokolle hochladen.
 
 Das Projekt wurde mit KI-Unterstützung entwickelt und steht unter der [MIT-Lizenz](LICENSE). Du darfst es unter deren Bedingungen nutzen, verändern und weitergeben. Gewährleistung und Haftung sind soweit gesetzlich zulässig ausgeschlossen. Die [Haftungshinweise](DISCLAIMER.de.md) enthalten die Einzelheiten.
+
+## Code signing policy
+
+Wir bereiten einen Antrag bei SignPath Foundation für kostenlose Open-Source-Signaturen vor. Eine Zusage gibt es noch nicht. Die bisherigen Downloads sind weiterhin unsigniert. Mehr dazu steht in der [Signierrichtlinie](docs/CODE-SIGNING.md).
