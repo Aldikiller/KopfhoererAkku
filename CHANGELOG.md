@@ -1,4 +1,10 @@
-# 1.1.0
+﻿# 1.1.0
+
+## 1.2.0
+
+- Sprachwahl Deutsch/Englisch in den Einstellungen, dauerhaft gespeichert.
+- Englische Menüs, Akkuwarnungen, Statusanzeigen, Livevorschau und Widget-Eigenschaften.
+- Bestehende Gerätenamen und Einstellungen bleiben erhalten.
 
 - Frei platzierbares Desktop-Widget zusätzlich zur Anzeige im Infobereich.
 - Auswahl zwischen Infobereich, Widget oder beidem.
