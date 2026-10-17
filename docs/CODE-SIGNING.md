@@ -2,7 +2,7 @@
 
 ## Current status
 
-We are preparing an application for free open-source code signing through SignPath Foundation. Approval has not been granted and no SignPath signing service is active for this project yet. All currently published 0.1.0-beta.1 binaries are unsigned.
+We have submitted an application for free open-source code signing through SignPath Foundation. Approval has not been granted and no SignPath signing service is active for this project yet. All currently published binaries are unsigned.
 
 If the project is accepted, code signing would be provided by SignPath.io with a certificate issued to SignPath Foundation. We will state this explicitly on the download page when signed releases are available.
 
