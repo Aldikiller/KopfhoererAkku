@@ -1,5 +1,17 @@
 # Build- und Testumfang
 
+## Rückmeldung des Herausgebers vom 17. Oktober 2026
+
+Aldikiller hat bestätigt, dass die Verbindungsanzeige beim Ein- und Ausschalten
+der beiden Kopfhörer funktioniert und die Gerätenamen stimmen. Auch die
+Installationsprüfung wurde als passend zurückgemeldet. Genaue Angaben zu
+Windows-Versionen und dem Testrechner liegen für diese Rückmeldung nicht vor.
+
+Noch offen sind die Lesbarkeit bei verschiedenen Skalierungen sowie eine
+Akkuwarnung bei echtem niedrigem Ladestand. Die digitale Signatur ist noch
+nicht eingerichtet. Die unten beschriebene eingeschränkte Entwicklungsumgebung
+ist vom manuellen Test des Herausgebers zu unterscheiden.
+
 ## Lokaler Stand am 17. Oktober 2026
 
 - Release-Anwendung und reguläre Setup.exe erfolgreich kompiliert.
@@ -11,7 +23,7 @@
 - Selbsttest auch aus dem isoliert installierten Verzeichnis bestanden.
 - Normale Autostart-/Startmenü-/Apps-Registrierung und Anmeldung noch nicht
   durch einen vollständigen Installationstest außerhalb der Einschränkungen belegt.
-- Noch kein GitHub-Serverlauf des Workflows und keine Codesignatur.
+- GitHub-Windows-Build und Versions-Tag-Workflow erfolgreich; noch keine Codesignatur.
 
 Die Screenshots zeigen synthetische Beispieldaten, keine Kompatibilitätsmessung.
 
@@ -52,8 +64,8 @@ Die Ausgabe enthält persönliche Gerätekennungen. Nicht unbereinigt teilen.
 - Portable Version in einem separaten beschreibbaren Ordner.
 
 Die klassische Bluetooth-Abfrage war in der eingeschränkten Entwicklungsumgebung
-gesperrt; die WinRT-Abfrage lief in einen Timeout. Eine stabile Aussage über
-reale Verbindungswechsel ist damit nicht belegt.
+gesperrt; die WinRT-Abfrage lief in einen Timeout. Diese Entwicklungsprüfung allein belegt keine realen Verbindungswechsel;
+die spätere Bestätigung des Herausgebers ist oben gesondert aufgeführt.
 
 Für einen isolierten Installer-Test kann das Inno-Skript mit `/DSmokeTest=1`
 gebaut werden. Dieser Testbuild überspringt Registrierung, Verknüpfungen,
