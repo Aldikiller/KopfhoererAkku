@@ -12,40 +12,41 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 enum DisplayMode { Infobereich, Widget, Beides }
+[TypeConverter(typeof(LocalizedAlignmentConverter))]
 enum WidgetTextAlignment { Links, Zentriert, Rechts }
 class InstalledFontNames : StringConverter {
  public override bool GetStandardValuesSupported(ITypeDescriptorContext c) { return true; }
  public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext c) { var names=new List<string>(); foreach(var f in FontFamily.Families) { names.Add(f.Name); f.Dispose(); } return new StandardValuesCollection(names); }
 }
 class WidgetOptions {
- [Browsable(false),Category("1. Anzeige"),DisplayName("Anzeigemodus")] public DisplayMode Mode {get;set;}
- [Category("1. Anzeige"),DisplayName("Immer im Vordergrund")] public bool Topmost {get;set;}
- [Category("1. Anzeige"),DisplayName("Position sperren")] public bool Locked {get;set;}
- [Category("1. Anzeige"),DisplayName("Nebeneinander statt untereinander")] public bool Horizontal {get;set;}
- [Category("2. Größe und Position"),DisplayName("Breite (Pixel)")] public int Width {get;set;}
- [Category("2. Größe und Position"),DisplayName("Höhe (Pixel)")] public int Height {get;set;}
- [Category("2. Größe und Position"),DisplayName("Position X"),Description("-32000 setzt das Widget beim nächsten Anzeigen mittig auf den Bildschirm.")] public int X {get;set;}
- [Category("2. Größe und Position"),DisplayName("Position Y")] public int Y {get;set;}
- [Category("2. Größe und Position"),DisplayName("Innenabstand (Pixel)")] public int Padding {get;set;}
- [Category("2. Größe und Position"),DisplayName("Abstand der Geräte (Pixel)")] public int Gap {get;set;}
- [Category("2. Größe und Position"),DisplayName("Symbolgröße (Pixel)")] public int IconSize {get;set;}
- [Category("3. Farben und Transparenz"),DisplayName("Gesamte Deckkraft (%)"),Description("10 bis 100. Niedrigere Werte machen das gesamte Widget durchsichtiger.")] public int Opacity {get;set;}
- [Category("3. Farben und Transparenz"),DisplayName("Hintergrund-Deckkraft (%)"),Description("0: Hintergrund vollständig transparent, Schrift und Symbole bleiben sichtbar.")] public int BackgroundOpacity {get;set;}
- [Category("3. Farben und Transparenz"),DisplayName("Hintergrundfarbe")] public Color Background {get;set;}
- [Category("3. Farben und Transparenz"),DisplayName("Schriftfarbe")] public Color Foreground {get;set;}
- [Category("3. Farben und Transparenz"),DisplayName("Rahmenfarbe")] public Color Border {get;set;}
- [Category("3. Farben und Transparenz"),DisplayName("Rahmenstärke (Pixel)")] public int BorderWidth {get;set;}
- [Category("3. Farben und Transparenz"),DisplayName("Eckenrundung (Pixel)")] public int Radius {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Schriftart"),TypeConverter(typeof(InstalledFontNames))] public string FontName {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Schriftart für Prozentwerte"),TypeConverter(typeof(InstalledFontNames))] public string ValueFontName {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Textausrichtung")] public WidgetTextAlignment Alignment {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Fette Gerätenamen")] public bool NameBold {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Schriftgröße für Namen")] public int FontSize {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Schriftgröße für Prozentwert")] public int ValueSize {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Fette Prozentzahl")] public bool Bold {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Gerätenamen anzeigen")] public bool Names {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Verbindungsstatus anzeigen")] public bool Status {get;set;}
- [Category("4. Schrift und Inhalt"),DisplayName("Gerätesymbole anzeigen")] public bool Icons {get;set;}
+ [Browsable(false),LocalizedCategory("1. Anzeige"),LocalizedName("Anzeigemodus")] public DisplayMode Mode {get;set;}
+ [LocalizedCategory("1. Anzeige"),LocalizedName("Immer im Vordergrund")] public bool Topmost {get;set;}
+ [LocalizedCategory("1. Anzeige"),LocalizedName("Position sperren")] public bool Locked {get;set;}
+ [LocalizedCategory("1. Anzeige"),LocalizedName("Nebeneinander statt untereinander")] public bool Horizontal {get;set;}
+ [LocalizedCategory("2. Größe und Position"),LocalizedName("Breite (Pixel)")] public int Width {get;set;}
+ [LocalizedCategory("2. Größe und Position"),LocalizedName("Höhe (Pixel)")] public int Height {get;set;}
+ [LocalizedCategory("2. Größe und Position"),LocalizedName("Position X"),LocalizedDescription("-32000 setzt das Widget beim nächsten Anzeigen mittig auf den Bildschirm.")] public int X {get;set;}
+ [LocalizedCategory("2. Größe und Position"),LocalizedName("Position Y")] public int Y {get;set;}
+ [LocalizedCategory("2. Größe und Position"),LocalizedName("Innenabstand (Pixel)")] public int Padding {get;set;}
+ [LocalizedCategory("2. Größe und Position"),LocalizedName("Abstand der Geräte (Pixel)")] public int Gap {get;set;}
+ [LocalizedCategory("2. Größe und Position"),LocalizedName("Symbolgröße (Pixel)")] public int IconSize {get;set;}
+ [LocalizedCategory("3. Farben und Transparenz"),LocalizedName("Gesamte Deckkraft (%)"),LocalizedDescription("10 bis 100. Niedrigere Werte machen das gesamte Widget durchsichtiger.")] public int Opacity {get;set;}
+ [LocalizedCategory("3. Farben und Transparenz"),LocalizedName("Hintergrund-Deckkraft (%)"),LocalizedDescription("0: Hintergrund vollständig transparent, Schrift und Symbole bleiben sichtbar.")] public int BackgroundOpacity {get;set;}
+ [LocalizedCategory("3. Farben und Transparenz"),LocalizedName("Hintergrundfarbe")] public Color Background {get;set;}
+ [LocalizedCategory("3. Farben und Transparenz"),LocalizedName("Schriftfarbe")] public Color Foreground {get;set;}
+ [LocalizedCategory("3. Farben und Transparenz"),LocalizedName("Rahmenfarbe")] public Color Border {get;set;}
+ [LocalizedCategory("3. Farben und Transparenz"),LocalizedName("Rahmenstärke (Pixel)")] public int BorderWidth {get;set;}
+ [LocalizedCategory("3. Farben und Transparenz"),LocalizedName("Eckenrundung (Pixel)")] public int Radius {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Schriftart"),TypeConverter(typeof(InstalledFontNames))] public string FontName {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Schriftart für Prozentwerte"),TypeConverter(typeof(InstalledFontNames))] public string ValueFontName {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Textausrichtung")] public WidgetTextAlignment Alignment {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Fette Gerätenamen")] public bool NameBold {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Schriftgröße für Namen")] public int FontSize {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Schriftgröße für Prozentwert")] public int ValueSize {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Fette Prozentzahl")] public bool Bold {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Gerätenamen anzeigen")] public bool Names {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Verbindungsstatus anzeigen")] public bool Status {get;set;}
+ [LocalizedCategory("4. Schrift und Inhalt"),LocalizedName("Gerätesymbole anzeigen")] public bool Icons {get;set;}
  public WidgetOptions() { Mode=DisplayMode.Infobereich; Topmost=true; Width=380; Height=200; X=-32000; Y=-32000; Padding=16; Gap=12; IconSize=48; Opacity=100; BackgroundOpacity=82; Background=Color.FromArgb(28,32,40); Foreground=Color.White; Border=Color.FromArgb(80,90,105); BorderWidth=1; Radius=18; FontName="Segoe UI"; ValueFontName="Arial"; FontSize=12; ValueSize=26; Bold=true; Names=true; Status=true; Icons=true; }
  public WidgetOptions Copy() { return (WidgetOptions)MemberwiseClone(); }
  static int Clamp(int x,int lo,int hi) { return Math.Max(lo,Math.Min(hi,x)); }
@@ -62,10 +63,10 @@ static class WidgetDrawing {
   using(var g=Graphics.FromImage(bitmap)) { g.Clear(Color.Transparent); g.SmoothingMode=SmoothingMode.AntiAlias; g.TextRenderingHint=System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
    float inset=Math.Max(0.5f,o.BorderWidth/2f); using(var body=Round(inset,inset,o.Width-2*inset,o.Height-2*inset,o.Radius)) { using(var brush=new SolidBrush(Color.FromArgb(o.BackgroundOpacity*255/100,o.Background))) g.FillPath(brush,body); if(o.BorderWidth>0) using(var pen=new Pen(o.Border,o.BorderWidth)) g.DrawPath(pen,body); }
    int count=Math.Max(1,items.Count); float pad=Math.Min(o.Padding,Math.Min(o.Width,o.Height)/5f),gap=Math.Min(o.Gap,(o.Horizontal ? o.Width : o.Height)/8f); float cellW=o.Horizontal ? (o.Width-2*pad-gap*(count-1))/count : o.Width-2*pad; float cellH=o.Horizontal ? o.Height-2*pad : (o.Height-2*pad-gap*(count-1))/count;
-   for(int i=0;i<count;i++) { var item=i<items.Count ? items[i] : new WidgetItem{Name="Keine Kopfhörer ausgewählt",Status="Doppelklick: Einstellungen",Profile=new DeviceProfile("#13705B")}; float x=pad+(o.Horizontal ? i*(cellW+gap) : 0),y=pad+(o.Horizontal ? 0 : i*(cellH+gap)); float iconSize=o.Icons ? Math.Min(o.IconSize,Math.Min(cellH,cellW*0.4f)) : 0;
+   for(int i=0;i<count;i++) { var item=i<items.Count ? items[i] : new WidgetItem{Name=L.T("Keine Kopfhörer ausgewählt"),Status=L.T("Doppelklick: Einstellungen"),Profile=new DeviceProfile("#13705B")}; float x=pad+(o.Horizontal ? i*(cellW+gap) : 0),y=pad+(o.Horizontal ? 0 : i*(cellH+gap)); float iconSize=o.Icons ? Math.Min(o.IconSize,Math.Min(cellH,cellW*0.4f)) : 0;
     if(iconSize>0) using(var icon=Tray.BatteryIcon(item.Battery,i,item.Connected,item.Profile.Color,settings.NumbersOnly,settings,item.Profile.Symbol,item.Profile.Marker)) using(var image=icon.ToBitmap()) { g.InterpolationMode=InterpolationMode.HighQualityBicubic; g.DrawImage(image,new RectangleF(x,y+(cellH-iconSize)/2,iconSize,iconSize)); }
     float textX=x+(iconSize>0 ? iconSize+Math.Min(12,gap+4) : 0),textW=cellW-(textX-x); float nameH=o.Names ? Math.Min(o.FontSize*1.5f,cellH*0.3f) : 0,statusH=o.Status ? Math.Min(o.FontSize*1.4f,cellH*0.25f) : 0,valueH=cellH-nameH-statusH;
-    using(var brush=new SolidBrush(o.Foreground)) { if(o.Names) Text(g,item.Name,o.FontName,Math.Min(o.FontSize,(int)(nameH*0.85f)),o.NameBold ? FontStyle.Bold : FontStyle.Regular,brush,new RectangleF(textX,y,textW,nameH),o.Alignment); string value=item.Connected==false ? "–" : item.Battery.HasValue ? item.Battery+" %" : "?"; Text(g,value,o.ValueFontName,Math.Max(6,Math.Min(o.ValueSize,(int)(valueH*0.85f))),o.Bold ? FontStyle.Bold : FontStyle.Regular,brush,new RectangleF(textX,y+nameH,textW,valueH),o.Alignment); if(o.Status) Text(g,item.Status ?? "Status unbekannt",o.FontName,Math.Max(6,Math.Min(o.FontSize,(int)(statusH*0.85f))),FontStyle.Regular,brush,new RectangleF(textX,y+nameH+valueH,textW,statusH),o.Alignment); }
+    using(var brush=new SolidBrush(o.Foreground)) { if(o.Names) Text(g,item.Name,o.FontName,Math.Min(o.FontSize,(int)(nameH*0.85f)),o.NameBold ? FontStyle.Bold : FontStyle.Regular,brush,new RectangleF(textX,y,textW,nameH),o.Alignment); string value=item.Connected==false ? "–" : item.Battery.HasValue ? item.Battery+" %" : "?"; Text(g,value,o.ValueFontName,Math.Max(6,Math.Min(o.ValueSize,(int)(valueH*0.85f))),o.Bold ? FontStyle.Bold : FontStyle.Regular,brush,new RectangleF(textX,y+nameH,textW,valueH),o.Alignment); if(o.Status) Text(g,item.Status ?? L.T("Status unbekannt"),o.FontName,Math.Max(6,Math.Min(o.FontSize,(int)(statusH*0.85f))),FontStyle.Regular,brush,new RectangleF(textX,y+nameH+valueH,textW,statusH),o.Alignment); }
    }
   } return bitmap;
  }
@@ -75,7 +76,7 @@ class BatteryWidget : Form {
  WidgetOptions options; Action<Point> moved; bool dragging; Point dragOrigin,windowOrigin;
  protected override CreateParams CreateParams { get { var p=base.CreateParams; p.ExStyle|=0x80000|0x80; return p; } }
  protected override bool ShowWithoutActivation {get {return true;}}
- public BatteryWidget(Action open,Action pick,Action quit,Action<Point> onMove) { moved=onMove; FormBorderStyle=FormBorderStyle.None; ShowInTaskbar=false; StartPosition=FormStartPosition.Manual; Text="Kopfhörer-Akku Widget"; var menu=new ContextMenuStrip(); menu.Items.Add("Einstellungen …",null,(s,e)=>open()); menu.Items.Add("Geräte auswählen …",null,(s,e)=>pick()); menu.Items.Add("Beenden",null,(s,e)=>quit()); ContextMenuStrip=menu; DoubleClick+=(s,e)=>open(); }
+ public BatteryWidget(Action open,Action pick,Action quit,Action<Point> onMove) { moved=onMove; FormBorderStyle=FormBorderStyle.None; ShowInTaskbar=false; StartPosition=FormStartPosition.Manual; Text="Kopfhörer-Akku Widget"; var menu=new ContextMenuStrip(); menu.Items.Add(L.T("Einstellungen …"),null,(s,e)=>open()); menu.Items.Add(L.T("Geräte auswählen …"),null,(s,e)=>pick()); menu.Items.Add(L.T("Beenden"),null,(s,e)=>quit()); ContextMenuStrip=menu; DoubleClick+=(s,e)=>open(); }
  public void UpdateContent(WidgetOptions value,Settings settings,IList<WidgetItem> items) { options=value; TopMost=value.Topmost; var desired=new Rectangle(value.X,value.Y,value.Width,value.Height); if(value.X==-32000 || !Screen.AllScreens.Any(s=>Rectangle.Intersect(s.WorkingArea,desired).Width>=60 && Rectangle.Intersect(s.WorkingArea,desired).Height>=40)) { var area=Screen.PrimaryScreen.WorkingArea; desired.Location=new Point(area.Left+Math.Max(0,(area.Width-value.Width)/2),area.Top+Math.Max(0,(area.Height-value.Height)/2)); } if(!dragging) { Location=desired.Location; Size=desired.Size; } if(!Visible) Show(); using(var bitmap=WidgetDrawing.Render(value,settings,items)) Present(bitmap,(byte)(value.Opacity*255/100)); }
  protected override void OnMouseDown(MouseEventArgs e) { base.OnMouseDown(e); if(e.Button==MouseButtons.Left && options!=null && !options.Locked) { dragging=true; dragOrigin=Cursor.Position; windowOrigin=Location; Capture=true; } }
  protected override void OnMouseMove(MouseEventArgs e) { base.OnMouseMove(e); if(dragging) Location=new Point(windowOrigin.X+Cursor.Position.X-dragOrigin.X,windowOrigin.Y+Cursor.Position.Y-dragOrigin.Y); }

@@ -18,6 +18,7 @@ class DeviceProfile {
  public Color Color { get { return ColorTranslator.FromHtml(ColorHex); } }
 }
 class Settings {
+ public string Language="de";
  public WidgetOptions Widget=new WidgetOptions();
  public FontFamily FontFamily() { try { var f=new FontFamily(FontName); if(f.IsStyleAvailable(FontStyle.Bold)) return f; f.Dispose(); } catch(ArgumentException) {} return new FontFamily("Segoe UI"); }
  public bool Warnings=true,CheckAtStartup=false,NumbersOnly=false;
@@ -32,6 +33,7 @@ class Settings {
   var x=new Settings(); if(!File.Exists(file)) return x;
   foreach(var line in File.ReadAllLines(file)) {
    int split=line.IndexOf('='); if(split<1) continue; string key=line.Substring(0,split),value=line.Substring(split+1); int n; bool b;
+   if(key=="Language" && (value=="de" || value=="en")) x.Language=value;
    if(key.StartsWith("Widget.",StringComparison.Ordinal)) x.Widget.Read(key.Substring(7),value);
    if(key=="FontName") { try { x.FontName=Decode(value); } catch(FormatException) {} }
    if(key=="TextSize" && int.TryParse(value,out n)) x.TextSize=Math.Max(10,Math.Min(28,n));
@@ -61,7 +63,7 @@ class Settings {
  }
  public static string CleanMarker(string value) { if(string.IsNullOrWhiteSpace(value)) return "A"; var e=System.Globalization.StringInfo.GetTextElementEnumerator(value.Trim()); return e.MoveNext() ? (string)e.Current : "A"; }
  public void Save(string file) {
-  var lines=new List<string>{"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
+  var lines=new List<string>{"Language="+Language,"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
   lines.AddRange(Widget.Lines());
   foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); lines.Add(prefix+"Symbol="+item.Value.Symbol); lines.Add(prefix+"Marker="+Encode(item.Value.Marker)); }
   Directory.CreateDirectory(Path.GetDirectoryName(file)); string temp=file+"."+Guid.NewGuid().ToString("N")+".tmp";
@@ -90,8 +92,8 @@ class ReleaseVersion : IComparable<ReleaseVersion> {
 static class UpdateService {
  public const string ReleasesPage="https://github.com/Aldikiller/KopfhoererAkku/releases";
  public static ReleaseVersion Select(string json,string current) {
-  var installed=ReleaseVersion.Parse(current); if(installed==null) throw new FormatException("Ungültige Programmversion.");
-  var entries=new JavaScriptSerializer{MaxJsonLength=524288}.DeserializeObject(json) as object[]; if(entries==null) throw new FormatException("Ungültige GitHub-Antwort.");
+  var installed=ReleaseVersion.Parse(current); if(installed==null) throw new FormatException(L.T("Ungültige Programmversion."));
+  var entries=new JavaScriptSerializer{MaxJsonLength=524288}.DeserializeObject(json) as object[]; if(entries==null) throw new FormatException(L.T("Ungültige GitHub-Antwort."));
   ReleaseVersion best=null; foreach(var entry in entries) {
    var row=entry as Dictionary<string,object>; if(row==null) continue; object tag,draft,pre;
    if(!row.TryGetValue("draft",out draft) || !(draft is bool) || (bool)draft || !row.TryGetValue("tag_name",out tag) || !(tag is string)) continue;
@@ -105,8 +107,8 @@ static class UpdateService {
   var request=(HttpWebRequest)WebRequest.Create("https://api.github.com/repos/Aldikiller/KopfhoererAkku/releases?per_page=100");
   request.UserAgent="KopfhoererAkku/"+AppPaths.Version; request.Accept="application/vnd.github+json"; request.Timeout=8000; request.ReadWriteTimeout=8000; request.AllowAutoRedirect=false;
   using(var response=(HttpWebResponse)request.GetResponse()) using(var stream=response.GetResponseStream()) using(var reader=new StreamReader(stream,Encoding.UTF8)) {
-   if(response.StatusCode!=HttpStatusCode.OK) throw new WebException("GitHub-Abfrage fehlgeschlagen.");
-   char[] buffer=new char[4096]; var text=new StringBuilder(); int n; while((n=reader.Read(buffer,0,buffer.Length))>0) { if(text.Length+n>524288) throw new FormatException("GitHub-Antwort zu groß."); text.Append(buffer,0,n); }
+   if(response.StatusCode!=HttpStatusCode.OK) throw new WebException(L.T("GitHub-Abfrage fehlgeschlagen."));
+   char[] buffer=new char[4096]; var text=new StringBuilder(); int n; while((n=reader.Read(buffer,0,buffer.Length))>0) { if(text.Length+n>524288) throw new FormatException(L.T("GitHub-Antwort zu groß.")); text.Append(buffer,0,n); }
    return Select(text.ToString(),AppPaths.Version);
   }
  }
