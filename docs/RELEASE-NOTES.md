@@ -1,17 +1,25 @@
-# Kopfhörer-Akku 0.1.0-beta.1
+# Kopfhörer-Akku 0.1.0 Beta 2
 
-Kostenlose, quelloffene Akkuanzeige für bis zu zwei Bluetooth-Kopfhörer im
-Windows-Infobereich. Herausgeber: Aldikiller. Lizenz: MIT.
+Neu in dieser Version:
 
-Downloads: Setup für Windows x64 und portable ZIP; SHA256-Prüfsummen liegen bei.
-Windows 10 ab Build 19041 / Windows 11 mit .NET Framework 4.8 erforderlich.
-Die Dateien sind nicht digital signiert.
+- Eigene Namen und Farben für jeden Kopfhörer.
+- Zwei Anzeigemodi: Batterie mit Zahl oder nur Zahl mit Kopfhörerzeichen.
+- Vorschau direkt in den Einstellungen und Rücksetzen auf Standard.
+- Freiwillige Suche nach neuen Versionen über GitHub; auf Wunsch beim Programmstart.
+- Link zur passenden Downloadseite. Keine automatische Installation.
 
-Enthalten: Akkuwarnungen, Einstellungen, separate Verbindungserkennung,
-Autostart und Deinstallation. Die Verbindungsanzeige ist noch nicht über
-verschiedene Rechner validiert. Bei fehlender Bestätigung wird unbekannt
-angezeigt; Akkuwerte können gespeichert oder verzögert sein.
+Die automatische Update-Prüfung ist zunächst aus. Bei einer Prüfung erhält GitHub
+IP-Adresse und Programmversion, aber keine Gerätekennungen, Namen oder Akkuwerte.
+Bestehende Geräteauswahl und Einstellungen bleiben erhalten.
 
-Ein-/Ausschaltwechsel, Windows-Anmeldung und echte Niedrigakku-Warnungen
-vor einer stabilen Veröffentlichung auf mehreren Geräten prüfen.
-Keine Zusage zur Unterstützung beliebiger Bluetooth-Geräte.
+Windows 10 ab Build 19041 oder Windows 11, x64, .NET Framework 4.8 erforderlich.
+Die Dateien sind weiterhin unsigniert. Der SignPath-Antrag ist eingereicht;
+eine Freigabe liegt noch nicht vor. MIT-Lizenz und Haftungshinweise sind enthalten.
+
+Namen/Farben/Anzeige und Versionsvergleich wurden automatisch geprüft, die
+Einstellungen visuell kontrolliert und die öffentliche GitHub-Abfrage getestet.
+
+## Code signing policy
+
+Geplant ist SignPath Foundation. Aktuell weiterhin unsigniert:
+https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/CODE-SIGNING.md

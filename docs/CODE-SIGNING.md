@@ -16,7 +16,7 @@ Only artifacts built from this public repository through the reviewed Windows bu
 
 ## Privacy
 
-The application does not make network connections or send telemetry. See [PRIVACY.md](../PRIVACY.md). Build and signing services process release artifacts separately from the installed application.
+The application does not send telemetry. The optional update check queries the public GitHub releases API and is disabled by default. This sends the network IP address and application version to GitHub, but no device names, identifiers or battery data. See [PRIVACY.md](../PRIVACY.md). Build and signing services process release artifacts separately from the installed application.
 
 ## Downloads
 

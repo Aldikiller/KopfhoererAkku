@@ -1,5 +1,18 @@
 # Build- und Testumfang
 
+## Beta 2: neue Funktionen
+
+- Warnlogik sowie 54 Status-/Farb-/Anzeigevarianten geprüft.
+- Namen einschließlich Unicode und Gleichheitszeichen, Farben, Anzeige und
+  Update-Einstellung gespeichert und wieder eingelesen; atomisches Überschreiben geprüft.
+- Versionsvergleich mit beta.2/beta.10, stabilen Versionen, ungültigen
+  Versionsnummern, unveröffentlichten Entwürfen und Downgrades geprüft.
+- Update-Prüfung standardmäßig aus. Echte öffentliche GitHub-Abfrage erfolgreich.
+- Drei Einstellungsseiten mit zwei synthetischen Geräten gerendert und geprüft.
+- Die Bestätigungen des Herausgebers unten beziehen sich auf Beta 1.
+  Eigene Namen/Farben und Update-Hinweis sind neue Funktionen von Beta 2.
+
+
 ## Rückmeldung des Herausgebers vom 17. Oktober 2026
 
 Aldikiller hat bestätigt, dass die Verbindungsanzeige beim Ein- und Ausschalten
