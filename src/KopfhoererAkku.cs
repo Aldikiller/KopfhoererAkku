@@ -18,13 +18,13 @@ using System.Text.RegularExpressions;
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
 [assembly: AssemblyProduct("Kopfhörer-Akku")]
-[assembly: AssemblyVersion("0.1.0.1")]
-[assembly: AssemblyFileVersion("0.1.0.1")]
-[assembly: AssemblyInformationalVersion("0.1.0-beta.2")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.0")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="0.1.0-beta.2";
+ public const string Version="1.0.0";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;
@@ -128,22 +128,27 @@ class Tray : ApplicationContext {
   Render(); timer.Interval=1000; int elapsed=0; timer.Tick+=(s,e)=> { if(stopEvent.WaitOne(0)) { ExitThread(); return; } elapsed++; if(elapsed>=settings.Interval) { elapsed=0; Refresh(); } }; timer.Start(); if(!demo) { Refresh(); if(settings.CheckAtStartup) CheckUpdates(false); }
  }
  static GraphicsPath Rounded(float x,float y,float w,float h,float r) {
-  var p=new GraphicsPath(); p.AddArc(x,y,r*2,r*2,180,90); p.AddArc(x+w-r*2,y,r*2,r*2,270,90); p.AddArc(x+w-r*2,y+h-r*2,r*2,r*2,0,90); p.AddArc(x,y+h-r*2,r*2,r*2,90,90); p.CloseFigure(); return p;
+  var p=new GraphicsPath(); r=Math.Max(0,Math.Min(r,Math.Min(w,h)/2)); if(r<0.1f) { p.AddRectangle(new RectangleF(x,y,w,h)); return p; } p.AddArc(x,y,r*2,r*2,180,90); p.AddArc(x+w-r*2,y,r*2,r*2,270,90); p.AddArc(x+w-r*2,y+h-r*2,r*2,r*2,0,90); p.AddArc(x,y+h-r*2,r*2,r*2,90,90); p.CloseFigure(); return p;
  }
  static Icon CopyIcon(Bitmap b) { var h=b.GetHicon(); try { return (Icon)Icon.FromHandle(h).Clone(); } finally { Native.DestroyIcon(h); } }
- public static Icon BatteryIcon(int? value,int slot,bool? connected=true,Color? custom=null,bool numbersOnly=false) {
+ public static Icon BatteryIcon(int? value,int slot,bool? connected=true,Color? custom=null,bool numbersOnly=false,Settings look=null) {
   using(var b=new Bitmap(32,32)) using(var g=Graphics.FromImage(b)) {
    g.SmoothingMode=SmoothingMode.AntiAlias; g.Clear(Color.Transparent);
    Color bg=custom ?? (slot==0 ? Color.FromArgb(19,112,91) : Color.FromArgb(28,87,159));
    if(value.HasValue && value<=20) bg=Color.FromArgb(166,35,49);
    if(connected!=true) bg=connected==false ? Color.FromArgb(75,75,75) : Color.FromArgb(103,86,39);
    Color fg=0.2126*bg.R+0.7152*bg.G+0.0722*bg.B>155 ? Color.Black : Color.White;
+   float stroke=look==null ? 1.3f : look.BatteryStroke/10f;
+   float width=look==null ? 28 : look.BatteryWidth, height=look==null ? 27 : look.BatteryHeight;
+   // Leave room for the outline and terminal inside the Windows icon canvas.
+   float left=(29-width)/2f, top=32-height-stroke/2f;
+   float bodyWidth=width-stroke, bodyHeight=height-stroke;
    if(!numbersOnly) {
-   using(var body=Rounded(0.6f,4.6f,28.2f,26.7f,4)) {
+   using(var body=Rounded(left+stroke/2f,top,bodyWidth,bodyHeight,look==null ? 4 : look.BatteryRadius)) {
     using(var brush=new SolidBrush(bg)) g.FillPath(brush,body);
-    using(var pen=new Pen(Color.FromArgb(230,245,245),1.3f)) g.DrawPath(pen,body);
+    using(var pen=new Pen(Color.FromArgb(230,245,245),stroke)) g.DrawPath(pen,body);
    }
-   using(var brush=new SolidBrush(Color.FromArgb(230,245,245))) g.FillRectangle(brush,29.4f,14,2.5f,10);
+   using(var brush=new SolidBrush(Color.FromArgb(230,245,245))) g.FillRectangle(brush,left+width,top+bodyHeight*0.32f,2,bodyHeight*0.36f);
    }
    // The headphone badge is joined to the battery at its upper left corner.
    using(var badge=Rounded(0,0,18,15,3)) using(var brush=new SolidBrush(bg)) g.FillPath(brush,badge);
@@ -153,11 +158,11 @@ class Tray : ApplicationContext {
     g.DrawLine(pen,5,8.2f,5,13); g.DrawLine(pen,12,8.2f,12,13);
    }
    string text=connected==false ? "×" : value.HasValue ? value.Value.ToString() : connected==null ? "?" : "–";
-   using(var path=new GraphicsPath()) using(var family=new FontFamily("Segoe UI")) {
-    path.AddString(text,family,(int)FontStyle.Bold,value==100 ? 16f : 21f,PointF.Empty,StringFormat.GenericTypographic);
-    var bounds=path.GetBounds(); float scale=Math.Min(1f,Math.Min(26.2f/bounds.Width,16.5f/bounds.Height)); using(var matrix=new Matrix()) { matrix.Translate(14.6f-bounds.Width*scale/2,22f-bounds.Height*scale/2); matrix.Scale(scale,scale); matrix.Translate(-bounds.Left,-bounds.Top); path.Transform(matrix); }
+   using(var path=new GraphicsPath()) using(var family=(look==null ? new FontFamily("Segoe UI") : look.FontFamily())) {
+    path.AddString(text,family,(int)FontStyle.Bold,(look==null ? 21f : look.TextSize)*(value==100 ? 16f/21f : 1f),PointF.Empty,StringFormat.GenericTypographic);
+    var bounds=path.GetBounds(); float availableWidth=numbersOnly ? 26.2f : bodyWidth-2, availableHeight=numbersOnly ? 16.5f : Math.Min(16.5f,bodyHeight-3); float scale=Math.Min(1f,Math.Min(availableWidth/bounds.Width,availableHeight/bounds.Height)); using(var matrix=new Matrix()) { matrix.Translate((numbersOnly ? 14.6f : left+width/2)-bounds.Width*scale/2,(numbersOnly ? 22f : top+bodyHeight-availableHeight/2-1.5f)-bounds.Height*scale/2); matrix.Scale(scale,scale); matrix.Translate(-bounds.Left,-bounds.Top); path.Transform(matrix); }
     if(numbersOnly) using(var outline=new Pen(fg,1.5f)) g.DrawPath(outline,path);
-    using(var brush=new SolidBrush(numbersOnly ? bg : fg)) g.FillPath(brush,path);
+    using(var brush=new SolidBrush(look!=null && look.TextColor!="Auto" ? ColorTranslator.FromHtml(look.TextColor) : numbersOnly ? bg : fg)) g.FillPath(brush,path);
    }
    return CopyIcon(b);
   }
@@ -186,7 +191,7 @@ class Tray : ApplicationContext {
   while(icons.Count<count) { var ni=new NotifyIcon(); ni.DoubleClick+=(s,e)=>Options(); icons.Add(ni); }
   while(icons.Count>count) { var ni=icons[icons.Count-1]; ni.Visible=false; if(ni.Icon!=null) ni.Icon.Dispose(); ni.Dispose(); icons.RemoveAt(icons.Count-1); }
   for(int i=0;i<count;i++) { var ni=icons[i]; var d=selected.Count>i ? devices.FirstOrDefault(x=>x.Id==selected[i]) : null;
-   var old=ni.Icon; ni.Icon=BatteryIcon(error.Length==0 && d!=null ? d.Battery : null,i,error.Length==0 && d!=null ? d.Connected : null,settings.Profile(selected.Count>i ? selected[i] : null,i).Color,settings.NumbersOnly); if(old!=null) old.Dispose();
+   var old=ni.Icon; ni.Icon=BatteryIcon(error.Length==0 && d!=null ? d.Battery : null,i,error.Length==0 && d!=null ? d.Connected : null,settings.Profile(selected.Count>i ? selected[i] : null,i).Color,settings.NumbersOnly,settings); if(old!=null) old.Dispose();
    string tip=d!=null ? Describe(d) : selected.Count==0 ? "Kopfhörer-Akku · Doppelklick: Einstellungen" : "Kopfhörer "+(i+1)+" · Verbindung unbekannt";
    if(error.Length>0) tip="Kopfhörer "+(i+1)+" · Abfrage fehlgeschlagen"; else if(lastScan.HasValue) tip+=" · "+lastScan.Value.ToString("HH:mm:ss"); ni.Text=tip.Length>63 ? tip.Substring(0,63) : tip;
    var menu=ni.ContextMenuStrip; ni.ContextMenuStrip=Menu(); if(menu!=null) menu.Dispose(); ni.Visible=true;
@@ -213,7 +218,7 @@ class Tray : ApplicationContext {
  public void Options(bool preview=false) {
   if(settingsForm!=null) { settingsForm.Activate(); return; }
   var f=new Form{Text="Kopfhörer-Akku · Einstellungen",ClientSize=new Size(610,550),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f;
-  var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage("Allgemein"); var appearance=new TabPage("Namen & Anzeige"); var updates=new TabPage("Updates"); tabs.TabPages.AddRange(new[]{general,appearance,updates});
+  var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage("Allgemein"); var appearance=new TabPage("Namen & Anzeige"); var updates=new TabPage("Updates"); var design=new TabPage("Schrift & Batterie"); tabs.TabPages.AddRange(new[]{general,appearance,updates,design});
   var status=new Label{Left=14,Top=14,Width=544,Height=112}; var updateLabel=new Label{Left=14,Top=190,Width=538,Height=60};
   updateStatus=()=> { status.Text=string.Join("\n",selected.Select(id=> { var d=devices.FirstOrDefault(x=>x.Id==id); return d==null ? "Gerät nicht gefunden · Verbindung unbekannt" : Describe(d); }).ToArray())+"\n\nLetzte Abfrage: "+(lastScan.HasValue ? lastScan.Value.ToString("HH:mm:ss") : "noch keine")+(error.Length>0 ? "\nFehler: "+error : ""); updateLabel.Text=updateStatusText; }; updateStatus();
   var warn=new CheckBox{Left=14,Top=136,Width=530,Text="Bei niedrigem Akku benachrichtigen",Checked=settings.Warnings};
@@ -224,25 +229,49 @@ class Tray : ApplicationContext {
   general.Controls.AddRange(new Control[]{status,warn,new Label{Left=14,Top=178,Width=225,Text="Warnung bei / unter (%)"},threshold,new Label{Left=14,Top=220,Width=225,Text="Abfrage alle (Sekunden)"},interval,hint,test});
   var names=new Dictionary<string,TextBox>(); var colors=new Dictionary<string,Color>(); var previews=new List<PictureBox>(); var ids=selected.ToArray();
   var style=new ComboBox{Left=14,Top=352,Width=340,DropDownStyle=ComboBoxStyle.DropDownList}; style.Items.AddRange(new[]{"Batterie mit Zahl und Kopfhörerzeichen","Nur Zahl mit Kopfhörerzeichen"}); style.SelectedIndex=settings.NumbersOnly ? 1 : 0;
-  Action refreshPreview=()=> { for(int i=0;i<ids.Length;i++) { var picture=previews[i]; var old=picture.Image; using(var icon=BatteryIcon(i==0 ? 75 : 65,i,true,colors[ids[i]],style.SelectedIndex==1)) picture.Image=icon.ToBitmap(); if(old!=null) old.Dispose(); } };
+  var look=new Settings{FontName=settings.FontName,TextSize=settings.TextSize,BatteryShape=settings.BatteryShape,TextColor=settings.TextColor,BatteryRadius=settings.BatteryRadius,BatteryStroke=settings.BatteryStroke,BatteryWidth=settings.BatteryWidth,BatteryHeight=settings.BatteryHeight};
+  var fontName=new ComboBox{Left=14,Top=40,Width=300,DropDownStyle=ComboBoxStyle.DropDownList};
+  foreach(var family in FontFamily.Families) { if(family.IsStyleAvailable(FontStyle.Bold)) fontName.Items.Add(family.Name); family.Dispose(); }
+  fontName.SelectedItem=look.FontName; if(fontName.SelectedIndex<0) fontName.SelectedItem="Segoe UI";
+  var textSize=new NumericUpDown{Left=340,Top=40,Width=100,Minimum=10,Maximum=28,Value=look.TextSize};
+  var shape=new ComboBox{Left=14,Top=120,Width=300,DropDownStyle=ComboBoxStyle.DropDownList}; shape.Items.AddRange(new[]{"Abgerundet","Eckig","Stark abgerundet"}); shape.SelectedIndex=look.BatteryShape;
+  var autoText=new CheckBox{Left=14,Top=180,Width=300,Text="Schriftfarbe automatisch",Checked=look.TextColor=="Auto"};
+  var textColor=new Button{Left=340,Top=176,Width=170,Height=30,Text="Schriftfarbe wählen …"};
+  var designPreview=new PictureBox{Left=14,Top=320,Width=96,Height=96,BackColor=Color.FromArgb(32,32,32),SizeMode=PictureBoxSizeMode.Zoom}; previews.Add(designPreview);
+  design.Controls.AddRange(new Control[]{new Label{Left=14,Top=16,Width=300,Text="Schriftart"},fontName,new Label{Left=340,Top=16,Width=180,Text="Schriftgröße (10–28)"},textSize,new Label{Left=14,Top=96,Width=300,Text="Batterieform"},shape,autoText,textColor,designPreview,new Label{Left=125,Top=320,Width=390,Height=100,Text="Diese Einstellungen gelten für beide Kopfhörer.\nDie Batteriefarbe wählst du unter Namen & Anzeige.\nBreite, Höhe und Rahmen beziehen sich auf die 32-Pixel-Zeichenfläche. Windows legt die Größe des Symbols im Infobereich fest. Sehr große Zahlen werden passend verkleinert."}});
+  var radius=new NumericUpDown{Left=14,Top=246,Width=110,Minimum=0,Maximum=14,Value=look.BatteryRadius};
+  var strokeControl=new NumericUpDown{Left=150,Top=246,Width=110,Minimum=0.5m,Maximum=3m,DecimalPlaces=1,Increment=0.1m,Value=look.BatteryStroke/10m};
+  var batteryWidth=new NumericUpDown{Left=286,Top=246,Width=110,Minimum=16,Maximum=28,Value=look.BatteryWidth};
+  var batteryHeight=new NumericUpDown{Left=422,Top=246,Width=110,Minimum=16,Maximum=27,Value=look.BatteryHeight};
+  design.Controls.AddRange(new Control[]{new Label{Left=14,Top=220,Width=120,Text="Rundung (0–14)"},radius,new Label{Left=150,Top=220,Width=120,Text="Rahmen (0,5–3)"},strokeControl,new Label{Left=286,Top=220,Width=120,Text="Breite (16–28)"},batteryWidth,new Label{Left=422,Top=220,Width=120,Text="Höhe (16–27)"},batteryHeight});
+  Action refreshPreview=()=> { for(int i=0;i<ids.Length;i++) { var picture=previews[i]; var old=picture.Image; using(var icon=BatteryIcon(i==0 ? 75 : 65,i,true,colors[ids[i]],style.SelectedIndex==1,look)) picture.Image=icon.ToBitmap(); if(old!=null) old.Dispose(); } var previous=designPreview.Image; using(var icon=BatteryIcon(75,0,true,ids.Length>0 && colors.ContainsKey(ids[0]) ? colors[ids[0]] : Color.Teal,style.SelectedIndex==1,look)) designPreview.Image=icon.ToBitmap(); if(previous!=null) previous.Dispose(); };
   for(int i=0;i<ids.Length;i++) {
    string id=ids[i]; int slot=i; var d=devices.FirstOrDefault(x=>x.Id==id); var profile=settings.Profile(id,i); colors[id]=profile.Color;
    int top=16+i*137; var name=new TextBox{Left=14,Top=top+27,Width=335,MaxLength=40,Text=profile.Name}; names[id]=name;
-   var colorButton=new Button{Left=365,Top=top+25,Width=105,Height=29,Text="Farbe …",BackColor=colors[id],ForeColor=Color.White,UseVisualStyleBackColor=false};
+   var colorButton=new Button{Left=365,Top=top+25,Width=105,Height=29,Text="Akku-Farbe …",BackColor=colors[id],ForeColor=Color.White,UseVisualStyleBackColor=false};
    colorButton.Click+=(a,b)=> { using(var dialog=new ColorDialog{Color=colors[id],FullOpen=true}) if(dialog.ShowDialog(f)==DialogResult.OK) { colors[id]=dialog.Color; colorButton.BackColor=dialog.Color; colorButton.ForeColor=dialog.Color.GetBrightness()>0.55f ? Color.Black : Color.White; refreshPreview(); } };
    var reset=new Button{Left=365,Top=top+60,Width=105,Height=28,Text="Standard"}; reset.Click+=(a,b)=> { colors[id]=slot==0 ? ColorTranslator.FromHtml("#13705B") : ColorTranslator.FromHtml("#1C579F"); name.Text=""; colorButton.BackColor=colors[id]; colorButton.ForeColor=Color.White; refreshPreview(); };
-   var picture=new PictureBox{Left=492,Top=top+25,Width=48,Height=48,SizeMode=PictureBoxSizeMode.Zoom,BackColor=Color.FromArgb(32,32,32)}; previews.Add(picture);
+   var picture=new PictureBox{Left=492,Top=top+25,Width=48,Height=48,SizeMode=PictureBoxSizeMode.Zoom,BackColor=Color.FromArgb(32,32,32)}; previews.Insert(i,picture);
    appearance.Controls.AddRange(new Control[]{new Label{Left=14,Top=top,Width=535,Text=(i+1)+". "+(d==null ? "Gespeicherter Kopfhörer" : d.DisplayName)},name,colorButton,reset,picture,new Label{Left=14,Top=top+63,Width=335,Height=38,Text="Eigener Name; leer lassen für den Gerätenamen."}});
   }
   if(ids.Length==0) appearance.Controls.Add(new Label{Left=14,Top=20,Width=535,Height=50,Text="Zuerst unter Geräte auswählen einen oder zwei Kopfhörer festlegen."});
-  appearance.Controls.AddRange(new Control[]{new Label{Left=14,Top=322,Width=530,Text="Darstellung für beide Symbole"},style,new Label{Left=14,Top=392,Width=535,Height=42,Text="Vorschau mit Beispielwerten. Statusfarben haben Vorrang vor deiner Farbe."}}); style.SelectedIndexChanged+=(a,b)=>refreshPreview(); refreshPreview();
+  appearance.Controls.AddRange(new Control[]{new Label{Left=14,Top=322,Width=530,Text="Darstellung für beide Symbole"},style,new Label{Left=14,Top=392,Width=535,Height=42,Text="Vorschau mit Beispielwerten. Statusfarben haben Vorrang vor deiner Farbe."}}); style.SelectedIndexChanged+=(a,b)=>refreshPreview();
+  fontName.SelectedIndexChanged+=(a,b)=> { look.FontName=(string)fontName.SelectedItem; refreshPreview(); };
+  textSize.ValueChanged+=(a,b)=> { look.TextSize=(int)textSize.Value; refreshPreview(); };
+  shape.SelectedIndexChanged+=(a,b)=> { look.BatteryShape=shape.SelectedIndex; radius.Value=shape.SelectedIndex==1 ? 0 : shape.SelectedIndex==2 ? 12 : 4; refreshPreview(); };
+  radius.ValueChanged+=(a,b)=> { look.BatteryRadius=(int)radius.Value; refreshPreview(); };
+  strokeControl.ValueChanged+=(a,b)=> { look.BatteryStroke=(int)(strokeControl.Value*10); refreshPreview(); };
+  batteryWidth.ValueChanged+=(a,b)=> { look.BatteryWidth=(int)batteryWidth.Value; refreshPreview(); };
+  batteryHeight.ValueChanged+=(a,b)=> { look.BatteryHeight=(int)batteryHeight.Value; refreshPreview(); };
+  autoText.CheckedChanged+=(a,b)=> { look.TextColor=autoText.Checked ? "Auto" : "#FFFFFF"; refreshPreview(); };
+  textColor.Click+=(a,b)=> { using(var dialog=new ColorDialog{Color=look.TextColor=="Auto" ? Color.White : ColorTranslator.FromHtml(look.TextColor),FullOpen=true}) if(dialog.ShowDialog(f)==DialogResult.OK) { autoText.Checked=false; look.TextColor=ColorTranslator.ToHtml(Color.FromArgb(dialog.Color.R,dialog.Color.G,dialog.Color.B)); if(!look.TextColor.StartsWith("#")) look.TextColor="#"+dialog.Color.R.ToString("X2")+dialog.Color.G.ToString("X2")+dialog.Color.B.ToString("X2"); refreshPreview(); } }; refreshPreview();
   var autoCheck=new CheckBox{Left=14,Top=20,Width=535,Text="Beim Programmstart nach neuen Versionen suchen",Checked=settings.CheckAtStartup};
   var privacy=new Label{Left=14,Top=62,Width=535,Height=98,Text="Freiwillig und zunächst ausgeschaltet. Die Prüfung ruft öffentliche\nRelease-Daten von GitHub ab. GitHub erhält dabei deine IP-Adresse\nund die Programmversion. Gerätenamen und Akkudaten werden nicht gesendet.\nEs werden keine Updates automatisch heruntergeladen oder installiert."};
   var check=new Button{Left=14,Top=264,Width=170,Height=32,Text="Jetzt nach Updates suchen"}; check.Click+=(a,b)=>CheckUpdates(true);
   var downloads=new Button{Left=200,Top=264,Width=170,Height=32,Text="GitHub-Downloads öffnen"}; downloads.Click+=(a,b)=>OpenPage(UpdateService.ReleasesPage);
   updates.Controls.AddRange(new Control[]{autoCheck,privacy,new Label{Left=14,Top=169,Width=530,Text="Installiert: "+AppPaths.Version},updateLabel,check,downloads});
   var save=new Button{Left=14,Top=506,Width=125,Height=32,Text="Speichern"}; save.Click+=(a,b)=> {
-   var next=new Settings{Warnings=warn.Checked,Threshold=(int)threshold.Value,Interval=(int)interval.Value,CheckAtStartup=autoCheck.Checked,NumbersOnly=style.SelectedIndex==1};
+   var next=new Settings{Warnings=warn.Checked,Threshold=(int)threshold.Value,Interval=(int)interval.Value,CheckAtStartup=autoCheck.Checked,NumbersOnly=style.SelectedIndex==1,FontName=look.FontName,TextSize=look.TextSize,BatteryShape=look.BatteryShape,TextColor=look.TextColor,BatteryRadius=look.BatteryRadius,BatteryStroke=look.BatteryStroke,BatteryWidth=look.BatteryWidth,BatteryHeight=look.BatteryHeight};
    foreach(var item in settings.Profiles) next.Profiles[item.Key]=new DeviceProfile(item.Value.ColorHex){Name=item.Value.Name};
    foreach(var id in ids) next.Profiles[id]=new DeviceProfile("#"+colors[id].R.ToString("X2")+colors[id].G.ToString("X2")+colors[id].B.ToString("X2")){Name=names[id].Text.Trim()};
    try { next.Save(SettingsPath); if(next.Threshold!=settings.Threshold || next.Warnings!=settings.Warnings) warnings.Reset(); settings=next; Render(); Refresh(); f.Close(); } catch(Exception ex) { MessageBox.Show("Speichern fehlgeschlagen: "+ex.Message); }
@@ -296,7 +325,13 @@ static class Program {
   foreach(bool? connected in new bool?[]{true,false,null}) foreach(int? level in new int?[]{0,1,20,70,100,null}) using(var icon=Tray.BatteryIcon(level,0,connected)) check(icon.Width==32,"icon creation");
   string file=AppPaths.Report("selftest-"+Guid.NewGuid().ToString("N")+".ini"); Directory.CreateDirectory(Path.GetDirectoryName(file)); config.Threshold=35; config.Interval=42; config.Save(file); var loaded=Settings.Read(file); File.Delete(file); check(loaded.Threshold==35 && loaded.Interval==42 && !loaded.Warnings,"settings roundtrip");
   string profileFile=AppPaths.Report("profiles-test-"+Guid.NewGuid().ToString("N")+".ini");
-  config.NumbersOnly=true; config.CheckAtStartup=true; config.Profiles["BTH\\TEST=ä"]=new DeviceProfile("#FFEE00"){Name="Büro = Musik 🎧"}; config.Save(profileFile); config.Save(profileFile); loaded=Settings.Read(profileFile); File.Delete(profileFile);
+  config.BatteryRadius=9; config.BatteryStroke=25; config.BatteryWidth=23; config.BatteryHeight=19; config.FontName="Arial"; config.TextSize=14; config.BatteryShape=2; config.TextColor="#ABCDEF"; config.NumbersOnly=true; config.CheckAtStartup=true; config.Profiles["BTH\\TEST=ä"]=new DeviceProfile("#FFEE00"){Name="Büro = Musik 🎧"}; config.Save(profileFile); config.Save(profileFile); loaded=Settings.Read(profileFile); File.Delete(profileFile);
+  check(loaded.BatteryRadius==9 && loaded.BatteryStroke==25 && loaded.BatteryWidth==23 && loaded.BatteryHeight==19,"battery geometry persistence");
+  check(loaded.FontName=="Arial" && loaded.TextSize==14 && loaded.BatteryShape==2 && loaded.TextColor=="#ABCDEF","appearance roundtrip");
+  foreach(int radiusTest in new[]{0,14}) foreach(int lineTest in new[]{5,30}) foreach(int widthTest in new[]{16,28}) foreach(int heightTest in new[]{16,27}) foreach(int levelTest in new[]{1,75,100}) using(var icon=Tray.BatteryIcon(levelTest,0,true,Color.Teal,false,new Settings{BatteryRadius=radiusTest,BatteryStroke=lineTest,BatteryWidth=widthTest,BatteryHeight=heightTest})) check(icon.Width==32,"geometry extremes");
+  File.WriteAllLines(profileFile,new[]{"BatteryShape=2","BatteryWidth=999","BatteryHeight=-3","BatteryStroke=999","BatteryRadius=999"}); var limited=Settings.Read(profileFile); check(limited.BatteryWidth==28 && limited.BatteryHeight==16 && limited.BatteryStroke==30 && limited.BatteryRadius==14,"geometry limits");
+  File.WriteAllLines(profileFile,new[]{"BatteryShape=2"}); check(Settings.Read(profileFile).BatteryRadius==12,"legacy shape migration"); File.Delete(profileFile);
+  foreach(var form in new[]{0,1,2}) foreach(var size in new[]{10,21,28}) using(var icon=Tray.BatteryIcon(100,0,true,Color.Teal,false,new Settings{FontName="missing font xyz",TextSize=size,BatteryShape=form})) check(icon.Width==32,"font fallback and shapes");
   check(loaded.NumbersOnly && loaded.CheckAtStartup && loaded.Profiles["BTH\\TEST=ä"].Name=="Büro = Musik 🎧" && loaded.Profiles["BTH\\TEST=ä"].ColorHex=="#FFEE00","profile roundtrip and atomic replacement");
   check(!new Settings().CheckAtStartup,"updates opt in");
   check(ReleaseVersion.Parse("v1.0.0-beta.10").CompareTo(ReleaseVersion.Parse("1.0.0-beta.2"))>0,"numeric prerelease comparison");
@@ -307,7 +342,7 @@ static class Program {
   check(UpdateService.Select(json,"0.1.0")==null,"stable excludes previews");
   check(UpdateService.Select("[{\"draft\":false,\"tag_name\":\"v0.1.0-beta.1\"}]","0.1.0-beta.2")==null,"no downgrade");
   foreach(bool? state in new bool?[]{true,false,null}) foreach(int? level in new int?[]{0,1,20,70,100,null}) foreach(bool numeric in new[]{false,true}) using(var icon=Tray.BatteryIcon(level,1,state,Color.Yellow,numeric)) check(icon.Width==32,"custom style/status icons");
-  File.WriteAllText(AppPaths.Report("Testbericht.txt"),"OK: Warnschwelle, Wiederholschutz, Wiederverbindung, fehlende Daten, deaktivierte Warnungen, Warnlogik, 54 Symbolvarianten, Namen/Farben/Anzeige speichern, Update-Versionsvergleich, Beta-Kanal, kein Downgrade, Updates standardmäßig aus.");
+  File.WriteAllText(AppPaths.Report("Testbericht.txt"),"OK: Warnschwelle, Wiederholschutz, Wiederverbindung, fehlende Daten, deaktivierte Warnungen, Warnlogik, 54 Symbolvarianten, Namen/Farben/Anzeige speichern, Schrift und Batteriegeometrie speichern, 48 Geometrie-Grenzfälle, Migration und Begrenzung, Update-Versionsvergleich, Beta-Kanal, kein Downgrade, Updates standardmäßig aus.");
  }
  [STAThread] static void Main(string[] args) {
   var output=args.FirstOrDefault(x=>x.StartsWith("--output-dir=",StringComparison.Ordinal)); if(output!=null) AppPaths.Output=Path.GetFullPath(output.Substring(13));
@@ -319,6 +354,7 @@ static class Program {
   Application.EnableVisualStyles(); Application.SetCompatibleTextRenderingDefault(false);
   if(args.Contains("--ui-check")) { var context=new Tray(true); context.Options(true); context.ExitThread(); context.Dispose(); return; }
   if(args.Contains("--diagnose")) { try { File.WriteAllLines(AppPaths.Report("Diagnose.txt"),Native.Scan().Select(d=>d.ToString()+"\t"+d.Id).Concat(new[]{Native.LinkDiagnostics})); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Diagnose.txt"),e.ToString()); } return; }
+  if(args.Contains("--geometry-preview")) { using(var bitmap=new Bitmap(576,240)) using(var g=Graphics.FromImage(bitmap)) { g.Clear(Color.FromArgb(30,30,30)); int i=0; foreach(var look in new[]{new Settings(),new Settings{BatteryRadius=0,BatteryStroke=5},new Settings{BatteryRadius=14,BatteryStroke=30},new Settings{BatteryWidth=16,BatteryHeight=16,BatteryStroke=30},new Settings{BatteryWidth=28,BatteryHeight=16,BatteryRadius=8},new Settings{BatteryWidth=16,BatteryHeight=27,BatteryRadius=6}}) { using(var icon=Tray.BatteryIcon(100,0,true,Color.Teal,false,look)) using(var image=icon.ToBitmap()) { g.DrawImage(image,new Rectangle(i*96+8,12,80,80)); g.DrawImage(image,new Rectangle(i*96+32,110,32,32)); g.DrawImage(image,new Rectangle(i*96+40,158,16,16)); } i++; } bitmap.Save(AppPaths.Report("Batterieformen.png")); } return; }
   if(args.Contains("--preview")) { using(var b=new Bitmap(440,180)) using(var g=Graphics.FromImage(b)) { g.Clear(Color.FromArgb(28,28,28)); int row=0; foreach(bool numeric in new[]{false,true}) { int i=0; foreach(int? n in new int?[]{90,70,1,100,null}) { using(var icon=Tray.BatteryIcon(n,i%2,true,i%2==0 ? Color.FromArgb(19,112,91) : Color.FromArgb(28,87,159),numeric)) { g.DrawIcon(icon,12+i*84,12+row*85); using(var image=icon.ToBitmap()) g.DrawImage(image,new Rectangle(20+i*84,58+row*85,16,16)); } i++; } row++; } b.Save(AppPaths.Report("Vorschau.png")); } return; }
   if(args.Contains("--update-check")) { try { var latest=UpdateService.Check(); File.WriteAllText(AppPaths.Report("Update-Check.txt"),latest==null ? "OK: keine neuere Version" : "OK: "+latest.Tag); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Update-Check.txt"),"FEHLER: "+e); Environment.ExitCode=1; } return; }
 

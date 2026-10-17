@@ -17,8 +17,10 @@ class DeviceProfile {
  public Color Color { get { return ColorTranslator.FromHtml(ColorHex); } }
 }
 class Settings {
+ public FontFamily FontFamily() { try { var f=new FontFamily(FontName); if(f.IsStyleAvailable(FontStyle.Bold)) return f; f.Dispose(); } catch(ArgumentException) {} return new FontFamily("Segoe UI"); }
  public bool Warnings=true,CheckAtStartup=false,NumbersOnly=false;
- public int Threshold=20,Interval=15;
+ public int Threshold=20,Interval=15,TextSize=21,BatteryShape=0,BatteryRadius=4,BatteryStroke=13,BatteryWidth=28,BatteryHeight=27;
+ public string FontName="Arial",TextColor="Auto";
  public Dictionary<string,DeviceProfile> Profiles=new Dictionary<string,DeviceProfile>(StringComparer.OrdinalIgnoreCase);
  public DeviceProfile Profile(string id,int slot) { DeviceProfile p; return id!=null && Profiles.TryGetValue(id,out p) ? p : new DeviceProfile(slot==0 ? "#13705B" : "#1C579F"); }
  public string Name(Device d) { DeviceProfile p; return Profiles.TryGetValue(d.Id,out p) && !string.IsNullOrWhiteSpace(p.Name) ? p.Name : d.DisplayName; }
@@ -28,6 +30,14 @@ class Settings {
   var x=new Settings(); if(!File.Exists(file)) return x;
   foreach(var line in File.ReadAllLines(file)) {
    int split=line.IndexOf('='); if(split<1) continue; string key=line.Substring(0,split),value=line.Substring(split+1); int n; bool b;
+   if(key=="FontName") { try { x.FontName=Decode(value); } catch(FormatException) {} }
+   if(key=="TextSize" && int.TryParse(value,out n)) x.TextSize=Math.Max(10,Math.Min(28,n));
+   if(key=="BatteryShape" && int.TryParse(value,out n)) x.BatteryShape=Math.Max(0,Math.Min(2,n));
+   if(key=="BatteryRadius" && int.TryParse(value,out n)) x.BatteryRadius=Math.Max(0,Math.Min(14,n));
+   if(key=="BatteryStroke" && int.TryParse(value,out n)) x.BatteryStroke=Math.Max(5,Math.Min(30,n));
+   if(key=="BatteryWidth" && int.TryParse(value,out n)) x.BatteryWidth=Math.Max(16,Math.Min(28,n));
+   if(key=="BatteryHeight" && int.TryParse(value,out n)) x.BatteryHeight=Math.Max(16,Math.Min(27,n));
+   if(key=="TextColor" && (value=="Auto" || Regex.IsMatch(value,@"\A#[0-9a-fA-F]{6}\z"))) x.TextColor=value;
    if(key=="Warnings" && bool.TryParse(value,out b)) x.Warnings=b;
    if(key=="CheckAtStartup" && bool.TryParse(value,out b)) x.CheckAtStartup=b;
    if(key=="NumbersOnly" && bool.TryParse(value,out b)) x.NumbersOnly=b;
@@ -39,10 +49,13 @@ class Settings {
     if(field=="Name") { var name=Decode(value); p.Name=name.Length>40 ? name.Substring(0,40) : name; }
     if(field=="Color" && Regex.IsMatch(value,@"\A#[0-9a-fA-F]{6}\z")) p.ColorHex=value;
    } catch(FormatException) {} }
-  } return x;
+  }
+  // Older presets used fixed radii; keep their appearance during migration.
+  if(!File.ReadAllLines(file).Any(line=>line.StartsWith("BatteryRadius="))) x.BatteryRadius=x.BatteryShape==1 ? 0 : x.BatteryShape==2 ? 12 : 4;
+  return x;
  }
  public void Save(string file) {
-  var lines=new List<string>{"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly};
+  var lines=new List<string>{"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
   foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); }
   Directory.CreateDirectory(Path.GetDirectoryName(file)); string temp=file+"."+Guid.NewGuid().ToString("N")+".tmp";
   try { File.WriteAllLines(temp,lines,Encoding.UTF8); if(File.Exists(file)) File.Replace(temp,file,null); else File.Move(temp,file); } finally { if(File.Exists(temp)) File.Delete(temp); }
