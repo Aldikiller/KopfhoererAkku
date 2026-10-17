@@ -1,0 +1,16 @@
+dist/
+work/
+bin/
+obj/
+.vs/
+Einstellungen/
+portable.flag
+Diagnose.txt
+Autostart-Status.txt
+Symbol-Check.txt
+Testbericht.txt
+*.log
+*.pfx
+*.p12
+*.key
+.env
