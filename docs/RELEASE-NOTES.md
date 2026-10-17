@@ -1,13 +1,9 @@
-# Kopfhörer-Akku 1.1.0
+﻿# Kopfhörer-Akku 1.2.0 · Deutsch / English
 
-Neu seit 1.0.0 sind außerdem die ständige Livevorschau und eigene Zeichen pro Kopfhörer (zum Beispiel „A“). Das Kopfhörerzeichen schneidet keine Fläche mehr aus der Batterie aus.
+Unter Einstellungen → Allgemein lässt sich jetzt Deutsch oder English auswählen. Nach Speichern wechselt die Oberfläche sofort; die Auswahl bleibt nach einem Neustart erhalten.
 
-Neu ist das frei platzierbare Desktop-Widget. Unter Einstellungen → Anzeige & Widget stehen Infobereich, Widget oder beide Anzeigen zur Auswahl.
+Menüs, Geräteauswahl, Akkuwarnungen, Statusanzeigen, Livevorschau und Widget-Eigenschaften unterstützen Englisch. Bestehende Einstellungen und eigene Gerätenamen bleiben erhalten. Deutsch bleibt Standard.
 
-Größe und Position, Hintergrund- und Gesamtdeckkraft, Farben, Schriftart, Schriftgrößen, Rahmen, Rundung, Abstände, Symbolgröße, Anordnung und sichtbare Inhalte sind anpassbar. Änderungen erscheinen in der Vorschau und werden mit Speichern übernommen.
+Choose English under Einstellungen → Allgemein → Sprache / Language, then click Speichern. The app remembers your choice. System tray, desktop widget, battery warnings and settings support English.
 
-Das Widget per linker Maustaste verschieben. Doppelklick öffnet die Einstellungen; Rechtsklick das Menü. Eine Positionssperre ist verfügbar. Positionen außerhalb vorhandener Bildschirme werden beim Anzeigen zurückgeholt.
-
-Hintergrund komplett transparent: Hintergrund-Deckkraft 0 und Rahmenstärke 0. Gesamtdeckkraft kann von 10 bis 100 Prozent gewählt werden, damit das Widget erreichbar bleibt. Bei Warnungen kann kurzzeitig ein Symbol im Infobereich erscheinen.
-
-Die Anwendung bleibt unsigniert. Geprüft wurden Speicherung, Layout-Grenzwerte, echte Windows-Alpha-Darstellung, Größenänderung und alle drei Anzeigemodi.
+Geprüft: Build, bestehende Selbsttests, mehrfacher Sprachwechsel, Einstellungsfenster, Speicherung und Neustart. Installer und portable ZIP sind weiterhin unsigniert.

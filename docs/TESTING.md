@@ -1,4 +1,4 @@
-# Build- und Testumfang
+﻿# Build- und Testumfang
 
 ## Beta 2: neue Funktionen
 
@@ -89,3 +89,7 @@ den Test des normalen Setups in einer frischen Windows-VM.
 ## Widget
 
 `--widget-check --output-dir=PFAD` prüft ein echtes Windows-Layered-Widget mit Alpha-Kanal, Größenwechsel und alle drei Anzeigemodi. Zusätzlich werden Vorschauen gespeichert. Die Selbsttests prüfen Widget-Einstellungen, Wertebegrenzung und kleine Layouts. Manuell zusätzlich Verschieben, Positionssperre, Neustart und mehrere Monitore prüfen.
+
+## Sprachwahl (1.2.0)
+
+`KopfhoererAkku.exe --language-check --output-dir=<Testordner>` prüft Deutsch → English → Deutsch → English, den Neuaufbau der Einstellungen und das erneute Laden der gespeicherten Sprachwahl mit isolierten Testdaten.
