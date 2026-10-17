@@ -6,13 +6,13 @@ Kostenlos und Open Source. Von **Aldikiller**.
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.2/KopfhoererAkku-0.1.0-beta.2-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.0.0/KopfhoererAkku-1.0.0-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.2/KopfhoererAkku-0.1.0-beta.2-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.0.0/KopfhoererAkku-1.0.0-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode der Beta](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.2/KopfhoererAkku-0.1.0-beta.2-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.2/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.0.0/KopfhoererAkku-1.0.0-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.0.0/SHA256SUMS.txt)
 
-Die aktuelle Version ist **0.1.0 Beta 2**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
+Die aktuelle Version ist **1.0.0**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
 ![So sehen die Symbole aus](docs/Symbole.png)
 
@@ -27,7 +27,7 @@ Ein Doppelklick auf ein Symbol öffnet die Einstellungen. Unter **Namen & Anzeig
 
 Unter **Updates** kannst du nach neuen Versionen suchen und die GitHub-Downloadseite öffnen. Auf Wunsch prüft das Tool auch bei jedem Programmstart. Das ist zunächst ausgeschaltet. Es installiert nichts automatisch.
 
- Dort kannst du die Akkuwarnung und das Abfrageintervall ändern. Mit **Test** lässt sich die Windows-Benachrichtigung ausprobieren.
+Unter **Allgemein** kannst du die Akkuwarnung und das Abfrageintervall ändern. Mit **Test** lässt sich die Windows-Benachrichtigung ausprobieren.
 
 Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder ausschalten und das Programm beenden. Im Installer ist der Autostart vorausgewählt.
 
@@ -47,7 +47,7 @@ Jeder Kopfhörer hat ein eigenes Symbol. Die Zahl im Akku ist der Prozentwert. W
 
 Das Tool liest die Akkuwerte aus Windows. Es funktioniert deshalb nur, wenn Windows für den Kopfhörer einen Wert bereitstellt. Die Werte können gerundet oder etwas älter sein.
 
-Akkuwerte wurden bisher mit JBL Live 770NC und JLab Rewind 2 ausgelesen. Die Verbindungserkennung ist noch nicht auf verschiedenen Rechnern geprüft. Deshalb ist die Version als Beta gekennzeichnet. Akkuwarnungen gibt es nur, wenn die Verbindung bestätigt ist. Windows kann Benachrichtigungen bei „Nicht stören“ unterdrücken.
+Akkuwerte wurden bisher mit JBL Live 770NC und JLab Rewind 2 ausgelesen. Wie gut andere Modelle funktionieren, hängt davon ab, welche Daten Windows bereitstellt. Akkuwarnungen gibt es nur, wenn die Verbindung bestätigt ist. Windows kann Benachrichtigungen bei „Nicht stören“ unterdrücken.
 
 Die Dateien sind noch nicht digital signiert. Windows kann beim Start einen Warnhinweis anzeigen.
 
@@ -69,4 +69,8 @@ Das Projekt wurde mit KI-Unterstützung entwickelt und steht unter der [MIT-Lize
 
 ## Code signing policy
 
-Wir bereiten einen Antrag bei SignPath Foundation für kostenlose Open-Source-Signaturen vor. Eine Zusage gibt es noch nicht. Die bisherigen Downloads sind weiterhin unsigniert. Mehr dazu steht in der [Signierrichtlinie](docs/CODE-SIGNING.md).
+Der Antrag bei SignPath Foundation für kostenlose Open-Source-Signaturen ist eingereicht. Eine Zusage gibt es noch nicht. Die bisherigen Downloads sind weiterhin unsigniert. Mehr dazu steht in der [Signierrichtlinie](docs/CODE-SIGNING.md).
+
+Schrift und Batterie: Unter Einstellungen → Schrift & Batterie kannst du Schriftart, Schriftgröße und Schriftfarbe getrennt wählen. Die Batterie kann eckig, abgerundet oder stark abgerundet sein. Die Akkufarbe stellst du pro Gerät unter Namen & Anzeige ein. Windows bestimmt die äußere Größe des Symbols.
+
+Unter **Schrift & Batterie** stellst du Schriftart, Schriftgröße und Schriftfarbe ein. Für den Akku kannst du Rundung, Rahmenstärke, Breite und Höhe getrennt ändern. Drei Formen dienen als Ausgangspunkt. Arial ist der Standard für neue Einstellungen; vorhandene Einstellungen bleiben erhalten. Windows bestimmt die äußere Symbolgröße.

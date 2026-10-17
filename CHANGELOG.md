@@ -1,3 +1,17 @@
+# 1.0.0
+
+- Erste Version ohne Beta-Zusatz.
+- Rundung, Rahmenstärke, Breite und Höhe der Batterie getrennt einstellbar.
+- Arial als Standard für neue Einstellungen; installierte Schriftarten wählbar.
+- Bestehende Einstellungen und frühere Batterieformen werden übernommen.
+
+# 0.1.0-beta.3
+
+- Schriftart und Schriftgröße getrennt einstellbar.
+- Eigene Schriftfarbe oder automatische Kontrastfarbe.
+- Drei Batterieformen mit direkter Vorschau.
+- Batteriefarbe weiterhin pro Gerät einstellbar.
+
 # Änderungen
 
 ## 0.1.0-beta.2 — 2026-10-17
