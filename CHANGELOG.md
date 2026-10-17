@@ -1,3 +1,23 @@
+# 1.1.0
+
+- Frei platzierbares Desktop-Widget zusätzlich zur Anzeige im Infobereich.
+- Auswahl zwischen Infobereich, Widget oder beidem.
+- Einstellbar: Größe, Position, Hintergrund- und Gesamtdeckkraft, Farben, Schriften, Symbolgröße, Abstände, Rahmen, Rundung, Anordnung und sichtbare Inhalte.
+- Position verschieben und speichern; Position sperren und Vordergrundverhalten wählen.
+- Livevorschau mit transparentem Schachbretthintergrund.
+
+# 1.0.2
+
+- Livevorschau auf jeder Einstellungsseite, mit hellem und dunklem Hintergrund.
+- Vorschau mit aktuellem Akkustand oder frei wählbarem Beispielwert.
+- Zeichen pro Gerät: Kopfhörer, Musiknote, Lautsprecher, eigener Buchstabe oder keines.
+- Zeichen ohne Hintergrundfläche; der Akku bleibt durch die Zwischenräume sichtbar.
+
+# 1.0.1
+
+- Transparenter Hintergrund hinter dem Kopfhörerzeichen.
+- Feine Kontrastkontur für helle und dunkle Taskleisten.
+
 # 1.0.0
 
 - Erste Version ohne Beta-Zusatz.

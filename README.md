@@ -1,18 +1,18 @@
 # Kopfhörer-Akku
 
-Ein kleines Windows-Tool, das den Akkustand von bis zu zwei Bluetooth-Kopfhörern neben der Uhr anzeigt. So muss man nicht jedes Mal in den Windows-Einstellungen nachsehen.
+Ein kleines Windows-Tool, das den Akkustand von bis zu zwei Bluetooth-Kopfhörern neben der Uhr oder als Desktop-Widget anzeigt. So muss man nicht jedes Mal in den Windows-Einstellungen nachsehen.
 
 Kostenlos und Open Source. Von **Aldikiller**.
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.0.0/KopfhoererAkku-1.0.0-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.1.0/KopfhoererAkku-1.1.0-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.0.0/KopfhoererAkku-1.0.0-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.1.0/KopfhoererAkku-1.1.0-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.0.0/KopfhoererAkku-1.0.0-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.0.0/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.1.0/KopfhoererAkku-1.1.0-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.1.0/SHA256SUMS.txt)
 
-Die aktuelle Version ist **1.0.0**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
+Die aktuelle Version ist **1.1.0**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
 ![So sehen die Symbole aus](docs/Symbole.png)
 
@@ -30,6 +30,28 @@ Unter **Updates** kannst du nach neuen Versionen suchen und die GitHub-Downloads
 Unter **Allgemein** kannst du die Akkuwarnung und das Abfrageintervall ändern. Mit **Test** lässt sich die Windows-Benachrichtigung ausprobieren.
 
 Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder ausschalten und das Programm beenden. Im Installer ist der Autostart vorausgewählt.
+
+## Anzeige anpassen
+
+Unter **Namen & Anzeige** kannst du jedem Gerät einen eigenen Namen, eine Farbe und ein Zeichen geben: Kopfhörer, Musiknote, Lautsprecher, ein eigener Buchstabe oder keines. Für die Anzeige stehen eine Batterie mit Zahl oder nur die Zahl mit Zeichen zur Wahl.
+
+Unter **Schrift & Batterie** stellst du Schriftart, Schriftgröße und Schriftfarbe ein. Rundung, Rahmenstärke, Breite und Höhe der Batterie lassen sich getrennt ändern. Windows bestimmt die äußere Größe der Symbole neben der Uhr.
+
+Die Livevorschau zeigt Änderungen sofort auf hellem und dunklem Hintergrund. Du kannst aktuelle Akkuwerte oder einen Beispielwert anzeigen. Erst **Speichern** übernimmt die Änderungen.
+
+![Livevorschau und Zeichenwahl](docs/Livevorschau.png)
+
+## Desktop-Widget
+
+Unter **Einstellungen → Anzeige & Widget** wählst du Infobereich, Desktop-Widget oder beides. Die Optionen darunter lassen sich durch Scrollen erreichen. Die Livevorschau zeigt Änderungen sofort; Speichern übernimmt sie.
+
+Du kannst Größe, Position, Deckkraft, Farben, Schriftart und Schriftgrößen, Rahmen, Rundung, Symbolgröße, Innenabstand und Geräteabstand ändern. Namen, Status und Symbole lassen sich einzeln ausblenden. Die Geräte können neben- oder untereinander stehen. Das Widget übernimmt deine Gerätenamen, Farben und Zeichen.
+
+Mit gedrückter linker Maustaste verschieben; die Position wird gespeichert. Doppelklick öffnet die Einstellungen und Rechtsklick das Menü. Bei Bedarf die Position sperren oder Immer im Vordergrund ausschalten.
+
+Für einen vollständig transparenten Hintergrund **Hintergrund-Deckkraft auf 0** und **Rahmenstärke auf 0** setzen. Die Gesamtdeckkraft wirkt auch auf Schrift und Symbole und kann zwischen 10 und 100 Prozent liegen. Bei Warnungen kann kurzzeitig ein Symbol neben der Uhr erscheinen. Die Größenangaben beziehen sich auf Pixel; Windows-Skalierung kann die Darstellung zusätzlich beeinflussen.
+
+![Widget-Einstellungen](docs/Widget-Einstellungen.png)
 
 ## Was angezeigt wird
 
@@ -70,7 +92,3 @@ Das Projekt wurde mit KI-Unterstützung entwickelt und steht unter der [MIT-Lize
 ## Code signing policy
 
 Der Antrag bei SignPath Foundation für kostenlose Open-Source-Signaturen ist eingereicht. Eine Zusage gibt es noch nicht. Die bisherigen Downloads sind weiterhin unsigniert. Mehr dazu steht in der [Signierrichtlinie](docs/CODE-SIGNING.md).
-
-Schrift und Batterie: Unter Einstellungen → Schrift & Batterie kannst du Schriftart, Schriftgröße und Schriftfarbe getrennt wählen. Die Batterie kann eckig, abgerundet oder stark abgerundet sein. Die Akkufarbe stellst du pro Gerät unter Namen & Anzeige ein. Windows bestimmt die äußere Größe des Symbols.
-
-Unter **Schrift & Batterie** stellst du Schriftart, Schriftgröße und Schriftfarbe ein. Für den Akku kannst du Rundung, Rahmenstärke, Breite und Höhe getrennt ändern. Drei Formen dienen als Ausgangspunkt. Arial ist der Standard für neue Einstellungen; vorhandene Einstellungen bleiben erhalten. Windows bestimmt die äußere Symbolgröße.

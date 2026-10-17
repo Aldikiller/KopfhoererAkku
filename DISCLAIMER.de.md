@@ -1,7 +1,7 @@
 # Nutzungshinweise und Haftung
 
 Kopfhörer-Akku ist kostenlose Open-Source-Software unter der MIT-Lizenz.
-Herausgeber: Aldikiller. Version 1.0.0.
+Herausgeber: Aldikiller. Version 1.1.0.
 
 Die Software wird im vorhandenen Zustand bereitgestellt. Eine fehlerfreie
 Funktion, die Eignung für einen bestimmten Zweck und die Unterstützung
