@@ -85,3 +85,7 @@ gebaut werden. Dieser Testbuild überspringt Registrierung, Verknüpfungen,
 Autostart und die .NET-Erkennung, erlaubt aber Dateiinstallation, Update und
 Deinstallation in einem ausdrücklich gewählten Testordner. Er ersetzt nicht
 den Test des normalen Setups in einer frischen Windows-VM.
+
+## Widget
+
+`--widget-check --output-dir=PFAD` prüft ein echtes Windows-Layered-Widget mit Alpha-Kanal, Größenwechsel und alle drei Anzeigemodi. Zusätzlich werden Vorschauen gespeichert. Die Selbsttests prüfen Widget-Einstellungen, Wertebegrenzung und kleine Layouts. Manuell zusätzlich Verschieben, Positionssperre, Neustart und mehrere Monitore prüfen.

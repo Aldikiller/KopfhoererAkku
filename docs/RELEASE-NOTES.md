@@ -1,14 +1,13 @@
-# Kopfhörer-Akku 1.0.0
+# Kopfhörer-Akku 1.1.0
 
-Die erste Version ohne Beta-Zusatz.
+Neu seit 1.0.0 sind außerdem die ständige Livevorschau und eigene Zeichen pro Kopfhörer (zum Beispiel „A“). Das Kopfhörerzeichen schneidet keine Fläche mehr aus der Batterie aus.
 
-- Rundung, Rahmenstärke, Breite und Höhe der Batterie getrennt einstellen.
-- Schriftart, Schriftgröße und Schriftfarbe auswählen. Arial ist der neue Standard.
-- Eigene Namen und Farben pro Kopfhörer sowie die Anzeige nur mit Zahl bleiben erhalten.
-- Vorschau direkt in den Einstellungen. Bisherige Einstellungen bleiben erhalten.
+Neu ist das frei platzierbare Desktop-Widget. Unter Einstellungen → Anzeige & Widget stehen Infobereich, Widget oder beide Anzeigen zur Auswahl.
 
-Windows legt die Gesamtgröße des Symbols im Infobereich fest. Die Regler verändern die Batterie innerhalb dieser Fläche. Sehr große Zahlen werden eingepasst.
+Größe und Position, Hintergrund- und Gesamtdeckkraft, Farben, Schriftart, Schriftgrößen, Rahmen, Rundung, Abstände, Symbolgröße, Anordnung und sichtbare Inhalte sind anpassbar. Änderungen erscheinen in der Vorschau und werden mit Speichern übernommen.
 
-Windows 10 ab Build 19041 oder Windows 11, x64, .NET Framework 4.8. Kostenlos und Open Source unter MIT. Weiterhin unsigniert; die SignPath-Freigabe steht noch aus.
+Das Widget per linker Maustaste verschieben. Doppelklick öffnet die Einstellungen; Rechtsklick das Menü. Eine Positionssperre ist verfügbar. Positionen außerhalb vorhandener Bildschirme werden beim Anzeigen zurückgeholt.
 
-Geprüft: Selbsttests einschließlich Geometrie-Grenzwerten, Einstellungen und Migration sowie visuelle Vorschau.
+Hintergrund komplett transparent: Hintergrund-Deckkraft 0 und Rahmenstärke 0. Gesamtdeckkraft kann von 10 bis 100 Prozent gewählt werden, damit das Widget erreichbar bleibt. Bei Warnungen kann kurzzeitig ein Symbol im Infobereich erscheinen.
+
+Die Anwendung bleibt unsigniert. Geprüft wurden Speicherung, Layout-Grenzwerte, echte Windows-Alpha-Darstellung, Größenänderung und alle drei Anzeigemodi.
