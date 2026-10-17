@@ -18,13 +18,13 @@ using System.Text.RegularExpressions;
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
 [assembly: AssemblyProduct("Kopfhörer-Akku")]
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
-[assembly: AssemblyInformationalVersion("0.1.0-beta.1")]
+[assembly: AssemblyVersion("0.1.0.1")]
+[assembly: AssemblyFileVersion("0.1.0.1")]
+[assembly: AssemblyInformationalVersion("0.1.0-beta.2")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="0.1.0-beta.1";
+ public const string Version="0.1.0-beta.2";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;
@@ -39,11 +39,6 @@ class Device {
  public string DisplayName { get { return Name.Replace(" Hands-Free AG", ""); } }
  public string Status { get { return Connected==true ? "Verbunden" : Connected==false ? "Getrennt" : "Verbindung unbekannt"; } }
  public override string ToString() { return DisplayName + " · " + Status + " · " + (Connected==false ? "kein aktueller Akkustand" : Battery.HasValue ? Battery + (Connected==null ? " % (gespeichert)" : " %") : "kein Akkustand"); }
-}
-class Settings {
- public bool Warnings=true; public int Threshold=20, Interval=15;
- public static Settings Read(string file) { var x=new Settings(); if(!File.Exists(file)) return x; foreach(var line in File.ReadAllLines(file)) { var parts=line.Split('='); if(parts.Length!=2) continue; int n; bool b; if(parts[0]=="Warnings" && bool.TryParse(parts[1],out b)) x.Warnings=b; if(parts[0]=="Threshold" && int.TryParse(parts[1],out n)) x.Threshold=Math.Max(1,Math.Min(90,n)); if(parts[0]=="Interval" && int.TryParse(parts[1],out n)) x.Interval=Math.Max(5,Math.Min(300,n)); } return x; }
- public void Save(string file) { File.WriteAllLines(file,new[]{"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval}); }
 }
 class WarningGate {
  readonly HashSet<string> warned=new HashSet<string>();
@@ -122,7 +117,7 @@ class Tray : ApplicationContext {
  List<NotifyIcon> icons=new List<NotifyIcon>(); List<Device> devices=new List<Device>(); List<string> selected=new List<string>();
  System.Windows.Forms.Timer timer=new System.Windows.Forms.Timer(); bool busy; string error="";
  string folder=AppPaths.Data;
- bool reloadPicker,exiting,firstRun; EventWaitHandle stopEvent; Form picker,settingsForm; Action updatePicker,updateStatus; Settings settings; WarningGate warnings=new WarningGate(); DateTime? lastScan;
+ bool reloadPicker,exiting,firstRun; EventWaitHandle stopEvent; Form picker,settingsForm; Action updatePicker,updateStatus; Settings settings; WarningGate warnings=new WarningGate(); DateTime? lastScan; bool updateBusy; string updateStatusText="Noch nicht geprüft";
  string SettingsPath { get { return Path.Combine(folder,"options.ini"); } }
  public Tray(bool demo=false) {
   stopEvent=new EventWaitHandle(false,EventResetMode.ManualReset,AppPaths.StopEventName);
@@ -130,26 +125,29 @@ class Tray : ApplicationContext {
   try { settings=Settings.Read(SettingsPath); } catch { settings=new Settings(); }
   if(demo) { selected=new List<string>{"demo-1","demo-2"}; devices=new List<Device>{new Device{Id="demo-1",Name="Kopfhörer 1",Battery=75,Connected=true},new Device{Id="demo-2",Name="Kopfhörer 2",Battery=65,Connected=true}}; lastScan=DateTime.Now; }
   firstRun=selected.Count==0;
-  Render(); timer.Interval=1000; int elapsed=0; timer.Tick+=(s,e)=> { if(stopEvent.WaitOne(0)) { ExitThread(); return; } elapsed++; if(elapsed>=settings.Interval) { elapsed=0; Refresh(); } }; timer.Start(); if(!demo) Refresh();
+  Render(); timer.Interval=1000; int elapsed=0; timer.Tick+=(s,e)=> { if(stopEvent.WaitOne(0)) { ExitThread(); return; } elapsed++; if(elapsed>=settings.Interval) { elapsed=0; Refresh(); } }; timer.Start(); if(!demo) { Refresh(); if(settings.CheckAtStartup) CheckUpdates(false); }
  }
  static GraphicsPath Rounded(float x,float y,float w,float h,float r) {
   var p=new GraphicsPath(); p.AddArc(x,y,r*2,r*2,180,90); p.AddArc(x+w-r*2,y,r*2,r*2,270,90); p.AddArc(x+w-r*2,y+h-r*2,r*2,r*2,0,90); p.AddArc(x,y+h-r*2,r*2,r*2,90,90); p.CloseFigure(); return p;
  }
  static Icon CopyIcon(Bitmap b) { var h=b.GetHicon(); try { return (Icon)Icon.FromHandle(h).Clone(); } finally { Native.DestroyIcon(h); } }
- public static Icon BatteryIcon(int? value,int slot,bool? connected=true) {
+ public static Icon BatteryIcon(int? value,int slot,bool? connected=true,Color? custom=null,bool numbersOnly=false) {
   using(var b=new Bitmap(32,32)) using(var g=Graphics.FromImage(b)) {
    g.SmoothingMode=SmoothingMode.AntiAlias; g.Clear(Color.Transparent);
-   Color bg=slot==0 ? Color.FromArgb(19,112,91) : Color.FromArgb(28,87,159);
+   Color bg=custom ?? (slot==0 ? Color.FromArgb(19,112,91) : Color.FromArgb(28,87,159));
    if(value.HasValue && value<=20) bg=Color.FromArgb(166,35,49);
    if(connected!=true) bg=connected==false ? Color.FromArgb(75,75,75) : Color.FromArgb(103,86,39);
+   Color fg=0.2126*bg.R+0.7152*bg.G+0.0722*bg.B>155 ? Color.Black : Color.White;
+   if(!numbersOnly) {
    using(var body=Rounded(0.6f,4.6f,28.2f,26.7f,4)) {
     using(var brush=new SolidBrush(bg)) g.FillPath(brush,body);
     using(var pen=new Pen(Color.FromArgb(230,245,245),1.3f)) g.DrawPath(pen,body);
    }
    using(var brush=new SolidBrush(Color.FromArgb(230,245,245))) g.FillRectangle(brush,29.4f,14,2.5f,10);
+   }
    // The headphone badge is joined to the battery at its upper left corner.
    using(var badge=Rounded(0,0,18,15,3)) using(var brush=new SolidBrush(bg)) g.FillPath(brush,badge);
-   using(var pen=new Pen(Color.White,2.1f)) {
+   using(var pen=new Pen(fg,2.1f)) {
     g.DrawArc(pen,2.5f,1.8f,12,12,180,180);
     g.DrawLine(pen,2.5f,7.4f,2.5f,12); g.DrawLine(pen,14.5f,7.4f,14.5f,12);
     g.DrawLine(pen,5,8.2f,5,13); g.DrawLine(pen,12,8.2f,12,13);
@@ -158,7 +156,8 @@ class Tray : ApplicationContext {
    using(var path=new GraphicsPath()) using(var family=new FontFamily("Segoe UI")) {
     path.AddString(text,family,(int)FontStyle.Bold,value==100 ? 16f : 21f,PointF.Empty,StringFormat.GenericTypographic);
     var bounds=path.GetBounds(); float scale=Math.Min(1f,Math.Min(26.2f/bounds.Width,16.5f/bounds.Height)); using(var matrix=new Matrix()) { matrix.Translate(14.6f-bounds.Width*scale/2,22f-bounds.Height*scale/2); matrix.Scale(scale,scale); matrix.Translate(-bounds.Left,-bounds.Top); path.Transform(matrix); }
-    using(var brush=new SolidBrush(Color.White)) g.FillPath(brush,path);
+    if(numbersOnly) using(var outline=new Pen(fg,1.5f)) g.DrawPath(outline,path);
+    using(var brush=new SolidBrush(numbersOnly ? bg : fg)) g.FillPath(brush,path);
    }
    return CopyIcon(b);
   }
@@ -167,14 +166,15 @@ class Tray : ApplicationContext {
   if(busy || exiting) return; busy=true;
   var known=selected.ToArray(); var worker=new System.ComponentModel.BackgroundWorker(); worker.DoWork+=(s,e)=>e.Result=Native.Scan(known);
   worker.RunWorkerCompleted+=(s,e)=> { if(exiting) { worker.Dispose(); return; } busy=false; error=e.Error==null ? "" : e.Error.Message; if(e.Error==null) { var fresh=(List<Device>)e.Result; foreach(var d in fresh.Where(x=>x.Name=="Gespeicherter Kopfhörer")) { var old=devices.FirstOrDefault(x=>x.Id==d.Id); if(old!=null) d.Name=old.Name; } devices=fresh; lastScan=DateTime.Now; } Render();
-   if(e.Error==null) { var alerts=new List<string>(); foreach(var id in selected) { var d=devices.FirstOrDefault(x=>x.Id==id); if(warnings.Check(d,settings)) alerts.Add(d.DisplayName+": noch "+d.Battery+" % Akku."); } if(alerts.Count>0 && icons.Count>0) icons[0].ShowBalloonTip(8000,"Kopfhörer-Akku niedrig",string.Join("\n",alerts.ToArray()),ToolTipIcon.Warning); }
+   if(e.Error==null) { var alerts=new List<string>(); foreach(var id in selected) { var d=devices.FirstOrDefault(x=>x.Id==id); if(warnings.Check(d,settings)) alerts.Add(settings.Name(d)+": noch "+d.Battery+" % Akku."); } if(alerts.Count>0 && icons.Count>0) icons[0].ShowBalloonTip(8000,"Kopfhörer-Akku niedrig",string.Join("\n",alerts.ToArray()),ToolTipIcon.Warning); }
    if(firstRun && e.Error==null) { firstRun=false; Pick(); }
    if(reloadPicker && updatePicker!=null) updatePicker(); reloadPicker=false; if(updateStatus!=null) updateStatus(); worker.Dispose(); }; worker.RunWorkerAsync();
  }
  ContextMenuStrip Menu() {
   var m=new ContextMenuStrip(); m.Items.Add("Kopfhörer-Akku").Enabled=false;
-  foreach(var id in selected) { var d=devices.FirstOrDefault(x=>x.Id==id); m.Items.Add(d==null ? "Nicht verfügbar / getrennt" : d.ToString()).Enabled=false; }
+  foreach(var id in selected) { var d=devices.FirstOrDefault(x=>x.Id==id); m.Items.Add(d==null ? "Nicht verfügbar / getrennt" : Describe(d)).Enabled=false; }
   if(error.Length>0) m.Items.Add("Abfrage fehlgeschlagen: "+error).Enabled=false;
+  m.Items.Add(updateBusy ? "Update-Prüfung läuft …" : "Nach Updates suchen …",null,(s,e)=>CheckUpdates(true)).Enabled=!updateBusy;
   m.Items.Add("Einstellungen …",null,(s,e)=>Options()); m.Items.Add("Geräte auswählen …",null,(s,e)=>Pick()); m.Items.Add("Jetzt aktualisieren",null,(s,e)=>Refresh());
   string startup=AppPaths.Startup;
   var auto=new ToolStripMenuItem("Mit Windows starten"); auto.Checked=File.Exists(startup);
@@ -186,38 +186,77 @@ class Tray : ApplicationContext {
   while(icons.Count<count) { var ni=new NotifyIcon(); ni.DoubleClick+=(s,e)=>Options(); icons.Add(ni); }
   while(icons.Count>count) { var ni=icons[icons.Count-1]; ni.Visible=false; if(ni.Icon!=null) ni.Icon.Dispose(); ni.Dispose(); icons.RemoveAt(icons.Count-1); }
   for(int i=0;i<count;i++) { var ni=icons[i]; var d=selected.Count>i ? devices.FirstOrDefault(x=>x.Id==selected[i]) : null;
-   var old=ni.Icon; ni.Icon=BatteryIcon(error.Length==0 && d!=null ? d.Battery : null,i,error.Length==0 && d!=null ? d.Connected : null); if(old!=null) old.Dispose();
-   string tip=d!=null ? d.ToString() : selected.Count==0 ? "Kopfhörer-Akku · Doppelklick: Einstellungen" : "Kopfhörer "+(i+1)+" · Verbindung unbekannt";
+   var old=ni.Icon; ni.Icon=BatteryIcon(error.Length==0 && d!=null ? d.Battery : null,i,error.Length==0 && d!=null ? d.Connected : null,settings.Profile(selected.Count>i ? selected[i] : null,i).Color,settings.NumbersOnly); if(old!=null) old.Dispose();
+   string tip=d!=null ? Describe(d) : selected.Count==0 ? "Kopfhörer-Akku · Doppelklick: Einstellungen" : "Kopfhörer "+(i+1)+" · Verbindung unbekannt";
    if(error.Length>0) tip="Kopfhörer "+(i+1)+" · Abfrage fehlgeschlagen"; else if(lastScan.HasValue) tip+=" · "+lastScan.Value.ToString("HH:mm:ss"); ni.Text=tip.Length>63 ? tip.Substring(0,63) : tip;
    var menu=ni.ContextMenuStrip; ni.ContextMenuStrip=Menu(); if(menu!=null) menu.Dispose(); ni.Visible=true;
   }
  }
  void About() {
-  MessageBox.Show("Kopfhörer-Akku "+AppPaths.Version+"\nHerausgeber: Aldikiller\n\nKostenlos und Open Source unter der MIT-Lizenz.\nOhne Gewährleistung, soweit gesetzlich zulässig.\n\nKeine Telemetrie. Einstellungen bleiben lokal.\nWindows-Akkuwerte können verzögert oder gespeichert sein.\n\nProjekt: github.com/Aldikiller/KopfhoererAkku", "Über Kopfhörer-Akku",MessageBoxButtons.OK,MessageBoxIcon.Information);
+  MessageBox.Show("Kopfhörer-Akku "+AppPaths.Version+"\nHerausgeber: Aldikiller\n\nKostenlos und Open Source unter der MIT-Lizenz.\nOhne Gewährleistung, soweit gesetzlich zulässig.\n\nKeine Telemetrie. Freiwillige Update-Prüfung über GitHub.\nWindows-Akkuwerte können verzögert oder gespeichert sein.\n\nProjekt: github.com/Aldikiller/KopfhoererAkku", "Über Kopfhörer-Akku",MessageBoxButtons.OK,MessageBoxIcon.Information);
  }
+ string Describe(Device d) { return settings.Name(d)+" · "+d.Status+" · "+(d.Connected==false ? "kein aktueller Akkustand" : d.Battery.HasValue ? d.Battery+(d.Connected==null ? " % (gespeichert)" : " %") : "kein Akkustand"); }
+ void CheckUpdates(bool manual) {
+  if(updateBusy || exiting) return; updateBusy=true; updateStatusText="GitHub wird abgefragt …"; if(updateStatus!=null) updateStatus(); Render();
+  var worker=new System.ComponentModel.BackgroundWorker(); worker.DoWork+=(a,b)=>b.Result=UpdateService.Check();
+  worker.RunWorkerCompleted+=(a,b)=> { if(exiting) { worker.Dispose(); return; } updateBusy=false;
+   if(b.Error!=null) { updateStatusText="Prüfung fehlgeschlagen. Internetverbindung oder GitHub-Limit prüfen."; if(manual) MessageBox.Show(updateStatusText,"Updates",MessageBoxButtons.OK,MessageBoxIcon.Information); }
+   else { var latest=b.Result as ReleaseVersion; updateStatusText=latest==null ? "Keine neuere passende Version gefunden ("+DateTime.Now.ToString("HH:mm")+")." : "Neue Version verfügbar: "+latest.Tag;
+    if(latest!=null && manual) { if(MessageBox.Show("Version "+latest.Tag+" ist verfügbar.\nInstalliert: "+AppPaths.Version+"\n\nGitHub-Downloadseite im Browser öffnen?","Update verfügbar",MessageBoxButtons.YesNo,MessageBoxIcon.Information)==DialogResult.Yes) OpenPage(UpdateService.Page(latest)); }
+    else if(latest!=null && icons.Count>0) icons[0].ShowBalloonTip(8000,"Update verfügbar",latest.Tag+" ist verfügbar. Rechtsklick → Nach Updates suchen.",ToolTipIcon.Info);
+    else if(manual) MessageBox.Show(updateStatusText,"Updates",MessageBoxButtons.OK,MessageBoxIcon.Information);
+   }
+   if(updateStatus!=null) updateStatus(); Render(); worker.Dispose();
+  }; worker.RunWorkerAsync();
+ }
+ void OpenPage(string page) { try { Process.Start(new ProcessStartInfo(page){UseShellExecute=true}); } catch(Exception ex) { MessageBox.Show("Browser konnte nicht geöffnet werden: "+ex.Message); } }
  public void Options(bool preview=false) {
   if(settingsForm!=null) { settingsForm.Activate(); return; }
-  var f=new Form{Text="Kopfhörer-Akku · Einstellungen",ClientSize=new Size(560,430),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f;
-  var status=new Label{Left=18,Top=16,Width=525,Height=104};
-  updateStatus=()=> { status.Text=string.Join("\n",selected.Select(id=> { var d=devices.FirstOrDefault(x=>x.Id==id); return d==null ? "Gerät nicht gefunden · Verbindung unbekannt" : d.ToString(); }).ToArray())+"\n\nLetzte erfolgreiche Abfrage: "+(lastScan.HasValue ? lastScan.Value.ToString("HH:mm:ss") : "noch keine")+(error.Length>0 ? "\nFehler: "+error : ""); }; updateStatus();
-  var warn=new CheckBox{Left=18,Top=127,Width=500,Text="Bei niedrigem Akku benachrichtigen",Checked=settings.Warnings};
-  var threshold=new NumericUpDown{Left=230,Top=166,Width=75,Minimum=1,Maximum=90,Value=settings.Threshold};
-  var interval=new NumericUpDown{Left=230,Top=207,Width=75,Minimum=5,Maximum=300,Value=settings.Interval};
-  var hide=new Label{Left=18,Top=248,Width=520,Text="Beide ausgewählten Kopfhörer bleiben als eigene Symbole sichtbar."};
-  var hint=new Label{Left=18,Top=284,Width=520,Height=70,Text="Grün/Blau: verbunden · Grau ×: getrennt · Gelb: Verbindung unbekannt (Zahl ggf. gespeichert).\nRot: Akku höchstens 20 %. Beide Gerätesymbole bleiben sichtbar.\nWarnung einmal pro Niedrigakku-Phase; erneut nach Wiederverbindung."};
-  var save=new Button{Left=18,Top=365,Width=125,Height=32,Text="Speichern"};
-  save.Click+=(a,b)=> { var next=new Settings{Warnings=warn.Checked,Threshold=(int)threshold.Value,Interval=(int)interval.Value}; try { Directory.CreateDirectory(folder); next.Save(SettingsPath); if(next.Threshold!=settings.Threshold || next.Warnings!=settings.Warnings) warnings.Reset(); settings=next;  Render(); Refresh(); f.Close(); } catch(Exception ex) { MessageBox.Show("Speichern fehlgeschlagen: "+ex.Message); } };
-  var choose=new Button{Left=155,Top=365,Width=150,Height=32,Text="Geräte auswählen"}; choose.Click+=(a,b)=>Pick();
-  var refresh=new Button{Left=317,Top=365,Width=125,Height=32,Text="Aktualisieren"}; refresh.Click+=(a,b)=>Refresh();
-  var test=new Button{Left=454,Top=365,Width=88,Height=32,Text="Test"}; test.Click+=(a,b)=> { if(icons.Count>0) icons[0].ShowBalloonTip(5000,"Kopfhörer-Akku · Test","So erscheint eine Akkuwarnung. Windows kann Hinweise bei aktivem Nicht stören unterdrücken.",ToolTipIcon.Info); };
-  f.Controls.AddRange(new Control[]{test,status,warn,new Label{Left=18,Top=169,Width=205,Text="Warnung bei / unter (%)"},threshold,new Label{Left=18,Top=210,Width=205,Text="Abfrage alle (Sekunden)"},interval,hide,hint,save,choose,refresh});
-  f.FormClosed+=(a,b)=> { updateStatus=null; settingsForm=null; f.Dispose(); }; f.Show();
-  if(preview) { File.WriteAllText(AppPaths.Report("Symbol-Check.txt"),"Ausgewählte Geräte: "+selected.Count+"; angelegte Symbole: "+icons.Count+"; sichtbar an Windows übergeben: "+icons.Count(x=>x.Visible)); using(var bitmap=new Bitmap(f.Width,f.Height)) { f.DrawToBitmap(bitmap,new Rectangle(0,0,f.Width,f.Height)); bitmap.Save(AppPaths.Report("Einstellungen-Vorschau.png")); } f.Close(); }
+  var f=new Form{Text="Kopfhörer-Akku · Einstellungen",ClientSize=new Size(610,550),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f;
+  var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage("Allgemein"); var appearance=new TabPage("Namen & Anzeige"); var updates=new TabPage("Updates"); tabs.TabPages.AddRange(new[]{general,appearance,updates});
+  var status=new Label{Left=14,Top=14,Width=544,Height=112}; var updateLabel=new Label{Left=14,Top=190,Width=538,Height=60};
+  updateStatus=()=> { status.Text=string.Join("\n",selected.Select(id=> { var d=devices.FirstOrDefault(x=>x.Id==id); return d==null ? "Gerät nicht gefunden · Verbindung unbekannt" : Describe(d); }).ToArray())+"\n\nLetzte Abfrage: "+(lastScan.HasValue ? lastScan.Value.ToString("HH:mm:ss") : "noch keine")+(error.Length>0 ? "\nFehler: "+error : ""); updateLabel.Text=updateStatusText; }; updateStatus();
+  var warn=new CheckBox{Left=14,Top=136,Width=530,Text="Bei niedrigem Akku benachrichtigen",Checked=settings.Warnings};
+  var threshold=new NumericUpDown{Left=245,Top=175,Width=75,Minimum=1,Maximum=90,Value=settings.Threshold};
+  var interval=new NumericUpDown{Left=245,Top=217,Width=75,Minimum=5,Maximum=300,Value=settings.Interval};
+  var hint=new Label{Left=14,Top=268,Width=538,Height=92,Text="Beide ausgewählten Kopfhörer behalten ein eigenes Symbol.\nRot: niedriger Akku · Grau ×: getrennt · Gelb: Status unbekannt.\nWarnungen erscheinen nur bei bestätigter Verbindung.\nEigene Namen ändern den Bluetooth-Namen in Windows nicht."};
+  var test=new Button{Left=14,Top=376,Width=180,Height=32,Text="Benachrichtigung testen"}; test.Click+=(a,b)=> { if(icons.Count>0) icons[0].ShowBalloonTip(5000,"Kopfhörer-Akku · Test","So erscheint eine Akkuwarnung.",ToolTipIcon.Info); };
+  general.Controls.AddRange(new Control[]{status,warn,new Label{Left=14,Top=178,Width=225,Text="Warnung bei / unter (%)"},threshold,new Label{Left=14,Top=220,Width=225,Text="Abfrage alle (Sekunden)"},interval,hint,test});
+  var names=new Dictionary<string,TextBox>(); var colors=new Dictionary<string,Color>(); var previews=new List<PictureBox>(); var ids=selected.ToArray();
+  var style=new ComboBox{Left=14,Top=352,Width=340,DropDownStyle=ComboBoxStyle.DropDownList}; style.Items.AddRange(new[]{"Batterie mit Zahl und Kopfhörerzeichen","Nur Zahl mit Kopfhörerzeichen"}); style.SelectedIndex=settings.NumbersOnly ? 1 : 0;
+  Action refreshPreview=()=> { for(int i=0;i<ids.Length;i++) { var picture=previews[i]; var old=picture.Image; using(var icon=BatteryIcon(i==0 ? 75 : 65,i,true,colors[ids[i]],style.SelectedIndex==1)) picture.Image=icon.ToBitmap(); if(old!=null) old.Dispose(); } };
+  for(int i=0;i<ids.Length;i++) {
+   string id=ids[i]; int slot=i; var d=devices.FirstOrDefault(x=>x.Id==id); var profile=settings.Profile(id,i); colors[id]=profile.Color;
+   int top=16+i*137; var name=new TextBox{Left=14,Top=top+27,Width=335,MaxLength=40,Text=profile.Name}; names[id]=name;
+   var colorButton=new Button{Left=365,Top=top+25,Width=105,Height=29,Text="Farbe …",BackColor=colors[id],ForeColor=Color.White,UseVisualStyleBackColor=false};
+   colorButton.Click+=(a,b)=> { using(var dialog=new ColorDialog{Color=colors[id],FullOpen=true}) if(dialog.ShowDialog(f)==DialogResult.OK) { colors[id]=dialog.Color; colorButton.BackColor=dialog.Color; colorButton.ForeColor=dialog.Color.GetBrightness()>0.55f ? Color.Black : Color.White; refreshPreview(); } };
+   var reset=new Button{Left=365,Top=top+60,Width=105,Height=28,Text="Standard"}; reset.Click+=(a,b)=> { colors[id]=slot==0 ? ColorTranslator.FromHtml("#13705B") : ColorTranslator.FromHtml("#1C579F"); name.Text=""; colorButton.BackColor=colors[id]; colorButton.ForeColor=Color.White; refreshPreview(); };
+   var picture=new PictureBox{Left=492,Top=top+25,Width=48,Height=48,SizeMode=PictureBoxSizeMode.Zoom,BackColor=Color.FromArgb(32,32,32)}; previews.Add(picture);
+   appearance.Controls.AddRange(new Control[]{new Label{Left=14,Top=top,Width=535,Text=(i+1)+". "+(d==null ? "Gespeicherter Kopfhörer" : d.DisplayName)},name,colorButton,reset,picture,new Label{Left=14,Top=top+63,Width=335,Height=38,Text="Eigener Name; leer lassen für den Gerätenamen."}});
+  }
+  if(ids.Length==0) appearance.Controls.Add(new Label{Left=14,Top=20,Width=535,Height=50,Text="Zuerst unter Geräte auswählen einen oder zwei Kopfhörer festlegen."});
+  appearance.Controls.AddRange(new Control[]{new Label{Left=14,Top=322,Width=530,Text="Darstellung für beide Symbole"},style,new Label{Left=14,Top=392,Width=535,Height=42,Text="Vorschau mit Beispielwerten. Statusfarben haben Vorrang vor deiner Farbe."}}); style.SelectedIndexChanged+=(a,b)=>refreshPreview(); refreshPreview();
+  var autoCheck=new CheckBox{Left=14,Top=20,Width=535,Text="Beim Programmstart nach neuen Versionen suchen",Checked=settings.CheckAtStartup};
+  var privacy=new Label{Left=14,Top=62,Width=535,Height=98,Text="Freiwillig und zunächst ausgeschaltet. Die Prüfung ruft öffentliche\nRelease-Daten von GitHub ab. GitHub erhält dabei deine IP-Adresse\nund die Programmversion. Gerätenamen und Akkudaten werden nicht gesendet.\nEs werden keine Updates automatisch heruntergeladen oder installiert."};
+  var check=new Button{Left=14,Top=264,Width=170,Height=32,Text="Jetzt nach Updates suchen"}; check.Click+=(a,b)=>CheckUpdates(true);
+  var downloads=new Button{Left=200,Top=264,Width=170,Height=32,Text="GitHub-Downloads öffnen"}; downloads.Click+=(a,b)=>OpenPage(UpdateService.ReleasesPage);
+  updates.Controls.AddRange(new Control[]{autoCheck,privacy,new Label{Left=14,Top=169,Width=530,Text="Installiert: "+AppPaths.Version},updateLabel,check,downloads});
+  var save=new Button{Left=14,Top=506,Width=125,Height=32,Text="Speichern"}; save.Click+=(a,b)=> {
+   var next=new Settings{Warnings=warn.Checked,Threshold=(int)threshold.Value,Interval=(int)interval.Value,CheckAtStartup=autoCheck.Checked,NumbersOnly=style.SelectedIndex==1};
+   foreach(var item in settings.Profiles) next.Profiles[item.Key]=new DeviceProfile(item.Value.ColorHex){Name=item.Value.Name};
+   foreach(var id in ids) next.Profiles[id]=new DeviceProfile("#"+colors[id].R.ToString("X2")+colors[id].G.ToString("X2")+colors[id].B.ToString("X2")){Name=names[id].Text.Trim()};
+   try { next.Save(SettingsPath); if(next.Threshold!=settings.Threshold || next.Warnings!=settings.Warnings) warnings.Reset(); settings=next; Render(); Refresh(); f.Close(); } catch(Exception ex) { MessageBox.Show("Speichern fehlgeschlagen: "+ex.Message); }
+  };
+  var choose=new Button{Left=151,Top=506,Width=145,Height=32,Text="Geräte auswählen"}; choose.Click+=(a,b)=>Pick();
+  var refresh=new Button{Left=308,Top=506,Width=125,Height=32,Text="Aktualisieren"}; refresh.Click+=(a,b)=>Refresh();
+  var cancel=new Button{Left=445,Top=506,Width=145,Height=32,Text="Schließen"}; cancel.Click+=(a,b)=>f.Close();
+  f.Controls.AddRange(new Control[]{tabs,save,choose,refresh,cancel}); f.FormClosed+=(a,b)=> { updateStatus=null; settingsForm=null; foreach(var picture in previews) if(picture.Image!=null) picture.Image.Dispose(); f.Dispose(); }; f.Show();
+  if(preview) { File.WriteAllText(AppPaths.Report("Symbol-Check.txt"),"Ausgewählte Geräte: "+selected.Count+"; angelegte Symbole: "+icons.Count+"; sichtbar an Windows übergeben: "+icons.Count(x=>x.Visible)); foreach(TabPage tab in tabs.TabPages) { tabs.SelectedTab=tab; using(var bitmap=new Bitmap(f.Width,f.Height)) { f.DrawToBitmap(bitmap,new Rectangle(0,0,f.Width,f.Height)); bitmap.Save(AppPaths.Report("Einstellungen-"+tabs.SelectedIndex+".png")); } } f.Close(); }
  }
  void Pick() {
   if(picker!=null) { picker.Activate(); return; }
   var f=new Form{Text="Kopfhörer-Akku – Geräte auswählen",ClientSize=new Size(560,350),StartPosition=FormStartPosition.CenterScreen,MinimumSize=new Size(576,389)}; picker=f;
-  var label=new Label{Text="Bis zu zwei Kopfhörer auswählen. Hintergrund: Grün = Gerät 1, Blau = Gerät 2.\nEin Strich im Symbol bedeutet: Windows liefert gerade keinen Akkustand.",Dock=DockStyle.Top,Height=55,Padding=new Padding(10)};
+  var label=new Label{Text="Bis zu zwei Kopfhörer auswählen. Namen und Farben lassen sich in den Einstellungen ändern.\nEin Strich im Symbol bedeutet: Windows liefert gerade keinen Akkustand.",Dock=DockStyle.Top,Height=55,Padding=new Padding(10)};
   var list=new CheckedListBox{Dock=DockStyle.Fill,CheckOnClick=true,HorizontalScrollbar=true};
   Action populate=()=> { list.Items.Clear(); foreach(var d in devices) list.Items.Add(d,selected.Contains(d.Id)); foreach(var id in selected.Where(id=>!devices.Any(d=>d.Id==id))) list.Items.Add(new Device{Id=id,Name="Gespeichertes Gerät (nicht verfügbar)"},true); };
   updatePicker=populate; populate(); var panel=new FlowLayoutPanel{Dock=DockStyle.Bottom,Height=75,Padding=new Padding(8)};
@@ -256,7 +295,19 @@ static class Program {
   gate.Reset(); config.Warnings=false; d.Battery=5; check(!gate.Check(d,config),"disabled warnings");
   foreach(bool? connected in new bool?[]{true,false,null}) foreach(int? level in new int?[]{0,1,20,70,100,null}) using(var icon=Tray.BatteryIcon(level,0,connected)) check(icon.Width==32,"icon creation");
   string file=AppPaths.Report("selftest-"+Guid.NewGuid().ToString("N")+".ini"); Directory.CreateDirectory(Path.GetDirectoryName(file)); config.Threshold=35; config.Interval=42; config.Save(file); var loaded=Settings.Read(file); File.Delete(file); check(loaded.Threshold==35 && loaded.Interval==42 && !loaded.Warnings,"settings roundtrip");
-  File.WriteAllText(AppPaths.Report("Testbericht.txt"),"OK: Warnschwelle, Wiederholschutz, Wiederverbindung, fehlende Daten, deaktivierte Warnungen, 18 Symbolvarianten, Einstellungen speichern/laden.");
+  string profileFile=AppPaths.Report("profiles-test-"+Guid.NewGuid().ToString("N")+".ini");
+  config.NumbersOnly=true; config.CheckAtStartup=true; config.Profiles["BTH\\TEST=ä"]=new DeviceProfile("#FFEE00"){Name="Büro = Musik 🎧"}; config.Save(profileFile); config.Save(profileFile); loaded=Settings.Read(profileFile); File.Delete(profileFile);
+  check(loaded.NumbersOnly && loaded.CheckAtStartup && loaded.Profiles["BTH\\TEST=ä"].Name=="Büro = Musik 🎧" && loaded.Profiles["BTH\\TEST=ä"].ColorHex=="#FFEE00","profile roundtrip and atomic replacement");
+  check(!new Settings().CheckAtStartup,"updates opt in");
+  check(ReleaseVersion.Parse("v1.0.0-beta.10").CompareTo(ReleaseVersion.Parse("1.0.0-beta.2"))>0,"numeric prerelease comparison");
+  check(ReleaseVersion.Parse("1.0.0").CompareTo(ReleaseVersion.Parse("1.0.0-rc.1"))>0,"stable newer than prerelease");
+  check(ReleaseVersion.Parse("1.0.0-beta.01")==null && ReleaseVersion.Parse("https://evil.example/")==null,"invalid versions rejected");
+  string json="[{\"draft\":false,\"tag_name\":\"v0.1.0-beta.10\",\"prerelease\":true},{\"draft\":true,\"tag_name\":\"v99.0.0\"},{\"draft\":false,\"tag_name\":\"v0.1.0-beta.2\"}]";
+  check(UpdateService.Select(json,"0.1.0-beta.2").Tag=="v0.1.0-beta.10","latest beta selection");
+  check(UpdateService.Select(json,"0.1.0")==null,"stable excludes previews");
+  check(UpdateService.Select("[{\"draft\":false,\"tag_name\":\"v0.1.0-beta.1\"}]","0.1.0-beta.2")==null,"no downgrade");
+  foreach(bool? state in new bool?[]{true,false,null}) foreach(int? level in new int?[]{0,1,20,70,100,null}) foreach(bool numeric in new[]{false,true}) using(var icon=Tray.BatteryIcon(level,1,state,Color.Yellow,numeric)) check(icon.Width==32,"custom style/status icons");
+  File.WriteAllText(AppPaths.Report("Testbericht.txt"),"OK: Warnschwelle, Wiederholschutz, Wiederverbindung, fehlende Daten, deaktivierte Warnungen, Warnlogik, 54 Symbolvarianten, Namen/Farben/Anzeige speichern, Update-Versionsvergleich, Beta-Kanal, kein Downgrade, Updates standardmäßig aus.");
  }
  [STAThread] static void Main(string[] args) {
   var output=args.FirstOrDefault(x=>x.StartsWith("--output-dir=",StringComparison.Ordinal)); if(output!=null) AppPaths.Output=Path.GetFullPath(output.Substring(13));
@@ -268,7 +319,8 @@ static class Program {
   Application.EnableVisualStyles(); Application.SetCompatibleTextRenderingDefault(false);
   if(args.Contains("--ui-check")) { var context=new Tray(true); context.Options(true); context.ExitThread(); context.Dispose(); return; }
   if(args.Contains("--diagnose")) { try { File.WriteAllLines(AppPaths.Report("Diagnose.txt"),Native.Scan().Select(d=>d.ToString()+"\t"+d.Id).Concat(new[]{Native.LinkDiagnostics})); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Diagnose.txt"),e.ToString()); } return; }
-  if(args.Contains("--preview")) { using(var b=new Bitmap(340,100)) using(var g=Graphics.FromImage(b)) { g.Clear(Color.FromArgb(28,28,28)); int i=0; foreach(int? n in new int?[]{90,70,1,100,null}) { using(var icon=Tray.BatteryIcon(n,i%2)) { g.DrawIcon(icon,12+i*66,12); g.DrawImage(icon.ToBitmap(),new Rectangle(20+i*66,66,16,16)); } i++; } b.Save(AppPaths.Report("Vorschau.png")); } return; }
+  if(args.Contains("--preview")) { using(var b=new Bitmap(440,180)) using(var g=Graphics.FromImage(b)) { g.Clear(Color.FromArgb(28,28,28)); int row=0; foreach(bool numeric in new[]{false,true}) { int i=0; foreach(int? n in new int?[]{90,70,1,100,null}) { using(var icon=Tray.BatteryIcon(n,i%2,true,i%2==0 ? Color.FromArgb(19,112,91) : Color.FromArgb(28,87,159),numeric)) { g.DrawIcon(icon,12+i*84,12+row*85); using(var image=icon.ToBitmap()) g.DrawImage(image,new Rectangle(20+i*84,58+row*85,16,16)); } i++; } row++; } b.Save(AppPaths.Report("Vorschau.png")); } return; }
+  if(args.Contains("--update-check")) { try { var latest=UpdateService.Check(); File.WriteAllText(AppPaths.Report("Update-Check.txt"),latest==null ? "OK: keine neuere Version" : "OK: "+latest.Tag); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Update-Check.txt"),"FEHLER: "+e); Environment.ExitCode=1; } return; }
 
   if(args.Contains("--enable-autostart")) { try { EnableAutostart(); File.WriteAllText(AppPaths.Report("Autostart-Status.txt"),"Aktiv: Windows-Autostartverknüpfung"); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Autostart-Status.txt"),e.ToString()); Environment.ExitCode=1; } return; }
 
