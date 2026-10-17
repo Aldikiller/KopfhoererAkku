@@ -6,13 +6,13 @@ Kostenlos und Open Source. Von **Aldikiller**.
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.1/KopfhoererAkku-0.1.0-beta.1-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.2/KopfhoererAkku-0.1.0-beta.2-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.1/KopfhoererAkku-0.1.0-beta.1-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.2/KopfhoererAkku-0.1.0-beta.2-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode der Beta](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.1/KopfhoererAkku-0.1.0-beta.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.1/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode der Beta](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.2/KopfhoererAkku-0.1.0-beta.2-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v0.1.0-beta.2/SHA256SUMS.txt)
 
-Die aktuelle Version ist **0.1.0 Beta 1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
+Die aktuelle Version ist **0.1.0 Beta 2**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
 ![So sehen die Symbole aus](docs/Symbole.png)
 
@@ -23,7 +23,11 @@ Die aktuelle Version ist **0.1.0 Beta 1**. Du brauchst Windows 10 ab Version 200
 3. Im Tool bis zu zwei Geräte auswählen und auf **Übernehmen** klicken. Falls ein Gerät mehrmals auftaucht, den Eintrag mit Akkustand nehmen.
 4. Sind die Symbole nicht neben der Uhr zu sehen, unter **^** nachschauen und herausziehen.
 
-Ein Doppelklick auf ein Symbol öffnet die Einstellungen. Dort kannst du die Akkuwarnung und das Abfrageintervall ändern. Mit **Test** lässt sich die Windows-Benachrichtigung ausprobieren.
+Ein Doppelklick auf ein Symbol öffnet die Einstellungen. Unter **Namen & Anzeige** kannst du jeden Kopfhörer umbenennen und seine Farbe auswählen. Das ändert nur die Anzeige im Tool, nicht den Bluetooth-Namen in Windows. Dort kannst du auch zwischen der Batterieanzeige und **nur Zahl mit Kopfhörerzeichen** wechseln.
+
+Unter **Updates** kannst du nach neuen Versionen suchen und die GitHub-Downloadseite öffnen. Auf Wunsch prüft das Tool auch bei jedem Programmstart. Das ist zunächst ausgeschaltet. Es installiert nichts automatisch.
+
+ Dort kannst du die Akkuwarnung und das Abfrageintervall ändern. Mit **Test** lässt sich die Windows-Benachrichtigung ausprobieren.
 
 Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder ausschalten und das Programm beenden. Im Installer ist der Autostart vorausgewählt.
 
@@ -31,7 +35,7 @@ Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder aus
 
 Jeder Kopfhörer hat ein eigenes Symbol. Die Zahl im Akku ist der Prozentwert. Wenn du mit der Maus darüberfährst, siehst du den Gerätenamen und den Status.
 
-- **Grün oder Blau:** verbunden.
+- **Deine gewählte Farbe:** verbunden (standardmäßig Grün oder Blau).
 - **Rot:** verbunden und höchstens 20 % Akku.
 - **Grau mit ×:** getrennt.
 - **Gelb:** die Verbindung lässt sich gerade nicht feststellen. Eine angezeigte Zahl kann ein gespeicherter Wert sein.
@@ -47,7 +51,7 @@ Akkuwerte wurden bisher mit JBL Live 770NC und JLab Rewind 2 ausgelesen. Die Ver
 
 Die Dateien sind noch nicht digital signiert. Windows kann beim Start einen Warnhinweis anzeigen.
 
-Es gibt keine Werbung und keine Telemetrie. Das Programm stellt keine Netzwerkverbindungen her. Deine Einstellungen bleiben auf deinem Rechner. Mehr dazu steht im [Datenschutztext](PRIVACY.md).
+Es gibt keine Werbung und keine Telemetrie. Nur die freiwillige Update-Prüfung fragt GitHub ab. Dabei erhält GitHub deine IP-Adresse und die Programmversion; Gerätenamen und Akkudaten werden nicht gesendet. Deine Einstellungen bleiben auf deinem Rechner. Mehr dazu steht im [Datenschutztext](PRIVACY.md).
 
 ## Entfernen
 

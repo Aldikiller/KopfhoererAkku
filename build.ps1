@@ -1,4 +1,4 @@
-param([switch]$Installer, [string]$Iscc, [switch]$SkipTests)
+﻿param([switch]$Installer, [string]$Iscc, [switch]$SkipTests)
 $ErrorActionPreference = 'Stop'
 $projectRoot = $PSScriptRoot
 $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'VERSION') -Raw).Trim()
@@ -10,14 +10,15 @@ if (!(Test-Path -LiteralPath $csc)) { throw 'Der .NET-Framework-C#-Compiler fehl
 New-Item -ItemType Directory -Force -Path $dist, $portable | Out-Null
 $exe = Join-Path $portable 'KopfhoererAkku.exe'
 $compilerArgs = @('/nologo','/target:winexe','/platform:x64','/optimize+',('/out:'+$exe),
-  '/reference:System.Windows.Forms.dll','/reference:System.Drawing.dll',
+  '/reference:System.Web.Extensions.dll','/reference:System.Windows.Forms.dll','/reference:System.Drawing.dll',
   ('/reference:'+(Join-Path $framework 'System.Runtime.dll')),
   ('/reference:'+(Join-Path $env:WINDIR 'System32\WinMetadata\Windows.Devices.winmd')),
   ('/reference:'+(Join-Path $env:WINDIR 'System32\WinMetadata\Windows.Foundation.winmd')),
   ('/win32manifest:'+(Join-Path $projectRoot 'src\app.manifest')))
 $icon = Join-Path $projectRoot 'assets\app.ico'
 if (Test-Path -LiteralPath $icon) { $compilerArgs += '/win32icon:'+$icon }
-& $csc @compilerArgs (Join-Path $projectRoot 'src\KopfhoererAkku.cs')
+$sources = @(Get-ChildItem -LiteralPath (Join-Path $projectRoot 'src') -Filter '*.cs' | ForEach-Object { $_.FullName })
+& $csc @compilerArgs @sources
 if ($LASTEXITCODE -ne 0) { throw 'Kompilierung fehlgeschlagen.' }
 Set-Content -LiteralPath (Join-Path $portable 'portable.flag') -Value 'Portable mode: settings stay next to the application.' -Encoding ASCII
 foreach ($name in @('LICENSE','README.md','DISCLAIMER.de.md','PRIVACY.md','CHANGELOG.md','CONTRIBUTING.md','SECURITY.md','THIRD-PARTY.md')) {
@@ -29,7 +30,7 @@ if (!$SkipTests) {
   New-Item -ItemType Directory -Force -Path $testDir | Out-Null
   $process = Start-Process -FilePath $exe -ArgumentList @('--selftest', ('"--output-dir='+$testDir+'"')) -Wait -PassThru
   if ($process.ExitCode -ne 0) { throw "Selbsttest fehlgeschlagen: $testDir" }
-  $report = Get-Content -LiteralPath (Join-Path $testDir 'Testbericht.txt') -Raw
+  $report = Get-Content -LiteralPath (Join-Path $testDir 'Testbericht.txt') -Raw -Encoding UTF8
   if (!$report.StartsWith('OK:')) { throw $report }
   Write-Host $report.Trim()
 }

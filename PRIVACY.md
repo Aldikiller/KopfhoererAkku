@@ -2,10 +2,10 @@
 
 Die Anwendung liest lokale Windows-Geräteeigenschaften, Bluetooth-Adressen,
 Gerätenamen, Verbindungsstatus und von Windows bereitgestellte Akkuwerte.
-Sie stellt selbst keine Netzwerkverbindungen her und sendet keine Telemetrie.
+Ohne Update-Prüfung stellt sie keine Netzwerkverbindungen her. Sie sendet keine Telemetrie.
 
 Gespeichert werden höchstens zwei ausgewählte Gerätekennungen und lokale
-Einstellungen zu Warnungen und Abfrageintervall. Installierte Version:
+Einstellungen zu Warnungen, Abfrageintervall, eigenen Anzeigenamen, Gerätefarben und Anzeigemodus. Installierte Version:
 `%LOCALAPPDATA%\KopfhoererAkku`; portable Version: `Einstellungen` neben der EXE.
 Autostart nutzt eine lokale Verknüpfung im Autostartordner des angemeldeten Nutzers.
 
@@ -15,4 +15,15 @@ Die Datei wird nicht automatisch übertragen. Vor dem Teilen persönliche
 Kennungen entfernen. Diagnoseprotokolle gehören nicht in öffentliche Issues.
 
 GitHub und die Webseite, über die die Dateien heruntergeladen werden, haben
-eigene Datenschutzbedingungen. Das Programm selbst lädt keine Updates herunter.
+eigene Datenschutzbedingungen. Die freiwillige Update-Prüfung verwendet die öffentliche GitHub-API unter
+api.github.com/repos/Aldikiller/KopfhoererAkku/releases. Sie ist standardmäßig
+aus und wird bewusst per Klick oder nach Aktivierung beim Start aufgerufen.
+GitHub erhält dabei die IP-Adresse und einen User-Agent mit der Programmversion.
+Gerätekennungen, eigene Namen, Farben und Akkuwerte werden nicht übertragen.
+Es werden keine Konten oder Zugriffsschlüssel benötigt.
+GitHubs Datenschutzbedingungen gelten für die Anfrage:
+https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
+
+Die Prüfung lädt keine Programmupdates herunter und installiert nichts.
+Die Downloadseite öffnet sich nur nach einem ausdrücklichen Klick oder einer
+Bestätigung im normalen Browser. Beim Browseraufruf gelten dessen Einstellungen.
