@@ -1,6 +1,6 @@
-; SPDX-License-Identifier: MIT
+﻿; SPDX-License-Identifier: MIT
 #ifndef AppVersion
-  #define AppVersion "1.1.0"
+  #define AppVersion "1.2.0"
 #endif
 #define ProjectRoot ".."
 
@@ -10,7 +10,7 @@ AppName=Kopfhörer-Akku
 AppVersion={#AppVersion}
 AppVerName=Kopfhörer-Akku {#AppVersion}
 AppPublisher=Aldikiller
-VersionInfoVersion=1.1.0.0
+VersionInfoVersion=1.2.0.0
 VersionInfoCopyright=Copyright (c) 2026 Aldikiller
 DefaultDirName={localappdata}\Programs\KopfhoererAkku
 DefaultGroupName=Kopfhörer-Akku
@@ -43,10 +43,25 @@ CreateUninstallRegKey=no
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
+[CustomMessages]
+german.Startup=Kopfhörer-Akku bei der Windows-Anmeldung starten
+english.Startup=Start Kopfhörer-Akku when signing in to Windows
+german.Desktop=Desktop-Verknüpfung erstellen
+english.Desktop=Create desktop shortcut
+german.Launch=Kopfhörer-Akku starten
+english.Launch=Start Kopfhörer-Akku
+
+german.NeedFramework=Bitte zuerst Microsoft .NET Framework 4.8 installieren. Das Setup lädt keine Komponenten automatisch herunter.
+english.NeedFramework=Please install Microsoft .NET Framework 4.8 first. Setup does not download components automatically.
+german.StopFailed=Die laufende Anwendung konnte nicht beendet werden. Bitte über das Symbol beenden.
+english.StopFailed=Could not close the running app. Please exit it using its tray icon.
+german.StillRunning=Kopfhörer-Akku läuft noch. Bitte über das Symbol beenden und die Installation wiederholen.
+english.StillRunning=Kopfhörer-Akku is still running. Please exit it using its tray icon and retry setup.
+
 [Tasks]
 #ifndef SmokeTest
-Name: "autostart"; Description: "Kopfhörer-Akku bei der Windows-Anmeldung starten"; Flags: checkedonce
-Name: "desktopicon"; Description: "Desktop-Verknüpfung erstellen"; Flags: unchecked
+Name: "autostart"; Description: "{cm:Startup}"; Flags: checkedonce
+Name: "desktopicon"; Description: "{cm:Desktop}"; Flags: unchecked
 #endif
 
 [Files]
@@ -71,7 +86,7 @@ Name: "{userstartup}\KopfhoererAkku"; Filename: "{app}\KopfhoererAkku.exe"; Work
 
 [Run]
 #ifndef SmokeTest
-Filename: "{app}\KopfhoererAkku.exe"; Description: "Kopfhörer-Akku starten"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\KopfhoererAkku.exe"; Description: "{cm:Launch}"; Flags: nowait postinstall skipifsilent
 #endif
 
 [UninstallRun]
@@ -101,7 +116,7 @@ begin
 #else
   Result := IsDotNetAvailable();
   if not Result then
-    MsgBox('Bitte zuerst Microsoft .NET Framework 4.8 installieren. Das Setup lädt keine Komponenten automatisch herunter.', mbError, MB_OK);
+    MsgBox(CustomMessage('NeedFramework'), mbError, MB_OK);
 #endif
 end;
 
@@ -112,8 +127,8 @@ begin
   Exe := ExpandConstant('{app}\KopfhoererAkku.exe');
   if FileExists(Exe) then begin
     if not Exec(Exe, '--shutdown', '', SW_HIDE, ewWaitUntilTerminated, Code) then
-      Result := 'Die laufende Anwendung konnte nicht beendet werden. Bitte über das Symbol beenden.'
+      Result := CustomMessage('StopFailed')
     else if Code <> 0 then
-      Result := 'Kopfhörer-Akku läuft noch. Bitte über das Symbol beenden und die Installation wiederholen.';
+      Result := CustomMessage('StillRunning');
   end;
 end;
