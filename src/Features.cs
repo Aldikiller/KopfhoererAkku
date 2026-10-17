@@ -11,12 +11,14 @@ using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 
 class DeviceProfile {
- public string Name="";
+ public string Name="",Marker="A";
+ public int Symbol=0;
  public string ColorHex;
  public DeviceProfile(string color) { ColorHex=color; }
  public Color Color { get { return ColorTranslator.FromHtml(ColorHex); } }
 }
 class Settings {
+ public WidgetOptions Widget=new WidgetOptions();
  public FontFamily FontFamily() { try { var f=new FontFamily(FontName); if(f.IsStyleAvailable(FontStyle.Bold)) return f; f.Dispose(); } catch(ArgumentException) {} return new FontFamily("Segoe UI"); }
  public bool Warnings=true,CheckAtStartup=false,NumbersOnly=false;
  public int Threshold=20,Interval=15,TextSize=21,BatteryShape=0,BatteryRadius=4,BatteryStroke=13,BatteryWidth=28,BatteryHeight=27;
@@ -30,6 +32,7 @@ class Settings {
   var x=new Settings(); if(!File.Exists(file)) return x;
   foreach(var line in File.ReadAllLines(file)) {
    int split=line.IndexOf('='); if(split<1) continue; string key=line.Substring(0,split),value=line.Substring(split+1); int n; bool b;
+   if(key.StartsWith("Widget.",StringComparison.Ordinal)) x.Widget.Read(key.Substring(7),value);
    if(key=="FontName") { try { x.FontName=Decode(value); } catch(FormatException) {} }
    if(key=="TextSize" && int.TryParse(value,out n)) x.TextSize=Math.Max(10,Math.Min(28,n));
    if(key=="BatteryShape" && int.TryParse(value,out n)) x.BatteryShape=Math.Max(0,Math.Min(2,n));
@@ -47,16 +50,20 @@ class Settings {
     int suffix=key.LastIndexOf('.'); if(suffix<=7) continue; string id=Decode(key.Substring(7,suffix-7)),field=key.Substring(suffix+1); if(id.Length==0) continue;
     DeviceProfile p; if(!x.Profiles.TryGetValue(id,out p)) { p=new DeviceProfile("#13705B"); x.Profiles[id]=p; }
     if(field=="Name") { var name=Decode(value); p.Name=name.Length>40 ? name.Substring(0,40) : name; }
+    if(field=="Symbol" && int.TryParse(value,out n)) p.Symbol=Math.Max(0,Math.Min(4,n));
+    if(field=="Marker") { var mark=Decode(value); p.Marker=CleanMarker(mark); }
     if(field=="Color" && Regex.IsMatch(value,@"\A#[0-9a-fA-F]{6}\z")) p.ColorHex=value;
    } catch(FormatException) {} }
   }
   // Older presets used fixed radii; keep their appearance during migration.
   if(!File.ReadAllLines(file).Any(line=>line.StartsWith("BatteryRadius="))) x.BatteryRadius=x.BatteryShape==1 ? 0 : x.BatteryShape==2 ? 12 : 4;
-  return x;
+  x.Widget.Normalize(); return x;
  }
+ public static string CleanMarker(string value) { if(string.IsNullOrWhiteSpace(value)) return "A"; var e=System.Globalization.StringInfo.GetTextElementEnumerator(value.Trim()); return e.MoveNext() ? (string)e.Current : "A"; }
  public void Save(string file) {
   var lines=new List<string>{"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
-  foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); }
+  lines.AddRange(Widget.Lines());
+  foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); lines.Add(prefix+"Symbol="+item.Value.Symbol); lines.Add(prefix+"Marker="+Encode(item.Value.Marker)); }
   Directory.CreateDirectory(Path.GetDirectoryName(file)); string temp=file+"."+Guid.NewGuid().ToString("N")+".tmp";
   try { File.WriteAllLines(temp,lines,Encoding.UTF8); if(File.Exists(file)) File.Replace(temp,file,null); else File.Move(temp,file); } finally { if(File.Exists(temp)) File.Delete(temp); }
  }
