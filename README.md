@@ -83,7 +83,7 @@ Jeder Kopfhörer hat ein eigenes Symbol. Die Zahl im Akku ist der Prozentwert. W
 
 Das Tool liest die Akkuwerte aus Windows. Es funktioniert deshalb nur, wenn Windows für den Kopfhörer einen Wert bereitstellt. Die Werte können gerundet oder etwas älter sein.
 
-Akkuwerte wurden bisher mit JBL Live 770NC und JLab Rewind 2 ausgelesen. Wie gut andere Modelle funktionieren, hängt davon ab, welche Daten Windows bereitstellt. Akkuwarnungen gibt es nur, wenn die Verbindung bestätigt ist. Windows kann Benachrichtigungen bei „Nicht stören“ unterdrücken.
+Akkuwerte wurden bisher mit JBL Live 770NC und JLab Rewind 2 ausgelesen. [Kompatibilitätsliste und eigenes Modell melden](docs/COMPATIBILITY.md). Wie gut andere Modelle funktionieren, hängt davon ab, welche Daten Windows bereitstellt. Akkuwarnungen gibt es nur, wenn die Verbindung bestätigt ist. Windows kann Benachrichtigungen bei „Nicht stören“ unterdrücken.
 
 Die Dateien sind noch nicht digital signiert. Windows kann beim Start einen Warnhinweis anzeigen.
 
@@ -110,5 +110,6 @@ SignPath Foundation hat den Antrag vorerst wegen zu geringer öffentlicher Bekan
 ## Sprache
 
 Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Français oder Українська wählen. Nach Speichern wird die Oberfläche sofort umgestellt. Die Auswahl bleibt beim nächsten Start erhalten. Standard ist Deutsch.
+
 
 
