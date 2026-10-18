@@ -30,3 +30,7 @@ Die Prüfung lädt keine Programmupdates herunter und installiert nichts.
 Die Downloadseite öffnet sich nur nach einem ausdrücklichen Klick oder einer
 Bestätigung im normalen Browser. Beim Browseraufruf gelten dessen Einstellungen.
 
+
+## Audio-Schnellauswahl
+
+Das Tool liest lokale Windows-Audioausgänge und Gerätekennungen zur Zuordnung. Gespeicherte Zuordnungen bleiben auf dem Rechner. Gerätekennungen werden nicht an GitHub gesendet. Ein Klick auf ein zugeordnetes Akkusymbol ändert die normale Windows-Audioausgabe.

@@ -10,19 +10,31 @@ Kostenlos und Open Source. Von **Aldikiller**.
 
 [Anleitung und Hilfe im Wiki](https://github.com/Aldikiller/KopfhoererAkku/wiki) · [Fragen und Erfahrungen](https://github.com/Aldikiller/KopfhoererAkku/discussions) · [Webseite](https://aldikiller.github.io/KopfhoererAkku/)
 
+## Audioausgabe mit einem Klick wechseln
+
+**Kopfhörer wechseln, ohne die Windows-Ausgabeeinstellungen zu öffnen.** Ein Klick auf das Akkusymbol schaltet die Windows-Audioausgabe auf diesen Kopfhörer um. Ein grüner Kreis mit weißem Häkchen zeigt die aktive Ausgabe. Eindeutig passende Geräte werden automatisch zugeordnet; sonst einmal unter „Audio-Schnellauswahl“ auswählen. Eigene Zuordnungen bleiben erhalten.
+
+![Aktive Audioausgabe mit grünem Häkchen](docs/Audio-Direktwahl-1.6.0.png)
+
+Beispielansicht: links aktiv, rechts nicht aktiv; darunter die kleinen Infobereich-Symbole.
+
+Ein Doppelklick öffnet die Einstellungen. Die Geräteübersicht und die Zuordnung erreichst du per Rechtsklick. Wer die Direktwahl nicht verwenden möchte, kann sie abschalten.
+
+Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunikationsgerät bleiben unverändert. Apps mit fest gewähltem Ausgang können ihre eigene Auswahl behalten. [Anleitung zur Direktwahl](docs/AUDIO-QUICKSTART.md).
+
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.4.0/KopfhoererAkku-1.4.0-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.0/KopfhoererAkku-1.6.0-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.4.0/KopfhoererAkku-1.4.0-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.0/KopfhoererAkku-1.6.0-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.4.0/KopfhoererAkku-1.4.0-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.4.0/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.0/KopfhoererAkku-1.6.0-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.0/SHA256SUMS.txt)
 
-Die aktuelle Version ist **1.4.0**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
+Die aktuelle Version ist **1.6.0**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
 ![So sehen die Symbole aus](docs/Symbole.png)
 
-## Kurz ansehen
+## Bisherige Anzeige im Video (1.4.0)
 
 [![35 Sekunden Bilderdemo mit Beispieldaten](docs/Demo-1.4.0-de-Poster.png)](https://aldikiller.github.io/KopfhoererAkku/#demo)
 
@@ -31,7 +43,7 @@ Die aktuelle Version ist **1.4.0**. Du brauchst Windows 10 ab Version 2004 oder 
 <details>
 <summary>Aktuelle Geräteübersicht und einfache Einstellungen</summary>
 
-Die Bilder zeigen Beispieldaten aus Version 1.4.0.
+Die folgenden Bilder und das Video zeigen Version 1.4.0 ohne Audio-Direktwahl.
 
 ![Geräteübersicht](docs/Geraeteuebersicht-1.4.0-de.png)
 
@@ -39,9 +51,11 @@ Die Bilder zeigen Beispieldaten aus Version 1.4.0.
 
 </details>
 
-## Neu in 1.4.0
+## Neu in 1.6.0
 
-Ein Klick auf ein Akkusymbol öffnet die Geräteübersicht. Dort stehen beide Kopfhörer mit der letzten Abfragezeit. Nach Standby und Verbindungsänderungen fragt das Tool mehrfach nach. Windows kann Akkuwerte zwischenspeichern; die Zeit bestätigt keine neue Messung am Kopfhörer.
+Ein Klick auf das Akkusymbol schaltet die Windows-Audioausgabe auf diesen Kopfhörer um. Ein grüner Kreis mit weißem Häkchen zeigt die aktive Ausgabe. Eindeutig passende Geräte werden automatisch zugeordnet; sonst einmal unter „Audio-Schnellauswahl“ auswählen. Eigene Zuordnungen bleiben erhalten.
+
+Die Akkuabfrage läuft standardmäßig alle 30 Sekunden, einstellbar von 30 bis 300 Sekunden. Keine schnellen Zusatzabfragen oder laufenden Fortschrittsmeldungen. Programmupdates werden nur manuell oder optional beim Start geprüft.
 
 ## So geht's
 
@@ -50,7 +64,7 @@ Ein Klick auf ein Akkusymbol öffnet die Geräteübersicht. Dort stehen beide Ko
 3. Im Tool bis zu zwei Geräte auswählen und auf **Übernehmen** klicken. Falls ein Gerät mehrmals auftaucht, den Eintrag mit Akkustand nehmen.
 4. Sind die Symbole nicht neben der Uhr zu sehen, unter **^** nachschauen und herausziehen.
 
-Ein Klick auf ein Symbol im Infobereich öffnet die Geräteübersicht, ein Doppelklick die Einstellungen. Für die folgenden Detailregler **Erweiterte Einstellungen** aktivieren. Unter **Namen & Anzeige** kannst du jeden Kopfhörer umbenennen und seine Farbe auswählen. Das ändert nur die Anzeige im Tool, nicht den Bluetooth-Namen in Windows. Dort kannst du auch zwischen der Batterieanzeige und **nur Zahl mit Kopfhörerzeichen** wechseln.
+Ein Klick auf ein Symbol im Infobereich wählt diesen Kopfhörer als Audioausgabe. Ein Doppelklick öffnet die Einstellungen; die Geräteübersicht findest du per Rechtsklick. Für die folgenden Detailregler **Erweiterte Einstellungen** aktivieren. Unter **Namen & Anzeige** kannst du jeden Kopfhörer umbenennen und seine Farbe auswählen. Das ändert nur die Anzeige im Tool, nicht den Bluetooth-Namen in Windows. Dort kannst du auch zwischen der Batterieanzeige und **nur Zahl mit Kopfhörerzeichen** wechseln.
 
 Unter **Updates** kannst du nach neuen Versionen suchen und die GitHub-Downloadseite öffnen. Auf Wunsch prüft das Tool auch bei jedem Programmstart. Das ist zunächst ausgeschaltet. Es installiert nichts automatisch.
 
@@ -88,6 +102,7 @@ Für einen vollständig transparenten Hintergrund **Hintergrund-Deckkraft auf 0*
 
 Jeder Kopfhörer hat ein eigenes Symbol. Die Zahl im Akku ist der Prozentwert. Wenn du mit der Maus darüberfährst, siehst du den Gerätenamen und den Status.
 
+- **Grüner Kreis mit weißem Häkchen:** aktive Windows-Audioausgabe.
 - **Deine gewählte Farbe:** verbunden (standardmäßig Grün oder Blau).
 - **Rot:** verbunden und höchstens 20 % Akku.
 - **Grau mit ×:** getrennt.
