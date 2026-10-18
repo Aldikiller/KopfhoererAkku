@@ -12,15 +12,19 @@ Kostenlos und Open Source. Von **Aldikiller**.
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.3/KopfhoererAkku-1.3.3-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.4.0/KopfhoererAkku-1.4.0-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.3/KopfhoererAkku-1.3.3-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.4.0/KopfhoererAkku-1.4.0-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.3/KopfhoererAkku-1.3.3-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.3/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.4.0/KopfhoererAkku-1.4.0-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.4.0/SHA256SUMS.txt)
 
-Die aktuelle Version ist **1.3.3**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
+Die aktuelle Version ist **1.4.0**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
 ![So sehen die Symbole aus](docs/Symbole.png)
+
+## Neu in 1.4.0
+
+Ein Klick auf ein Akkusymbol öffnet die Geräteübersicht. Dort stehen beide Kopfhörer mit der letzten Abfragezeit. Nach Standby und Verbindungsänderungen fragt das Tool mehrfach nach. Windows kann Akkuwerte zwischenspeichern; die Zeit bestätigt keine neue Messung am Kopfhörer.
 
 ## So geht's
 
@@ -39,7 +43,7 @@ Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder aus
 
 ## Einfache und erweiterte Einstellungen
 
-Ab Version 1.3.3 zeigt das Einstellungsfenster zunächst die wichtigsten Optionen: Akkuwarnung, Anzeigeort, Darstellungsart und Sprache. Mit **Erweiterte Einstellungen** oben werden die bisherigen Detailregler eingeblendet. Noch nicht gespeicherte Änderungen bleiben beim Umschalten erhalten. **Speichern** übernimmt sie; **Schließen** verwirft sie.
+Ab Version 1.4.0 zeigt das Einstellungsfenster zunächst die wichtigsten Optionen: Akkuwarnung, Anzeigeort, Darstellungsart und Sprache. Mit **Erweiterte Einstellungen** oben werden die bisherigen Detailregler eingeblendet. Noch nicht gespeicherte Änderungen bleiben beim Umschalten erhalten. **Speichern** übernimmt sie; **Schließen** verwirft sie.
 
 ## Anzeige anpassen
 
@@ -106,3 +110,4 @@ SignPath Foundation hat den Antrag vorerst wegen zu geringer öffentlicher Bekan
 ## Sprache
 
 Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Français oder Українська wählen. Nach Speichern wird die Oberfläche sofort umgestellt. Die Auswahl bleibt beim nächsten Start erhalten. Standard ist Deutsch.
+

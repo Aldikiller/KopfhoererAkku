@@ -13,6 +13,7 @@ $compilerArgs = @('/nologo','/target:winexe','/platform:x64','/optimize+',('/out
   ('/resource:'+(Join-Path $projectRoot 'docs\logo.png')+',KopfhoererAkku.Logo.png'),
   '/reference:System.Web.Extensions.dll','/reference:System.Windows.Forms.dll','/reference:System.Drawing.dll',
   ('/reference:'+(Join-Path $framework 'System.Runtime.dll')),
+  ('/reference:'+(Join-Path $framework 'System.Runtime.InteropServices.WindowsRuntime.dll')),
   ('/reference:'+(Join-Path $env:WINDIR 'System32\WinMetadata\Windows.Devices.winmd')),
   ('/reference:'+(Join-Path $env:WINDIR 'System32\WinMetadata\Windows.Foundation.winmd')),
   ('/win32manifest:'+(Join-Path $projectRoot 'src\app.manifest')))

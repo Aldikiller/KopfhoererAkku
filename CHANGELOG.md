@@ -1,3 +1,10 @@
+# 1.4.0
+
+- Ein Klick auf ein Akkusymbol öffnet die Übersicht beider Geräte. Doppelklick öffnet weiter die Einstellungen.
+- Eigene Abfragezeiten je Gerät; zuletzt gelesene Werte bleiben bei Trennung als nicht aktuell erkennbar.
+- Gezielte Wiederholungsabfragen nach Standby, Entsperren und Bluetooth-Verbindungsereignissen.
+- Übersicht in Deutsch, Englisch, Spanisch, Französisch und Ukrainisch.
+- Windows kann Akkuwerte zwischenspeichern. Eine erfolgreiche Abfrage bestätigt keine neue Messung am Kopfhörer.
 # 1.3.3
 
 - Über-Dialog mit eigenem Logo und anklickbaren Links zu GitHub und Webseite.
@@ -85,3 +92,4 @@
 - Portable ZIP, lokale Einstellungen und Diagnose auf Anfrage.
 - MIT-Lizenz, Datenschutz- und Haftungshinweise, Build- und GitHub-Unterlagen.
 - Gerätewechsel und echte Bluetooth-Verbindung noch nicht über verschiedene Rechner validiert.
+
