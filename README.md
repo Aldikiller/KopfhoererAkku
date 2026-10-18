@@ -1,165 +1,80 @@
-Deutsch · [English](docs/README.en.md) · [Español](docs/README.es.md) · [Français](docs/README.fr.md) · [Українська](docs/README.uk.md)
+# Kopfhörer-Akku — Bluetooth battery monitor and audio switcher
 
-## English — Windows Bluetooth battery monitor and audio switcher
+[Deutsch](docs/README.de.md) · **English** · [Español](docs/README.es.md) · [Français](docs/README.fr.md) · [Українська](docs/README.uk.md)
 
-**English is included in version 1.6.1.** Monitor two headphones and switch Windows audio with one click in the system tray or desktop widget. Free and open source under the MIT license.
+A free, open-source Windows app by **Aldikiller**. Monitor up to two Bluetooth headphones in the system tray, a desktop widget, or both. Click the headphone you want to use to switch the Windows audio output.
 
-**[Read the full English guide](docs/README.en.md)** · [English website](https://aldikiller.github.io/KopfhoererAkku/en.html) · [Download 1.6.1](https://github.com/Aldikiller/KopfhoererAkku/releases/tag/v1.6.1)
-
-To enable English: double-click a tray icon → **Sprache / Language → English → Speichern (Save)**. The choice is remembered. Screenshot below: actual English interface with example devices.
-
-![English interface of Kopfhörer-Akku 1.6.1](docs/Settings-1.6.1-en.png)
-
----
-
-## Deutsch — Anleitung und Download
-
-Deutsch bleibt die Standardsprache. Die deutsche Anleitung steht weiterhin vollständig unten.
-
-# Kopfhörer-Akku
-
-<img src="docs/logo.png" width="96" height="96" alt="Kopfhörer-Akku Logo">
-
-Ein kleines Windows-Tool, das den Akkustand von bis zu zwei Bluetooth-Kopfhörern neben der Uhr oder als Desktop-Widget anzeigt. So muss man nicht jedes Mal in den Windows-Einstellungen nachsehen.
-
-Kostenlos und Open Source. Von **Aldikiller**.
-
-[Anleitung und Hilfe im Wiki](https://github.com/Aldikiller/KopfhoererAkku/wiki) · [Fragen und Erfahrungen](https://github.com/Aldikiller/KopfhoererAkku/discussions) · [Webseite](https://aldikiller.github.io/KopfhoererAkku/)
-
-## Audioausgabe mit einem Klick wechseln
-
-**Kopfhörer wechseln, ohne die Windows-Ausgabeeinstellungen zu öffnen.** Ein Klick auf das Akkusymbol schaltet die Windows-Audioausgabe auf diesen Kopfhörer um. Ein grüner Kreis mit weißem Häkchen zeigt die aktive Ausgabe. Eindeutig passende Geräte werden automatisch zugeordnet; sonst einmal unter „Audio-Schnellauswahl“ auswählen. Eigene Zuordnungen bleiben erhalten.
-
-![Aktive Audioausgabe mit grünem Häkchen](docs/Audio-Direktwahl-1.6.0.png)
-
-Beispielansicht: links aktiv, rechts nicht aktiv; daneben die kleinen Infobereich-Symbole.
-
-Ein Doppelklick öffnet die Einstellungen. Die Geräteübersicht und die Zuordnung erreichst du per Rechtsklick. Wer die Direktwahl nicht verwenden möchte, kann sie abschalten.
-
-Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunikationsgerät bleiben unverändert. Apps mit fest gewähltem Ausgang können ihre eigene Auswahl behalten. [Anleitung zur Direktwahl](docs/AUDIO-QUICKSTART.md).
+**Current version: 1.6.1. The app supports English.** German is the default; both languages are included in the same download, along with Spanish, French and Ukrainian.
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Setup.exe)** – mit Installation und Deinstallation.
+**[Download installer](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Setup.exe)** · **[Download portable ZIP](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-portable.zip)**
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-portable.zip)** – entpacken und ohne Installation starten.
+[All releases and SHA-256 checksums](https://github.com/Aldikiller/KopfhoererAkku/releases/latest) · [English website](https://aldikiller.github.io/KopfhoererAkku/en.html) · [English wiki](https://github.com/Aldikiller/KopfhoererAkku/wiki/English)
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/SHA256SUMS.txt)
+Requires Windows 10 build 19041 or newer, or Windows 11, x64, and .NET Framework 4.8. Downloads are currently unsigned; Windows may show a security warning.
 
-Die aktuelle Version ist **1.6.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
+## Switch the app to English
 
-![So sehen die Symbole aus](docs/Symbole.png)
+1. Double-click a battery icon to open **Einstellungen** (Settings).
+2. In the simple view, find **Sprache / Language**. In advanced settings it is under **Allgemein** (General).
+3. Choose **English** and click **Speichern** (Save).
 
-## Ansichten aus Version 1.6.1
+The interface changes immediately and remembers the choice after restarting. These screenshots show the actual English interface of version 1.6.1 with example devices, not live battery measurements.
 
-Die Bilder zeigen Beispieldaten aus der aktuellen Version. Die Direktwahl stellst du unter **Audio-Schnellauswahl** ein. Die Geräteübersicht bleibt über das Rechtsklick-Menü erreichbar.
+![English settings with English selected in the language menu](docs/Settings-1.6.1-en.png)
 
-<details>
-<summary>Audio-Schnellauswahl und Geräteübersicht ansehen</summary>
+## Choose audio output with one click
 
-![Audio-Schnellauswahl 1.6.1](docs/Audio-Schnellauswahl-1.6.1-de.png)
+Click a tray battery icon, or the headphone icon, name or battery value in the widget. A green check marks the active Windows output. Unique matching devices are assigned automatically using their shared Windows device identity. If there is no unique match, right-click a tray icon, open **Quick audio selection**, select each output once and save. Existing manual assignments are preserved.
 
-![Geräteübersicht 1.6.1](docs/Geraeteuebersicht-1.6.1-de.png)
+![Quick audio selection in English, version 1.6.1](docs/Audio-Selection-1.6.1-en.png)
 
-</details>
+The same mapping and quick-selection setting apply to the tray and widget. Dragging moves the widget without switching audio. Double-click opens settings only. Clicking also works when the widget position is locked. Disabling quick selection restores single-click overview for tray icons.
 
-## Neu in 1.6.1
+![English desktop widget with the active output check mark](docs/Widget-1.6.1-en.png)
 
-Ein Klick auf das Akkusymbol schaltet die Windows-Audioausgabe auf diesen Kopfhörer um. Ein grüner Kreis mit weißem Häkchen zeigt die aktive Ausgabe. Eindeutig passende Geräte werden automatisch zugeordnet; sonst einmal unter „Audio-Schnellauswahl“ auswählen. Eigene Zuordnungen bleiben erhalten.
+Switching changes the normal Windows audio output. The microphone and separate communications default are unchanged. Apps with a fixed output may keep their own choice.
 
-Die Akkuabfrage läuft standardmäßig alle 30 Sekunden, einstellbar von 30 bis 300 Sekunden. Keine schnellen Zusatzabfragen oder laufenden Fortschrittsmeldungen. Programmupdates werden nur manuell oder optional beim Start geprüft.
+## Set up the headphones
 
-## So geht's
+1. Install the app, or extract the portable ZIP completely into its own folder and run it.
+2. Turn on the headphones and connect them to Windows.
+3. Select up to two devices in the app and click **Apply**. If duplicate entries appear, choose the one showing a battery value.
+4. If the tray icons are hidden, look under **^** next to the clock and drag them into view.
 
-1. Installer starten oder die portable ZIP vollständig entpacken.
-2. Kopfhörer einschalten und mit Windows verbinden.
-3. Im Tool bis zu zwei Geräte auswählen und auf **Übernehmen** klicken. Falls ein Gerät mehrmals auftaucht, den Eintrag mit Akkustand nehmen.
-4. Sind die Symbole nicht neben der Uhr zu sehen, unter **^** nachschauen und herausziehen.
+The installer selects startup with Windows by default. You can change this in the right-click menu. The portable edition stores settings beside the app.
 
-Ein Klick auf ein Symbol im Infobereich wählt diesen Kopfhörer als Audioausgabe. Ein Doppelklick öffnet die Einstellungen; die Geräteübersicht findest du per Rechtsklick. Für die folgenden Detailregler **Erweiterte Einstellungen** aktivieren. Unter **Namen & Anzeige** kannst du jeden Kopfhörer umbenennen und seine Farbe auswählen. Das ändert nur die Anzeige im Tool, nicht den Bluetooth-Namen in Windows. Dort kannst du auch zwischen der Batterieanzeige und **nur Zahl mit Kopfhörerzeichen** wechseln.
+## Overview and battery checks
 
-Unter **Updates** kannst du nach neuen Versionen suchen und die GitHub-Downloadseite öffnen. Auf Wunsch prüft das Tool auch bei jedem Programmstart. Das ist zunächst ausgeschaltet. Es installiert nichts automatisch.
+Right-click a tray icon and choose the device overview to see both headphones and their last Windows query times. Hover over an icon for the device name, battery level and query age.
 
-Unter **Allgemein** kannst du die Akkuwarnung und das Abfrageintervall ändern. Mit **Test** lässt sich die Windows-Benachrichtigung ausprobieren.
+![Device overview in English](docs/Device-Overview-1.6.1-en.png)
 
-Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder ausschalten und das Programm beenden. Im Installer ist der Autostart vorausgewählt.
+Battery checks default to 30 seconds and can be set from 30 to 300 seconds. No rapid extra polling after sleep, and no routine progress banners. Real errors and uncertain connection states remain visible. Windows may cache values; a query timestamp does not confirm a fresh battery measurement by the headphones.
 
-## Einfache und erweiterte Einstellungen
+## Customize the display
 
-Das Einstellungsfenster zeigt zunächst die wichtigsten Optionen: Akkuwarnung, Anzeigeort, Darstellungsart und Sprache. Mit **Erweiterte Einstellungen** oben werden die bisherigen Detailregler eingeblendet. Noch nicht gespeicherte Änderungen bleiben beim Umschalten erhalten. **Speichern** übernimmt sie; **Schließen** verwirft sie.
+Settings open in a simple view. Select **Advanced settings** for all controls. Change device labels, colors and symbols, fonts, battery size, corner radius and outline thickness. Choose a battery with a number, or a number with a symbol. The live preview shows changes before saving. Windows controls the outer size of tray icons.
 
-## Anzeige anpassen
+The widget has independent size, position, opacity, fonts, spacing and layout settings. Choose tray, widget or both in display settings. For a clear background, set background opacity and frame thickness to zero. Overall opacity also affects text and symbols.
 
-Unter **Namen & Anzeige** kannst du jedem Gerät einen eigenen Namen, eine Farbe und ein Zeichen geben: Kopfhörer, Musiknote, Lautsprecher, ein eigener Buchstabe oder keines. Für die Anzeige stehen eine Batterie mit Zahl oder nur die Zahl mit Zeichen zur Wahl.
+## Warnings and limits
 
-Unter **Schrift & Batterie** stellst du Schriftart, Schriftgröße und Schriftfarbe ein. Rundung, Rahmenstärke, Breite und Höhe der Batterie lassen sich getrennt ändern. Windows bestimmt die äußere Größe der Symbole neben der Uhr.
+Low-battery warnings require a confirmed connection and a battery value. Use the notification test in general settings. Windows Do Not Disturb may suppress notifications.
 
-Die Livevorschau zeigt Änderungen sofort auf hellem und dunklem Hintergrund. Du kannst aktuelle Akkuwerte oder einen Beispielwert anzeigen. Erst **Speichern** übernimmt die Änderungen.
+The app displays only battery values supplied by Windows and the device driver. Values may be rounded or delayed; some models do not provide compatible data. Battery readings have been reported with **JBL Live 770NC** and **JLab Rewind 2**. This does not establish compatibility with every device or Windows configuration. [Compatibility notes](docs/COMPATIBILITY.md).
 
-![Livevorschau und Zeichenwahl](docs/Livevorschau.png)
+## Updates and privacy
 
-## Audio-Direktwahl auch im Widget
+App update checks are manual or optionally run at startup; the automatic option is off by default. They open the GitHub download page and never install an update automatically. This is separate from battery polling.
 
-Klicke im Desktop-Widget auf das Symbol, den Namen oder den Prozentwert des gewünschten Kopfhörers. Das grüne Häkchen zeigt die aktive Audioausgabe. Ziehen verschiebt das Widget, ohne die Ausgabe zu wechseln. Doppelklick öffnet die Einstellungen. Die Auswahl funktioniert auch bei gesperrter Position. Es gilt dieselbe Zuordnung wie im Infobereich; „Audio-Schnellauswahl“ schaltet die Direktwahl für beide Ansichten ein oder aus.
+No ads or telemetry. Settings and audio mappings stay on your computer. The optional update check sends your IP address and app version to GitHub, but not device names, device identifiers or battery levels. [Privacy details](PRIVACY.md).
 
-![Widget mit aktiver Audioausgabe](docs/Widget-Direktwahl-1.6.1.png)
+## Remove the app or report a problem
 
-## Desktop-Widget
+Uninstall the installed edition through Windows Settings → Apps. Settings remain in `%LOCALAPPDATA%\KopfhoererAkku`. For portable mode, disable startup, quit the app and remove its extracted folder.
 
-Unter **Einstellungen → Anzeige & Widget** wählst du Infobereich, Desktop-Widget oder beides. Die Optionen darunter lassen sich durch Scrollen erreichen. Die Livevorschau zeigt Änderungen sofort; Speichern übernimmt sie.
+[Report a problem](https://github.com/Aldikiller/KopfhoererAkku/issues) with the headphone model, Windows and app versions, expected behavior and steps to reproduce. Remove private device identifiers and Bluetooth addresses from screenshots and logs.
 
-Du kannst Größe, Position, Deckkraft, Farben, Schriftart und Schriftgrößen, Rahmen, Rundung, Symbolgröße, Innenabstand und Geräteabstand ändern. Namen, Status und Symbole lassen sich einzeln ausblenden. Die Geräte können neben- oder untereinander stehen. Das Widget übernimmt deine Gerätenamen, Farben und Zeichen.
-
-Mit gedrückter linker Maustaste verschieben; die Position wird gespeichert. Doppelklick öffnet die Einstellungen und Rechtsklick das Menü. Bei Bedarf die Position sperren oder Immer im Vordergrund ausschalten.
-
-Für einen vollständig transparenten Hintergrund **Hintergrund-Deckkraft auf 0** und **Rahmenstärke auf 0** setzen. Die Gesamtdeckkraft wirkt auch auf Schrift und Symbole und kann zwischen 10 und 100 Prozent liegen. Bei Warnungen kann kurzzeitig ein Symbol neben der Uhr erscheinen. Die Größenangaben beziehen sich auf Pixel; Windows-Skalierung kann die Darstellung zusätzlich beeinflussen.
-
-![Widget-Einstellungen](docs/Widget-Einstellungen.png)
-
-## Was angezeigt wird
-
-Jeder Kopfhörer hat ein eigenes Symbol. Die Zahl im Akku ist der Prozentwert. Wenn du mit der Maus darüberfährst, siehst du den Gerätenamen und den Status.
-
-- **Grüner Kreis mit weißem Häkchen:** aktive Windows-Audioausgabe.
-- **Deine gewählte Farbe:** verbunden (standardmäßig Grün oder Blau).
-- **Rot:** verbunden und höchstens 20 % Akku.
-- **Grau mit ×:** getrennt.
-- **Gelb:** die Verbindung lässt sich gerade nicht feststellen. Eine angezeigte Zahl kann ein gespeicherter Wert sein.
-- **? oder –:** es fehlen Daten zum Status oder Akkustand.
-
-![Die Einstellungen](docs/Einstellungen.png)
-
-## Was man wissen sollte
-
-Das Tool liest die Akkuwerte aus Windows. Es funktioniert deshalb nur, wenn Windows für den Kopfhörer einen Wert bereitstellt. Die Werte können gerundet oder etwas älter sein.
-
-Akkuwerte wurden bisher mit JBL Live 770NC und JLab Rewind 2 ausgelesen. [Kompatibilitätsliste und eigenes Modell melden](docs/COMPATIBILITY.md). Wie gut andere Modelle funktionieren, hängt davon ab, welche Daten Windows bereitstellt. Akkuwarnungen gibt es nur, wenn die Verbindung bestätigt ist. Windows kann Benachrichtigungen bei „Nicht stören“ unterdrücken.
-
-Die Dateien sind noch nicht digital signiert. Windows kann beim Start einen Warnhinweis anzeigen.
-
-Es gibt keine Werbung und keine Telemetrie. Nur die freiwillige Update-Prüfung fragt GitHub ab. Dabei erhält GitHub deine IP-Adresse und die Programmversion; Gerätenamen und Akkudaten werden nicht gesendet. Deine Einstellungen bleiben auf deinem Rechner. Mehr dazu steht im [Datenschutztext](PRIVACY.md).
-
-## Entfernen
-
-Die installierte Version lässt sich unter **Windows-Einstellungen → Apps** deinstallieren. Die Einstellungen bleiben in `%LOCALAPPDATA%\KopfhoererAkku` erhalten und können bei Bedarf gelöscht werden.
-
-Bei der portablen Version zuerst den Autostart ausschalten, das Tool beenden und dann den Ordner löschen.
-
-Wer noch die frühere Prototyp-Version benutzt, sollte sie vor der Installation beenden und ihren Autostart ausschalten.
-
-## Quellcode und Lizenz
-
-Der Quellcode ist hier im Repository. Mit `build.ps1` lässt sich das Tool selbst bauen. Hinweise dazu stehen unter [Build und Tests](docs/TESTING.md). Fehler kannst du unter [Issues](https://github.com/Aldikiller/KopfhoererAkku/issues) melden. Bitte keine persönlichen Gerätekennungen oder unbereinigten Diagnoseprotokolle hochladen.
-
-Das Projekt steht unter der [MIT-Lizenz](LICENSE). Du darfst es unter deren Bedingungen nutzen, verändern und weitergeben. Gewährleistung und Haftung sind soweit gesetzlich zulässig ausgeschlossen. Die [Haftungshinweise](DISCLAIMER.de.md) enthalten die Einzelheiten.
-
-## Code signing policy
-
-SignPath Foundation hat den Antrag vorerst wegen zu geringer öffentlicher Bekanntheit abgelehnt. Eine erneute Bewerbung ist später möglich. Die bisherigen Downloads sind weiterhin unsigniert. Mehr dazu steht in der [Signierrichtlinie](docs/CODE-SIGNING.md).
-
-## Sprache
-
-Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Français oder Українська wählen. Nach Speichern wird die Oberfläche sofort umgestellt. Die Auswahl bleibt beim nächsten Start erhalten. Standard ist Deutsch.
-
-
-
+Free and open source under the [MIT license](LICENSE), provided without warranty to the extent permitted by law. German documentation and the German default interface remain available.
