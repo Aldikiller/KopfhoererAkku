@@ -78,3 +78,7 @@ Uninstall the installed edition through Windows Settings → Apps. Settings rema
 [Report a problem](https://github.com/Aldikiller/KopfhoererAkku/issues) with the headphone model, Windows and app versions, expected behavior and steps to reproduce. Remove private device identifiers and Bluetooth addresses from screenshots and logs.
 
 Free and open source under the [MIT license](LICENSE), provided without warranty to the extent permitted by law. German documentation and the German default interface remain available.
+
+## Find us on AlternativeTo
+
+[View Kopfhörer-Akku on AlternativeTo](https://alternativeto.net/software/kopfhorer-akku/) — compare similar tools or share your experience.
