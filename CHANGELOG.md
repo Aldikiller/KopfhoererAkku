@@ -1,4 +1,11 @@
-﻿# 1.1.0
+# 1.3.0
+
+- Spanische, französische und ukrainische Oberfläche und Installertexte.
+- Sprachauswahl mit fünf Sprachen; Deutsch bleibt Standard.
+- Übersetzte Webseiten und Kurzanleitungen.
+- Sprachwechsel, Speicherung und Neustart für alle fünf Sprachen geprüft.
+
+# 1.1.0
 
 ## 1.2.0
 
