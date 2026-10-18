@@ -9,6 +9,13 @@ static class L {
  public static bool Supported(string value) { return Array.IndexOf(Codes,value)>=0; }
  public static bool English { get { return Language=="en"; } }
  static readonly Dictionary<string,string[]> SimpleWords=new Dictionary<string,string[]> {
+ {"Geräteübersicht",new[]{"Device overview","Resumen de dispositivos","Vue des appareils","Огляд пристроїв"}},
+ {"Wird neu geprüft …",new[]{"Checking again …","Comprobando de nuevo …","Nouvelle vérification …","Повторна перевірка …"}},
+ {"Geprüft vor: ",new[]{"Query age: ","Comprobado hace: ","Vérifié il y a : ","Час після перевірки: "}},
+ {"Letzter Windows-Wert: ",new[]{"Last Windows value: ","Último valor de Windows: ","Dernière valeur Windows : ","Останнє значення Windows: "}},
+ {"Gelesen vor: ",new[]{"Reading age: ","Leído hace: ","Lu il y a : ","Час після зчитування: "}},
+ {"nicht aktuell",new[]{"not current","no actualizado","non actuel","не поточне"}},
+ {"Windows-Werte können zwischengespeichert sein. Die Zeit zeigt die letzte Abfrage, keine neue Messung am Kopfhörer.",new[]{"Windows values may be cached. The time indicates the last query, not a new measurement by the headphones.","Los valores de Windows pueden estar guardados. La hora indica la última consulta, no una nueva medición de los auriculares.","Les valeurs Windows peuvent être mémorisées. L’heure indique la dernière requête, pas une nouvelle mesure du casque.","Значення Windows можуть бути кешованими. Час указує останній запит, а не нове вимірювання навушниками."}},
  {"Einfach",new[]{"Simple","Sencillo","Simple","Прості"}},
  {"Erweiterte Einstellungen",new[]{"Advanced settings","Ajustes avanzados","Paramètres avancés","Розширені налаштування"}},
  {"Die wichtigsten Einstellungen. Weitere Optionen findest du unter Erweiterte Einstellungen.",new[]{"The essentials. Find more options under Advanced settings.","Lo esencial. Más opciones en Ajustes avanzados.","L’essentiel. Plus d’options dans Paramètres avancés.","Основні параметри. Більше опцій у розширених налаштуваннях."}}
