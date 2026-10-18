@@ -1,0 +1,149 @@
+**[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
+
+# Kopfhörer-Akku
+
+<img src="logo.png" width="96" height="96" alt="Kopfhörer-Akku Logo">
+
+Ein kleines Windows-Tool, das den Akkustand von bis zu zwei Bluetooth-Kopfhörern neben der Uhr oder als Desktop-Widget anzeigt. So muss man nicht jedes Mal in den Windows-Einstellungen nachsehen.
+
+Kostenlos und Open Source. Von **Aldikiller**.
+
+[Anleitung und Hilfe im Wiki](https://github.com/Aldikiller/KopfhoererAkku/wiki) · [Fragen und Erfahrungen](https://github.com/Aldikiller/KopfhoererAkku/discussions) · [Webseite](https://aldikiller.github.io/KopfhoererAkku/)
+
+## Audioausgabe mit einem Klick wechseln
+
+**Kopfhörer wechseln, ohne die Windows-Ausgabeeinstellungen zu öffnen.** Ein Klick auf das Akkusymbol schaltet die Windows-Audioausgabe auf diesen Kopfhörer um. Ein grüner Kreis mit weißem Häkchen zeigt die aktive Ausgabe. Eindeutig passende Geräte werden automatisch zugeordnet; sonst einmal unter „Audio-Schnellauswahl“ auswählen. Eigene Zuordnungen bleiben erhalten.
+
+![Aktive Audioausgabe mit grünem Häkchen](Audio-Direktwahl-1.6.0.png)
+
+Beispielansicht: links aktiv, rechts nicht aktiv; daneben die kleinen Infobereich-Symbole.
+
+Ein Doppelklick öffnet die Einstellungen. Die Geräteübersicht und die Zuordnung erreichst du per Rechtsklick. Wer die Direktwahl nicht verwenden möchte, kann sie abschalten.
+
+Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunikationsgerät bleiben unverändert. Apps mit fest gewähltem Ausgang können ihre eigene Auswahl behalten. [Anleitung zur Direktwahl](AUDIO-QUICKSTART.md).
+
+## Download
+
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Setup.exe)** – mit Installation und Deinstallation.
+
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-portable.zip)** – entpacken und ohne Installation starten.
+
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/SHA256SUMS.txt)
+
+Die aktuelle Version ist **1.6.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
+
+![So sehen die Symbole aus](Symbole.png)
+
+## Ansichten aus Version 1.6.1
+
+Die Bilder zeigen Beispieldaten aus der aktuellen Version. Die Direktwahl stellst du unter **Audio-Schnellauswahl** ein. Die Geräteübersicht bleibt über das Rechtsklick-Menü erreichbar.
+
+<details>
+<summary>Audio-Schnellauswahl und Geräteübersicht ansehen</summary>
+
+![Audio-Schnellauswahl 1.6.1](Audio-Schnellauswahl-1.6.1-de.png)
+
+![Geräteübersicht 1.6.1](Geraeteuebersicht-1.6.1-de.png)
+
+</details>
+
+## Neu in 1.6.1
+
+Ein Klick auf das Akkusymbol schaltet die Windows-Audioausgabe auf diesen Kopfhörer um. Ein grüner Kreis mit weißem Häkchen zeigt die aktive Ausgabe. Eindeutig passende Geräte werden automatisch zugeordnet; sonst einmal unter „Audio-Schnellauswahl“ auswählen. Eigene Zuordnungen bleiben erhalten.
+
+Die Akkuabfrage läuft standardmäßig alle 30 Sekunden, einstellbar von 30 bis 300 Sekunden. Keine schnellen Zusatzabfragen oder laufenden Fortschrittsmeldungen. Programmupdates werden nur manuell oder optional beim Start geprüft.
+
+## So geht's
+
+1. Installer starten oder die portable ZIP vollständig entpacken.
+2. Kopfhörer einschalten und mit Windows verbinden.
+3. Im Tool bis zu zwei Geräte auswählen und auf **Übernehmen** klicken. Falls ein Gerät mehrmals auftaucht, den Eintrag mit Akkustand nehmen.
+4. Sind die Symbole nicht neben der Uhr zu sehen, unter **^** nachschauen und herausziehen.
+
+Ein Klick auf ein Symbol im Infobereich wählt diesen Kopfhörer als Audioausgabe. Ein Doppelklick öffnet die Einstellungen; die Geräteübersicht findest du per Rechtsklick. Für die folgenden Detailregler **Erweiterte Einstellungen** aktivieren. Unter **Namen & Anzeige** kannst du jeden Kopfhörer umbenennen und seine Farbe auswählen. Das ändert nur die Anzeige im Tool, nicht den Bluetooth-Namen in Windows. Dort kannst du auch zwischen der Batterieanzeige und **nur Zahl mit Kopfhörerzeichen** wechseln.
+
+Unter **Updates** kannst du nach neuen Versionen suchen und die GitHub-Downloadseite öffnen. Auf Wunsch prüft das Tool auch bei jedem Programmstart. Das ist zunächst ausgeschaltet. Es installiert nichts automatisch.
+
+Unter **Allgemein** kannst du die Akkuwarnung und das Abfrageintervall ändern. Mit **Test** lässt sich die Windows-Benachrichtigung ausprobieren.
+
+Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder ausschalten und das Programm beenden. Im Installer ist der Autostart vorausgewählt.
+
+## Einfache und erweiterte Einstellungen
+
+Das Einstellungsfenster zeigt zunächst die wichtigsten Optionen: Akkuwarnung, Anzeigeort, Darstellungsart und Sprache. Mit **Erweiterte Einstellungen** oben werden die bisherigen Detailregler eingeblendet. Noch nicht gespeicherte Änderungen bleiben beim Umschalten erhalten. **Speichern** übernimmt sie; **Schließen** verwirft sie.
+
+## Anzeige anpassen
+
+Unter **Namen & Anzeige** kannst du jedem Gerät einen eigenen Namen, eine Farbe und ein Zeichen geben: Kopfhörer, Musiknote, Lautsprecher, ein eigener Buchstabe oder keines. Für die Anzeige stehen eine Batterie mit Zahl oder nur die Zahl mit Zeichen zur Wahl.
+
+Unter **Schrift & Batterie** stellst du Schriftart, Schriftgröße und Schriftfarbe ein. Rundung, Rahmenstärke, Breite und Höhe der Batterie lassen sich getrennt ändern. Windows bestimmt die äußere Größe der Symbole neben der Uhr.
+
+Die Livevorschau zeigt Änderungen sofort auf hellem und dunklem Hintergrund. Du kannst aktuelle Akkuwerte oder einen Beispielwert anzeigen. Erst **Speichern** übernimmt die Änderungen.
+
+![Livevorschau und Zeichenwahl](Livevorschau.png)
+
+## Audio-Direktwahl auch im Widget
+
+Klicke im Desktop-Widget auf das Symbol, den Namen oder den Prozentwert des gewünschten Kopfhörers. Das grüne Häkchen zeigt die aktive Audioausgabe. Ziehen verschiebt das Widget, ohne die Ausgabe zu wechseln. Doppelklick öffnet die Einstellungen. Die Auswahl funktioniert auch bei gesperrter Position. Es gilt dieselbe Zuordnung wie im Infobereich; „Audio-Schnellauswahl“ schaltet die Direktwahl für beide Ansichten ein oder aus.
+
+![Widget mit aktiver Audioausgabe](Widget-Direktwahl-1.6.1.png)
+
+## Desktop-Widget
+
+Unter **Einstellungen → Anzeige & Widget** wählst du Infobereich, Desktop-Widget oder beides. Die Optionen darunter lassen sich durch Scrollen erreichen. Die Livevorschau zeigt Änderungen sofort; Speichern übernimmt sie.
+
+Du kannst Größe, Position, Deckkraft, Farben, Schriftart und Schriftgrößen, Rahmen, Rundung, Symbolgröße, Innenabstand und Geräteabstand ändern. Namen, Status und Symbole lassen sich einzeln ausblenden. Die Geräte können neben- oder untereinander stehen. Das Widget übernimmt deine Gerätenamen, Farben und Zeichen.
+
+Mit gedrückter linker Maustaste verschieben; die Position wird gespeichert. Doppelklick öffnet die Einstellungen und Rechtsklick das Menü. Bei Bedarf die Position sperren oder Immer im Vordergrund ausschalten.
+
+Für einen vollständig transparenten Hintergrund **Hintergrund-Deckkraft auf 0** und **Rahmenstärke auf 0** setzen. Die Gesamtdeckkraft wirkt auch auf Schrift und Symbole und kann zwischen 10 und 100 Prozent liegen. Bei Warnungen kann kurzzeitig ein Symbol neben der Uhr erscheinen. Die Größenangaben beziehen sich auf Pixel; Windows-Skalierung kann die Darstellung zusätzlich beeinflussen.
+
+![Widget-Einstellungen](Widget-Einstellungen.png)
+
+## Was angezeigt wird
+
+Jeder Kopfhörer hat ein eigenes Symbol. Die Zahl im Akku ist der Prozentwert. Wenn du mit der Maus darüberfährst, siehst du den Gerätenamen und den Status.
+
+- **Grüner Kreis mit weißem Häkchen:** aktive Windows-Audioausgabe.
+- **Deine gewählte Farbe:** verbunden (standardmäßig Grün oder Blau).
+- **Rot:** verbunden und höchstens 20 % Akku.
+- **Grau mit ×:** getrennt.
+- **Gelb:** die Verbindung lässt sich gerade nicht feststellen. Eine angezeigte Zahl kann ein gespeicherter Wert sein.
+- **? oder –:** es fehlen Daten zum Status oder Akkustand.
+
+![Die Einstellungen](Einstellungen.png)
+
+## Was man wissen sollte
+
+Das Tool liest die Akkuwerte aus Windows. Es funktioniert deshalb nur, wenn Windows für den Kopfhörer einen Wert bereitstellt. Die Werte können gerundet oder etwas älter sein.
+
+Akkuwerte wurden bisher mit JBL Live 770NC und JLab Rewind 2 ausgelesen. [Kompatibilitätsliste und eigenes Modell melden](COMPATIBILITY.md). Wie gut andere Modelle funktionieren, hängt davon ab, welche Daten Windows bereitstellt. Akkuwarnungen gibt es nur, wenn die Verbindung bestätigt ist. Windows kann Benachrichtigungen bei „Nicht stören“ unterdrücken.
+
+Die Dateien sind noch nicht digital signiert. Windows kann beim Start einen Warnhinweis anzeigen.
+
+Es gibt keine Werbung und keine Telemetrie. Nur die freiwillige Update-Prüfung fragt GitHub ab. Dabei erhält GitHub deine IP-Adresse und die Programmversion; Gerätenamen und Akkudaten werden nicht gesendet. Deine Einstellungen bleiben auf deinem Rechner. Mehr dazu steht im [Datenschutztext](../PRIVACY.md).
+
+## Entfernen
+
+Die installierte Version lässt sich unter **Windows-Einstellungen → Apps** deinstallieren. Die Einstellungen bleiben in `%LOCALAPPDATA%\KopfhoererAkku` erhalten und können bei Bedarf gelöscht werden.
+
+Bei der portablen Version zuerst den Autostart ausschalten, das Tool beenden und dann den Ordner löschen.
+
+Wer noch die frühere Prototyp-Version benutzt, sollte sie vor der Installation beenden und ihren Autostart ausschalten.
+
+## Quellcode und Lizenz
+
+Der Quellcode ist hier im Repository. Mit `build.ps1` lässt sich das Tool selbst bauen. Hinweise dazu stehen unter [Build und Tests](TESTING.md). Fehler kannst du unter [Issues](https://github.com/Aldikiller/KopfhoererAkku/issues) melden. Bitte keine persönlichen Gerätekennungen oder unbereinigten Diagnoseprotokolle hochladen.
+
+Das Projekt steht unter der [MIT-Lizenz](../LICENSE). Du darfst es unter deren Bedingungen nutzen, verändern und weitergeben. Gewährleistung und Haftung sind soweit gesetzlich zulässig ausgeschlossen. Die [Haftungshinweise](../DISCLAIMER.de.md) enthalten die Einzelheiten.
+
+## Digitale Signierung
+
+SignPath Foundation hat den Antrag vorerst wegen zu geringer öffentlicher Bekanntheit abgelehnt. Eine erneute Bewerbung ist später möglich. Die bisherigen Downloads sind weiterhin unsigniert. Mehr dazu steht in der [Signierrichtlinie](CODE-SIGNING.md).
+
+## Sprache
+
+Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Français oder Українська wählen. Nach Speichern wird die Oberfläche sofort umgestellt. Die Auswahl bleibt beim nächsten Start erhalten. Standard ist Deutsch.
+
+
+

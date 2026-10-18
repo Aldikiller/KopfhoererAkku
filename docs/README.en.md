@@ -1,6 +1,6 @@
 # Kopfhörer-Akku — Bluetooth battery monitor and audio switcher
 
-[Deutsch](../README.md) · **English** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
+[Deutsch](README.de.md) · **English** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
 
 A free, open-source Windows app by **Aldikiller**. Monitor up to two Bluetooth headphones in the system tray, a desktop widget, or both. Click the headphone you want to use to switch the Windows audio output.
 
