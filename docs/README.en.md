@@ -17,3 +17,5 @@ Free and open source under the MIT license. No ads or telemetry. The optional up
 Provided without warranty to the extent permitted by law. See the MIT license for the full terms.
 
 Languages: Deutsch · English · Español · Français · Українська. Choose a language in general settings and save. German remains the default.
+
+From version 1.3.1, settings open in a simple view with battery warnings, display mode, icon style and language. Select Advanced settings to access all detailed controls. Unsaved changes are preserved when switching views. Save applies them; Close discards them.
