@@ -1,6 +1,6 @@
 ﻿; SPDX-License-Identifier: MIT
 #ifndef AppVersion
-  #define AppVersion "1.2.0"
+  #define AppVersion "1.3.0"
 #endif
 #define ProjectRoot ".."
 
@@ -10,7 +10,7 @@ AppName=Kopfhörer-Akku
 AppVersion={#AppVersion}
 AppVerName=Kopfhörer-Akku {#AppVersion}
 AppPublisher=Aldikiller
-VersionInfoVersion=1.2.0.0
+VersionInfoVersion=1.3.0.0
 VersionInfoCopyright=Copyright (c) 2026 Aldikiller
 DefaultDirName={localappdata}\Programs\KopfhoererAkku
 DefaultGroupName=Kopfhörer-Akku
@@ -43,6 +43,10 @@ CreateUninstallRegKey=no
 Name: "german"; MessagesFile: "compiler:Languages\German.isl"
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
+Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
+Name: "french"; MessagesFile: "compiler:Languages\French.isl"
+Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
+
 [CustomMessages]
 german.Startup=Kopfhörer-Akku bei der Windows-Anmeldung starten
 english.Startup=Start Kopfhörer-Akku when signing in to Windows
@@ -57,6 +61,27 @@ german.StopFailed=Die laufende Anwendung konnte nicht beendet werden. Bitte übe
 english.StopFailed=Could not close the running app. Please exit it using its tray icon.
 german.StillRunning=Kopfhörer-Akku läuft noch. Bitte über das Symbol beenden und die Installation wiederholen.
 english.StillRunning=Kopfhörer-Akku is still running. Please exit it using its tray icon and retry setup.
+
+spanish.Startup=Iniciar Kopfhörer-Akku al entrar en Windows
+spanish.Desktop=Crear acceso directo en el escritorio
+spanish.Launch=Iniciar Kopfhörer-Akku
+spanish.NeedFramework=Instala primero Microsoft .NET Framework 4.8. No se descargan componentes automáticamente.
+spanish.StopFailed=No se pudo cerrar la aplicación. Ciérrala desde su icono.
+spanish.StillRunning=La aplicación sigue en ejecución. Ciérrala desde su icono y repite la instalación.
+
+french.Startup=Démarrer Kopfhörer-Akku à l’ouverture de session Windows
+french.Desktop=Créer un raccourci sur le bureau
+french.Launch=Démarrer Kopfhörer-Akku
+french.NeedFramework=Installez d’abord Microsoft .NET Framework 4.8. Aucun composant n’est téléchargé automatiquement.
+french.StopFailed=Impossible de fermer l’application. Quittez-la depuis son icône.
+french.StillRunning=L’application est encore ouverte. Quittez-la depuis son icône et recommencez.
+
+ukrainian.Startup=Запускати Kopfhörer-Akku під час входу у Windows
+ukrainian.Desktop=Створити ярлик на робочому столі
+ukrainian.Launch=Запустити Kopfhörer-Akku
+ukrainian.NeedFramework=Спочатку встановіть Microsoft .NET Framework 4.8. Компоненти автоматично не завантажуються.
+ukrainian.StopFailed=Не вдалося закрити програму. Закрийте її через значок.
+ukrainian.StillRunning=Програма ще працює. Закрийте її через значок і повторіть встановлення.
 
 [Tasks]
 #ifndef SmokeTest
