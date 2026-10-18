@@ -1,0 +1,61 @@
+name: Kopfhörer-Kompatibilität / Headphone compatibility
+description: Teile dein Testergebnis – auch funktionierende Modelle helfen. Report working or failing models.
+title: "[Kompatibilität] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke fürs Testen! Bitte keine Bluetooth-Adressen, Gerätekennungen oder unbereinigten Protokolle veröffentlichen.
+        Thanks for testing! Do not post Bluetooth addresses, device IDs or unredacted logs. No log is required.
+        [Bekannte Modelle / Known models](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/COMPATIBILITY.md)
+  - type: input
+    id: model
+    attributes:
+      label: Kopfhörermodell / Headphone model
+      placeholder: Hersteller und vollständiger Modellname / Manufacturer and full model
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: App-Version / App version
+      placeholder: z. B. / e.g. 1.4.0
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows-Version / Windows version
+      description: Unter Einstellungen → System → Info. Settings → System → About. Keine Produkt-ID angeben / No product ID.
+      placeholder: z. B. Windows 11 25H2 / e.g. Windows 11 25H2
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: Gesamtergebnis / Overall result
+      options:
+        - Funktioniert / Working
+        - Funktioniert teilweise / Partly working
+        - Kein Akkuwert / No battery value
+        - Anderes Problem / Other issue
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Getestet und beobachtet / Tests and observations
+      description: Bitte pro Punkt Ergebnis oder „nicht getestet“ angeben. Give the result or say “not tested” for each item.
+      value: |
+        Erste Verbindung / Initial connection:
+        Aus- und Einschalten / Reconnect:
+        Nach Standby / Resume from sleep:
+        Zwei Geräte, falls vorhanden / Two devices, if available:
+        Zeigt Windows selbst einen Akkuwert? / Does Windows show a battery value?:
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Weitere Angaben / Additional details
+      description: Optional Bluetooth-Adapter, Treiberversion oder Schritte zum Nachstellen. Optional adapter, driver version or reproduction steps. Keine persönlichen Kennungen / No personal IDs.
