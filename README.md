@@ -22,6 +22,23 @@ Die aktuelle Version ist **1.4.0**. Du brauchst Windows 10 ab Version 2004 oder 
 
 ![So sehen die Symbole aus](docs/Symbole.png)
 
+## Kurz ansehen
+
+[![35 Sekunden Bilderdemo mit Beispieldaten](docs/Demo-1.4.0-de-Poster.png)](https://aldikiller.github.io/KopfhoererAkku/#demo)
+
+[Demo abspielen (35 Sekunden, ohne Ton)](https://aldikiller.github.io/KopfhoererAkku/#demo) · [English demo](https://aldikiller.github.io/KopfhoererAkku/en.html#demo)
+
+<details>
+<summary>Aktuelle Geräteübersicht und einfache Einstellungen</summary>
+
+Die Bilder zeigen Beispieldaten aus Version 1.4.0.
+
+![Geräteübersicht](docs/Geraeteuebersicht-1.4.0-de.png)
+
+![Einfache Einstellungen](docs/Einstellungen-Einfach-1.4.0-de.png)
+
+</details>
+
 ## Neu in 1.4.0
 
 Ein Klick auf ein Akkusymbol öffnet die Geräteübersicht. Dort stehen beide Kopfhörer mit der letzten Abfragezeit. Nach Standby und Verbindungsänderungen fragt das Tool mehrfach nach. Windows kann Akkuwerte zwischenspeichern; die Zeit bestätigt keine neue Messung am Kopfhörer.
