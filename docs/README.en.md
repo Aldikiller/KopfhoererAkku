@@ -1,5 +1,7 @@
 # Kopfhörer-Akku
 
+[English website](https://aldikiller.github.io/KopfhoererAkku/en.html) · [English guide](https://github.com/Aldikiller/KopfhoererAkku/wiki/English)
+
 A free Windows app that shows the battery levels of up to two Bluetooth headphones in the system tray, a desktop widget, or both.
 
 Choose **English** under **Einstellungen → Allgemein → Sprache / Language**, then click **Speichern**. The interface changes immediately and remembers your choice. German is the default.
@@ -12,4 +14,4 @@ Requires Windows 10 build 19041 or newer, or Windows 11, x64, with .NET Framewor
 
 Free and open source under the MIT license. No ads or telemetry. The optional update check sends your IP address and app version to GitHub, but does not send device names or battery levels. No updates are installed automatically.
 
-Developed with AI assistance. Provided without warranty to the extent permitted by law. See the MIT license for the full terms.
+Provided without warranty to the extent permitted by law. See the MIT license for the full terms.
