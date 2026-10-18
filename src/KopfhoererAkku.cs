@@ -18,13 +18,13 @@ using System.Text.RegularExpressions;
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
 [assembly: AssemblyProduct("Kopfhörer-Akku")]
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
-[assembly: AssemblyInformationalVersion("1.2.0")]
+[assembly: AssemblyVersion("1.3.0.0")]
+[assembly: AssemblyFileVersion("1.3.0.0")]
+[assembly: AssemblyInformationalVersion("1.3.0")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="1.2.0";
+ public const string Version="1.3.0";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;
@@ -201,7 +201,7 @@ class Tray : ApplicationContext {
   m.Items.Add(updateBusy ? L.T("Update-Prüfung läuft …") : L.T("Nach Updates suchen …"),null,(s,e)=>CheckUpdates(true)).Enabled=!updateBusy;
   m.Items.Add(L.T("Einstellungen …"),null,(s,e)=>Options()); m.Items.Add(L.T("Geräte auswählen …"),null,(s,e)=>Pick()); m.Items.Add(L.T("Jetzt aktualisieren"),null,(s,e)=>Refresh());
   string startup=AppPaths.Startup;
-  var auto=new ToolStripMenuItem(L.English ? "Start with Windows" : "Mit Windows starten"); auto.Checked=File.Exists(startup);
+  var auto=new ToolStripMenuItem(L.T("Beim Windows-Start ausführen")); auto.Checked=File.Exists(startup);
   auto.Click+=(s,e)=> { try { if(File.Exists(startup)) File.Delete(startup); else Program.EnableAutostart(); Render(); } catch(Exception ex) { MessageBox.Show(L.T("Autostart konnte nicht geändert werden: ")+ex.Message); } };
   var modes=new ToolStripMenuItem(L.T("Anzeigemodus")); foreach(DisplayMode mode in Enum.GetValues(typeof(DisplayMode))) { var choice=mode; var item=new ToolStripMenuItem(mode==DisplayMode.Infobereich ? L.T("Nur Infobereich") : mode==DisplayMode.Widget ? L.T("Nur Desktop-Widget") : L.T("Beides")){Checked=settings.Widget.Mode==mode}; item.Click+=(s,e)=> { var previous=settings.Widget.Mode; settings.Widget.Mode=choice; try { settings.Save(SettingsPath); Render(); } catch(Exception ex) { settings.Widget.Mode=previous; Render(); MessageBox.Show(L.T("Anzeigemodus konnte nicht gespeichert werden: ")+ex.Message); } }; modes.DropDownItems.Add(item); } m.Items.Add(modes);
   m.Items.Add(auto); m.Items.Add(L.T("Über Kopfhörer-Akku …"),null,(s,e)=>About()); m.Items.Add(L.T("Beenden"),null,(s,e)=>ExitThread()); return m;
@@ -224,18 +224,18 @@ class Tray : ApplicationContext {
   }
  }
  public void CheckLanguages() {
-  foreach(string target in new[]{"en","de","en"}) {
+  foreach(string target in new[]{"es","fr","uk","en","de","en"}) {
    Options(); var tab=settingsForm.Controls.OfType<TabControl>().Single().TabPages[0];
-   var language=tab.Controls.OfType<ComboBox>().Single(); language.SelectedIndex=target=="en" ? 1 : 0;
+   var language=tab.Controls.OfType<ComboBox>().Single(); language.SelectedIndex=Array.IndexOf(L.Codes,target);
    settingsForm.Controls.OfType<Button>().Single(x=>x.Text==L.T("Speichern")).PerformClick(); Application.DoEvents();
-   if(Settings.Read(SettingsPath).Language!=target || L.Language!=target || settingsForm==null || !settingsForm.Text.Contains(target=="en" ? "Settings" : "Einstellungen")) throw new Exception("Language switch failed: "+target);
+   if(Settings.Read(SettingsPath).Language!=target || L.Language!=target || settingsForm==null || settingsForm.Text!=L.T("Kopfhörer-Akku · Einstellungen")) throw new Exception("Language switch failed: "+target);
    settingsForm.Close();
   }
   ExitThread();
  }
  public void CheckWidgetModes() { foreach(DisplayMode mode in Enum.GetValues(typeof(DisplayMode))) { settings.Widget.Mode=mode; Render(); Application.DoEvents(); if(icons.Any(x=>x.Visible)!=(mode!=DisplayMode.Widget) || (widget!=null && widget.Visible)!=(mode!=DisplayMode.Infobereich)) throw new Exception("Anzeigemodus fehlerhaft: "+mode); } settings.Widget.Mode=DisplayMode.Infobereich; Render(); ExitThread(); }
  void About() {
-  MessageBox.Show("Kopfhörer-Akku "+AppPaths.Version+(L.English ? "\nPublisher: Aldikiller\n\nFree and open source under the MIT license.\nNo warranty, to the extent permitted by law.\n\nNo telemetry. Optional update check via GitHub.\nWindows battery levels may be delayed or cached.\n\nProject: github.com/Aldikiller/KopfhoererAkku" : "\nHerausgeber: Aldikiller\n\nKostenlos und Open Source unter der MIT-Lizenz.\nOhne Gewährleistung, soweit gesetzlich zulässig.\n\nKeine Telemetrie. Freiwillige Update-Prüfung über GitHub.\nWindows-Akkuwerte können verzögert oder gespeichert sein.\n\nProjekt: github.com/Aldikiller/KopfhoererAkku"), L.T("Über Kopfhörer-Akku"),MessageBoxButtons.OK,MessageBoxIcon.Information);
+  MessageBox.Show("Kopfhörer-Akku "+AppPaths.Version+"\nAldikiller · MIT\n\n"+L.T("GitHub-Downloads öffnen")+": github.com/Aldikiller/KopfhoererAkku", L.T("Über Kopfhörer-Akku"),MessageBoxButtons.OK,MessageBoxIcon.Information);
  }
  string Describe(Device d) { return settings.Name(d)+" · "+d.Status+" · "+(d.Connected==false ? L.T("kein aktueller Akkustand") : d.Battery.HasValue ? d.Battery+(d.Connected==null ? L.T(" % (gespeichert)") : " %") : L.T("kein Akkustand")); }
  void CheckUpdates(bool manual) {
@@ -245,7 +245,7 @@ class Tray : ApplicationContext {
    if(b.Error!=null) { updateStatusText=L.T("Prüfung fehlgeschlagen. Internetverbindung oder GitHub-Limit prüfen."); if(manual) MessageBox.Show(updateStatusText,"Updates",MessageBoxButtons.OK,MessageBoxIcon.Information); }
    else { var latest=b.Result as ReleaseVersion; updateStatusText=latest==null ? L.T("Keine neuere passende Version gefunden (")+DateTime.Now.ToString("HH:mm")+")." : L.T("Neue Version verfügbar: ")+latest.Tag;
     if(latest!=null && manual) { if(MessageBox.Show(L.T("Version ")+latest.Tag+L.T(" ist verfügbar.\nInstalliert: ")+AppPaths.Version+L.T("\n\nGitHub-Downloadseite im Browser öffnen?"),L.T("Update verfügbar"),MessageBoxButtons.YesNo,MessageBoxIcon.Information)==DialogResult.Yes) OpenPage(UpdateService.Page(latest)); }
-    else if(latest!=null && icons.Count>0) Notify(8000,L.T("Update verfügbar"),latest.Tag+" ist verfügbar. Rechtsklick → Nach Updates suchen.",ToolTipIcon.Info);
+    else if(latest!=null && icons.Count>0) Notify(8000,L.T("Update verfügbar"),L.T("Neue Version verfügbar: ")+latest.Tag+" · "+L.T("Nach Updates suchen …"),ToolTipIcon.Info);
     else if(manual) MessageBox.Show(updateStatusText,"Updates",MessageBoxButtons.OK,MessageBoxIcon.Information);
    }
    if(updateStatus!=null) updateStatus(); Render(); worker.Dispose();
@@ -255,7 +255,7 @@ class Tray : ApplicationContext {
  public void Options(bool preview=false) {
   if(settingsForm!=null) { settingsForm.Activate(); return; }
   var f=new Form{Text=L.T("Kopfhörer-Akku · Einstellungen"),ClientSize=new Size(870,550),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f; Action liveRefresh=null;
-  var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage(L.T("Allgemein")); var appearance=new TabPage(L.T("Namen & Anzeige")); var updates=new TabPage("Updates"); var design=new TabPage(L.T("Schrift & Batterie")); var widgetTab=new TabPage(L.T("Anzeige & Widget")); tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab});
+  var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage(L.T("Allgemein")); var appearance=new TabPage(L.T("Namen & Anzeige")); var updates=new TabPage(L.T("Updates")); var design=new TabPage(L.T("Schrift & Batterie")); var widgetTab=new TabPage(L.T("Anzeige & Widget")); tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab});
   var status=new Label{Left=14,Top=14,Width=544,Height=112}; var updateLabel=new Label{Left=14,Top=190,Width=538,Height=60};
   updateStatus=()=> { status.Text=string.Join("\n",selected.Select(id=> { var d=devices.FirstOrDefault(x=>x.Id==id); return d==null ? L.T("Gerät nicht gefunden · Verbindung unbekannt") : Describe(d); }).ToArray())+L.T("\n\nLetzte Abfrage: ")+(lastScan.HasValue ? lastScan.Value.ToString("HH:mm:ss") : L.T("noch keine"))+(error.Length>0 ? L.T("\nFehler: ")+error : ""); updateLabel.Text=updateStatusText; if(liveRefresh!=null) liveRefresh(); }; updateStatus();
   var warn=new CheckBox{Left=14,Top=136,Width=530,Text=L.T("Bei niedrigem Akku benachrichtigen"),Checked=settings.Warnings};
@@ -263,8 +263,8 @@ class Tray : ApplicationContext {
   var interval=new NumericUpDown{Left=245,Top=217,Width=75,Minimum=5,Maximum=300,Value=settings.Interval};
   var hint=new Label{Left=14,Top=268,Width=538,Height=92,Text=L.T("Beide ausgewählten Kopfhörer behalten ein eigenes Symbol.\nRot: niedriger Akku · Grau ×: getrennt · Gelb: Status unbekannt.\nWarnungen erscheinen nur bei bestätigter Verbindung.\nEigene Namen ändern den Bluetooth-Namen in Windows nicht.")};
   var test=new Button{Left=14,Top=376,Width=210,Height=32,Text=L.T("Benachrichtigung testen")}; test.Click+=(a,b)=> { if(icons.Count>0) Notify(5000,"Kopfhörer-Akku · Test",L.T("So erscheint eine Akkuwarnung."),ToolTipIcon.Info); };
-  var language=new ComboBox{Left=14,Top=438,Width=240,DropDownStyle=ComboBoxStyle.DropDownList}; language.Items.AddRange(new[]{"Deutsch","English"}); language.SelectedIndex=settings.Language=="en" ? 1 : 0;
-  general.Controls.Add(new Label{Left=14,Top=414,Width=530,Text="Sprache / Language (nach Speichern / after Save)"}); general.Controls.Add(language);
+  var language=new ComboBox{Left=14,Top=438,Width=240,DropDownStyle=ComboBoxStyle.DropDownList}; language.Items.AddRange(new[]{"Deutsch","English","Español","Français","Українська"}); language.SelectedIndex=Array.IndexOf(L.Codes,settings.Language);
+  general.Controls.Add(new Label{Left=14,Top=414,Width=530,Text="Sprache / Language"}); general.Controls.Add(language);
   general.Controls.AddRange(new Control[]{status,warn,new Label{Left=14,Top=178,Width=225,Text=L.T("Warnung bei / unter (%)")},threshold,new Label{Left=14,Top=220,Width=225,Text=L.T("Abfrage alle (Sekunden)")},interval,hint,test});
   var symbolBoxes=new Dictionary<string,ComboBox>(); var markers=new Dictionary<string,TextBox>();
   var names=new Dictionary<string,TextBox>(); var colors=new Dictionary<string,Color>(); var previews=new List<PictureBox>(); var ids=selected.ToArray();
@@ -352,7 +352,7 @@ class Tray : ApplicationContext {
   updates.Controls.AddRange(new Control[]{autoCheck,privacy,new Label{Left=14,Top=169,Width=530,Text=L.T("Installiert: ")+AppPaths.Version},updateLabel,check,downloads});
   var save=new Button{Left=14,Top=506,Width=125,Height=32,Text=L.T("Speichern")}; save.Click+=(a,b)=> {
    widgetGrid.Focus(); widgetLook.Normalize(); if(widgetLook.X==originalWidgetX) widgetLook.X=settings.Widget.X; if(widgetLook.Y==originalWidgetY) widgetLook.Y=settings.Widget.Y;
-   var next=new Settings{Language=language.SelectedIndex==1 ? "en" : "de",Widget=widgetLook.Copy(),Warnings=warn.Checked,Threshold=(int)threshold.Value,Interval=(int)interval.Value,CheckAtStartup=autoCheck.Checked,NumbersOnly=style.SelectedIndex==1,FontName=look.FontName,TextSize=look.TextSize,BatteryShape=look.BatteryShape,TextColor=look.TextColor,BatteryRadius=look.BatteryRadius,BatteryStroke=look.BatteryStroke,BatteryWidth=look.BatteryWidth,BatteryHeight=look.BatteryHeight};
+   var next=new Settings{Language=L.Codes[Math.Max(0,language.SelectedIndex)],Widget=widgetLook.Copy(),Warnings=warn.Checked,Threshold=(int)threshold.Value,Interval=(int)interval.Value,CheckAtStartup=autoCheck.Checked,NumbersOnly=style.SelectedIndex==1,FontName=look.FontName,TextSize=look.TextSize,BatteryShape=look.BatteryShape,TextColor=look.TextColor,BatteryRadius=look.BatteryRadius,BatteryStroke=look.BatteryStroke,BatteryWidth=look.BatteryWidth,BatteryHeight=look.BatteryHeight};
    foreach(var item in settings.Profiles) next.Profiles[item.Key]=new DeviceProfile(item.Value.ColorHex){Name=item.Value.Name,Symbol=item.Value.Symbol,Marker=item.Value.Marker};
    foreach(var id in ids) next.Profiles[id]=new DeviceProfile("#"+colors[id].R.ToString("X2")+colors[id].G.ToString("X2")+colors[id].B.ToString("X2")){Name=names[id].Text.Trim(),Symbol=symbolBoxes[id].SelectedIndex,Marker=Settings.CleanMarker(markers[id].Text)};
    try { next.Save(SettingsPath); if(next.Threshold!=settings.Threshold || next.Warnings!=settings.Warnings) warnings.Reset(); bool changedLanguage=settings.Language!=next.Language; settings=next; L.Language=settings.Language; if(changedLanguage) { updateStatusText=L.T("Noch nicht geprüft"); if(widget!=null) { widget.Close(); widget.Dispose(); widget=null; } if(picker!=null) picker.Close(); } Render(); Refresh(); f.Close(); if(changedLanguage) Options(); } catch(Exception ex) { MessageBox.Show(L.T("Speichern fehlgeschlagen: ")+ex.Message); }
@@ -454,8 +454,8 @@ static class Program {
   if(args.Contains("--export-icon")) { using(var icon=Tray.BatteryIcon(75,0)) using(var stream=File.Create(AppPaths.Report("app.ico"))) icon.Save(stream); return; }
   if(args.Contains("--selftest")) { try { SelfTest(); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Testbericht.txt"),"FEHLER: "+e); Environment.ExitCode=1; } return; }
   Application.EnableVisualStyles(); Application.SetCompatibleTextRenderingDefault(false);
-  if(args.Contains("--language-check")) { string dir=AppPaths.Report("language-ui"); Directory.CreateDirectory(dir); using(var context=new Tray(true,"de",dir)) context.CheckLanguages(); using(var context=new Tray(true,null,dir)) { if(L.Language!="en") throw new Exception("Language restart failed"); context.ExitThread(); } File.WriteAllText(AppPaths.Report("Language-Test.txt"),"OK: German/English switching, settings windows rebuilt, persistence and restart."); return; }
-  if(args.Contains("--ui-check")) { var context=new Tray(true,args.Contains("--english") ? "en" : "de"); context.Options(true); context.ExitThread(); context.Dispose(); return; }
+  if(args.Contains("--language-check")) { string dir=AppPaths.Report("language-ui"); Directory.CreateDirectory(dir); using(var context=new Tray(true,"de",dir)) context.CheckLanguages(); using(var context=new Tray(true,null,dir)) { if(L.Language!="en") throw new Exception("Language restart failed"); context.ExitThread(); } File.WriteAllText(AppPaths.Report("Language-Test.txt"),"OK: German/English/Spanish/French/Ukrainian switching, settings windows rebuilt, persistence and restart."); return; }
+  if(args.Contains("--ui-check")) { var context=new Tray(true,args.Contains("--spanish") ? "es" : args.Contains("--french") ? "fr" : args.Contains("--ukrainian") ? "uk" : args.Contains("--english") ? "en" : "de"); context.Options(true); context.ExitThread(); context.Dispose(); return; }
   if(args.Contains("--diagnose")) { try { File.WriteAllLines(AppPaths.Report("Diagnose.txt"),Native.Scan().Select(d=>d.ToString()+"\t"+d.Id).Concat(new[]{Native.LinkDiagnostics})); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Diagnose.txt"),e.ToString()); } return; }
   if(args.Contains("--widget-check")) {
    Application.EnableVisualStyles();

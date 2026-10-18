@@ -33,7 +33,7 @@ class Settings {
   var x=new Settings(); if(!File.Exists(file)) return x;
   foreach(var line in File.ReadAllLines(file)) {
    int split=line.IndexOf('='); if(split<1) continue; string key=line.Substring(0,split),value=line.Substring(split+1); int n; bool b;
-   if(key=="Language" && (value=="de" || value=="en")) x.Language=value;
+   if(key=="Language" && L.Supported(value)) x.Language=value;
    if(key.StartsWith("Widget.",StringComparison.Ordinal)) x.Widget.Read(key.Substring(7),value);
    if(key=="FontName") { try { x.FontName=Decode(value); } catch(FormatException) {} }
    if(key=="TextSize" && int.TryParse(value,out n)) x.TextSize=Math.Max(10,Math.Min(28,n));
