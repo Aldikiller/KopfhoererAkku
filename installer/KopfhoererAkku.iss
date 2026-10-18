@@ -1,6 +1,6 @@
 ﻿; SPDX-License-Identifier: MIT
 #ifndef AppVersion
-  #define AppVersion "1.3.1"
+  #define AppVersion "1.3.2"
 #endif
 #define ProjectRoot ".."
 
@@ -10,7 +10,7 @@ AppName=Kopfhörer-Akku
 AppVersion={#AppVersion}
 AppVerName=Kopfhörer-Akku {#AppVersion}
 AppPublisher=Aldikiller
-VersionInfoVersion=1.3.1.0
+VersionInfoVersion=1.3.2.0
 VersionInfoCopyright=Copyright (c) 2026 Aldikiller
 DefaultDirName={localappdata}\Programs\KopfhoererAkku
 DefaultGroupName=Kopfhörer-Akku
@@ -25,6 +25,8 @@ UninstallDisplayIcon={app}\KopfhoererAkku.exe
 LicenseFile={#ProjectRoot}\LICENSE
 InfoBeforeFile={#ProjectRoot}\DISCLAIMER.de.md
 WizardStyle=modern
+WizardImageFile={#ProjectRoot}\assets\setup-banner.bmp
+WizardSmallImageFile={#ProjectRoot}\assets\setup-small.bmp
 Compression=lzma2
 SolidCompression=yes
 CloseApplications=yes
