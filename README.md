@@ -24,30 +24,30 @@ Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunik
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.0/KopfhoererAkku-1.6.0-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.0/KopfhoererAkku-1.6.0-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.0/KopfhoererAkku-1.6.0-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.0/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/SHA256SUMS.txt)
 
-Die aktuelle Version ist **1.6.0**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
+Die aktuelle Version ist **1.6.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
 ![So sehen die Symbole aus](docs/Symbole.png)
 
-## Ansichten aus Version 1.6.0
+## Ansichten aus Version 1.6.1
 
 Die Bilder zeigen Beispieldaten aus der aktuellen Version. Die Direktwahl stellst du unter **Audio-Schnellauswahl** ein. Die Geräteübersicht bleibt über das Rechtsklick-Menü erreichbar.
 
 <details>
 <summary>Audio-Schnellauswahl und Geräteübersicht ansehen</summary>
 
-![Audio-Schnellauswahl 1.6.0](docs/Audio-Schnellauswahl-1.6.0-de.png)
+![Audio-Schnellauswahl 1.6.1](docs/Audio-Schnellauswahl-1.6.1-de.png)
 
-![Geräteübersicht 1.6.0](docs/Geraeteuebersicht-1.6.0-de.png)
+![Geräteübersicht 1.6.1](docs/Geraeteuebersicht-1.6.1-de.png)
 
 </details>
 
-## Neu in 1.6.0
+## Neu in 1.6.1
 
 Ein Klick auf das Akkusymbol schaltet die Windows-Audioausgabe auf diesen Kopfhörer um. Ein grüner Kreis mit weißem Häkchen zeigt die aktive Ausgabe. Eindeutig passende Geräte werden automatisch zugeordnet; sonst einmal unter „Audio-Schnellauswahl“ auswählen. Eigene Zuordnungen bleiben erhalten.
 
@@ -81,6 +81,12 @@ Unter **Schrift & Batterie** stellst du Schriftart, Schriftgröße und Schriftfa
 Die Livevorschau zeigt Änderungen sofort auf hellem und dunklem Hintergrund. Du kannst aktuelle Akkuwerte oder einen Beispielwert anzeigen. Erst **Speichern** übernimmt die Änderungen.
 
 ![Livevorschau und Zeichenwahl](docs/Livevorschau.png)
+
+## Audio-Direktwahl auch im Widget
+
+Klicke im Desktop-Widget auf das Symbol, den Namen oder den Prozentwert des gewünschten Kopfhörers. Das grüne Häkchen zeigt die aktive Audioausgabe. Ziehen verschiebt das Widget, ohne die Ausgabe zu wechseln. Doppelklick öffnet die Einstellungen. Die Auswahl funktioniert auch bei gesperrter Position. Es gilt dieselbe Zuordnung wie im Infobereich; „Audio-Schnellauswahl“ schaltet die Direktwahl für beide Ansichten ein oder aus.
+
+![Widget mit aktiver Audioausgabe](docs/Widget-Direktwahl-1.6.1.png)
 
 ## Desktop-Widget
 
