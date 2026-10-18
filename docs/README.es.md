@@ -1,4 +1,12 @@
-# Kopfhörer-Akku · Español
+# Kopfhörer-Akku
+
+## Cambiar la salida de audio con un clic
+
+Haz clic en el icono de batería para cambiar la salida de audio de Windows a esos auriculares. Un círculo verde con una marca blanca indica la salida activa. Los dispositivos con una coincidencia única se asignan automáticamente; si no, elige la salida una vez en la selección rápida de audio. Se conservan las asignaciones manuales.
+
+![Audio output](Audio-Direktwahl-1.6.0.png)
+
+La batería se consulta cada 30 segundos por defecto, ajustable entre 30 y 300 segundos. Sin consultas rápidas adicionales ni avisos rutinarios de progreso. Las actualizaciones se comprueban manualmente o, si lo activas, al iniciar. · Español
 
 [Descargar](https://github.com/Aldikiller/KopfhoererAkku/releases/latest) · [Código fuente](https://github.com/Aldikiller/KopfhoererAkku) · [Preguntas y experiencias](https://github.com/Aldikiller/KopfhoererAkku/discussions)
 
@@ -44,7 +52,3 @@ Comparte el modelo de auriculares, las versiones de Windows y de la aplicación 
 
 MIT: [Código fuente](https://github.com/Aldikiller/KopfhoererAkku/blob/main/LICENSE)
 
-
-## Novedades de la versión 1.4.0
-
-Haz un clic en un icono de batería de la bandeja para ver el resumen de ambos auriculares. Un doble clic abre los ajustes. Cada dispositivo tiene su propia hora de consulta. Al desconectarse, los valores anteriores se marcan como no actualizados. La aplicación repite la consulta después de reanudar Windows, desbloquear la sesión o cambiar la conexión Bluetooth. Windows puede guardar los valores en caché: la hora indica la última consulta a Windows, no una nueva medición confirmada de los auriculares.

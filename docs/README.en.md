@@ -1,5 +1,13 @@
 # Kopfhörer-Akku
 
+## Switch audio output with one click
+
+Click a tray battery icon to send Windows audio to that headphone. A green circle with a white check marks the active output. Unique matching devices are assigned automatically; otherwise choose the output once under Audio quick selection. Saved manual assignments are preserved.
+
+![Audio output](Audio-Direktwahl-1.6.0.png)
+
+Battery checks default to 30 seconds, configurable from 30 to 300 seconds. No rapid extra checks or routine progress banners. App updates are checked manually or optionally at startup.
+
 [English website](https://aldikiller.github.io/KopfhoererAkku/en.html) · [English guide](https://github.com/Aldikiller/KopfhoererAkku/wiki/English)
 
 A free Windows app that shows the battery levels of up to two Bluetooth headphones in the system tray, a desktop widget, or both.
@@ -20,7 +28,3 @@ Languages: Deutsch · English · Español · Français · Українська. 
 
 From version 1.3.1, settings open in a simple view with battery warnings, display mode, icon style and language. Select Advanced settings to access all detailed controls. Unsaved changes are preserved when switching views. Save applies them; Close discards them.
 
-
-## New in 1.4.0
-
-Single-click a system tray battery icon to open the overview of both headphones. Double-click opens settings. Each device has its own query timestamp. Previous readings are marked as not current when disconnected. The app retries after resume, unlock and Bluetooth connection changes. Windows may cache battery values: the timestamp indicates the last Windows query, not a confirmed new measurement by the headphones.

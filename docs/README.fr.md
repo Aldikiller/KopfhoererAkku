@@ -1,4 +1,12 @@
-# Kopfhörer-Akku · Français
+# Kopfhörer-Akku
+
+## Changer de sortie audio en un clic
+
+Cliquez sur une icône de batterie pour envoyer le son de Windows vers ce casque. Un cercle vert avec une coche blanche indique la sortie active. Les correspondances uniques sont attribuées automatiquement ; sinon, choisissez la sortie une fois dans la sélection audio rapide. Les associations manuelles sont conservées.
+
+![Audio output](Audio-Direktwahl-1.6.0.png)
+
+La batterie est vérifiée toutes les 30 secondes par défaut, avec un intervalle réglable de 30 à 300 secondes. Sans vérifications rapides supplémentaires ni messages de progression habituels. Les mises à jour sont vérifiées manuellement ou, en option, au démarrage. · Français
 
 [Télécharger](https://github.com/Aldikiller/KopfhoererAkku/releases/latest) · [Code source](https://github.com/Aldikiller/KopfhoererAkku) · [Questions et retours](https://github.com/Aldikiller/KopfhoererAkku/discussions)
 
@@ -44,7 +52,3 @@ Indiquez le modèle du casque, les versions de Windows et de l’application et 
 
 MIT: [Code source](https://github.com/Aldikiller/KopfhoererAkku/blob/main/LICENSE)
 
-
-## Nouveautés de la version 1.4.0
-
-Un clic sur une icône de batterie dans la zone de notification ouvre la vue des deux casques. Un double-clic ouvre les paramètres. Chaque appareil possède sa propre heure de requête. Après une déconnexion, les anciennes valeurs sont indiquées comme non actuelles. L’application répète les requêtes après la veille, le déverrouillage et les changements de connexion Bluetooth. Windows peut conserver les valeurs en mémoire : l’heure indique la dernière requête Windows, pas une nouvelle mesure confirmée du casque.

@@ -1,11 +1,21 @@
-# Kopfhörer-Akku 1.4.0
+# Kopfhörer-Akku 1.6.0
 
-Ein Klick auf ein Akkusymbol im Infobereich öffnet die Übersicht beider Kopfhörer. Ein Doppelklick öffnet die Einstellungen. Jedes Gerät hat eine eigene Abfragezeit. Frühere Werte werden bei einer Trennung als nicht aktuell angezeigt. Nach Standby, Entsperren und Bluetooth-Verbindungsänderungen fragt die App mehrfach nach. Windows kann Akkuwerte zwischenspeichern: Die Zeit bezeichnet die letzte Windows-Abfrage, keine bestätigte neue Messung am Kopfhörer.
+## Audioausgabe direkt am Akkusymbol wählen
+
+- Ein Klick auf das jeweilige Symbol wechselt die normale Windows-Audioausgabe zu diesem Kopfhörer.
+- Grüner Kreis mit weißem Häkchen für die aktive Ausgabe.
+- Automatische Zuordnung bei eindeutiger Windows-Gerätekennung; manuelle Auswahl bleibt möglich und wird gespeichert.
+- Audio-Schnellauswahl mit Neu laden und Diagnose. Die Geräteübersicht bleibt im Rechtsklick-Menü erreichbar; Doppelklick öffnet die Einstellungen.
+- Akkuintervall standardmäßig 30 Sekunden, einstellbar von 30 bis 300 Sekunden. Keine kurzen Zusatzabfragen nach Standby.
+- Normale Prüfungen laufen ohne Fortschrittsbanner. Echte Fehler bleiben sichtbar. Update-Prüfung weiterhin nur manuell oder optional beim Start.
+- Fehler beim Einlesen der Windows-Audioausgänge behoben; Bluetooth-Ereignisse fremder Geräte ändern die Anzeige nicht mehr.
+
+Mikrofon und separates Kommunikationsgerät bleiben unverändert. Apps mit fest gewählter Audioausgabe können ihre eigene Auswahl behalten. Automatische Zuordnung setzt eine eindeutige gemeinsame Windows-Gerätekennung voraus; andernfalls einmal manuell zuordnen.
 
 ## English
 
-Single-click a system tray battery icon to open the overview of both headphones. Double-click opens settings. Each device has its own query timestamp. Previous readings are marked as not current when disconnected. The app retries after resume, unlock and Bluetooth connection changes. Windows may cache battery values: the timestamp indicates the last Windows query, not a confirmed new measurement by the headphones.
+Click a tray battery icon to switch Windows audio to that headphone. A green circle with a white check shows the active output. Unique device matches are assigned automatically; manual assignments remain available and are preserved. Right-click for the overview or audio mapping; double-click for settings.
 
-Oberfläche: Deutsch, English, Español, Français und Українська. Deutsch bleibt Standard. Bestehende Einstellungen bleiben beim Update erhalten. Downloads sind weiterhin unsigniert.
+Battery checks default to 30 seconds (adjustable 30–300), without rapid retries or routine progress banners. App update checks remain manual or optional at startup. Microphone and the separate communications device are unchanged; apps with a fixed output may keep their own choice.
 
-Die vollständige Versionsgeschichte steht in [CHANGELOG.md](../CHANGELOG.md).
+Deutsch, English, Español, Français, Українська. Bestehende Einstellungen bleiben erhalten. Installer und portable ZIP sind weiterhin unsigniert.

@@ -1,4 +1,11 @@
-# Aktueller Teststand: 1.4.0 · 18. Oktober 2026
+# Aktueller Teststand: 1.6.0 · 18. Oktober 2026
+
+- Build und Selbsttests erfolgreich: automatische Zuordnung, mehrdeutige und fehlende Gerätekennungen, manuelle Zuordnung, Intervallgrenzen und Aktiv-Markierung.
+- Reale Windows-Abfrage: 29 Audioausgänge, Standardausgabe erkannt; Audioereignisse registriert und abgemeldet.
+- Oberfläche ohne routinemäßige Fortschrittsbanner geprüft; echte Fehler bleiben sichtbar.
+- Der Nutzer bestätigt den manuellen Audio-Wechsel. Die automatische Zuordnung ist noch nicht für alle Modelle im Alltag bestätigt.
+
+## Historischer Teststand: 1.4.0 · 18. Oktober 2026
 
 - Lokaler Build, Installer-Erstellung und bestehende Selbsttests erfolgreich.
 - Neue Tests für getrennte Zeitstempel, fehlende Werte, Trennung und begrenzte Wiederholungsabfragen erfolgreich.
