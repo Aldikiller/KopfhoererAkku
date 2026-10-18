@@ -147,3 +147,7 @@ Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Françai
 
 
 
+
+## Auf AlternativeTo
+
+[Kopfhörer-Akku auf AlternativeTo ansehen](https://alternativeto.net/software/kopfhorer-akku/) – ähnliche Programme vergleichen oder eigene Erfahrungen teilen.
