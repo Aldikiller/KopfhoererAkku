@@ -1,5 +1,9 @@
 # Kopfhörer-Akku
 
+## Sélection audio aussi dans le widget · 1.6.1
+
+Cliquez sur le symbole, le nom ou le pourcentage du casque dans le widget pour sélectionner sa sortie audio. Une coche verte indique la sortie active. Glisser déplace le widget sans changer le son ; un double clic ouvre les paramètres. La sélection fonctionne aussi lorsque la position est verrouillée. Le widget utilise les mêmes associations et le même réglage de sélection rapide que les icônes de notification.
+
 ## Changer de sortie audio en un clic
 
 Cliquez sur une icône de batterie pour envoyer le son de Windows vers ce casque. Un cercle vert avec une coche blanche indique la sortie active. Les correspondances uniques sont attribuées automatiquement ; sinon, choisissez la sortie une fois dans la sélection audio rapide. Les associations manuelles sont conservées.

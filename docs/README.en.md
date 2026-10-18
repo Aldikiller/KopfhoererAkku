@@ -1,5 +1,9 @@
 # Kopfhörer-Akku
 
+## One-click audio switching in the widget too · 1.6.1
+
+Click a headphone icon, name or battery value in the desktop widget to select its audio output. A green check marks the active output. Dragging moves the widget without switching audio; double-click opens settings. Selection works with the position locked too. The widget shares the tray mappings and the Audio quick selection setting.
+
 ## Switch audio output with one click
 
 Click a tray battery icon to send Windows audio to that headphone. A green circle with a white check marks the active output. Unique matching devices are assigned automatically; otherwise choose the output once under Audio quick selection. Saved manual assignments are preserved.

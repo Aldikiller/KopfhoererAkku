@@ -1,4 +1,4 @@
-# Audio-Schnellauswahl · Version 1.6.0
+# Audio-Schnellauswahl · Version 1.6.1
 
 1. Beide Kopfhörer mit Windows verbinden.
 2. Im Rechtsklick-Menü eines Akkusymbols **Audio-Schnellauswahl** öffnen. Der Knopf steht auch unten im Einstellungsfenster.
@@ -25,3 +25,7 @@ Zum Wechsel der Windows-Standardausgabe wird die interne PolicyConfig-COM-Schnit
 
 Normale Abfragen laufen ohne Fortschrittsmeldung. Abfragealter, unbekannte oder getrennte Verbindung und echte Abfragefehler bleiben sichtbar. Bluetooth-Ereignisse anderer Geräte invalidieren die beiden ausgewählten Kopfhörer nicht. Die freiwillige GitHub-Update-Prüfung läuft nur manuell oder nach Aktivierung beim Programmstart, nicht im Akkuintervall.
 
+
+## Direktwahl im Desktop-Widget ab 1.6.1
+
+Klicke im Desktop-Widget auf das Symbol, den Namen oder den Prozentwert des gewünschten Kopfhörers. Das grüne Häkchen zeigt die aktive Audioausgabe. Ziehen verschiebt das Widget, ohne die Ausgabe zu wechseln. Doppelklick öffnet die Einstellungen. Die Auswahl funktioniert auch bei gesperrter Position. Es gilt dieselbe Zuordnung wie im Infobereich; „Audio-Schnellauswahl“ schaltet die Direktwahl für beide Ansichten ein oder aus.

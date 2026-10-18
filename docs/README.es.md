@@ -1,5 +1,9 @@
 # Kopfhörer-Akku
 
+## Selección de audio también desde el widget · 1.6.1
+
+Haz clic en el icono, el nombre o el porcentaje de los auriculares en el widget para seleccionar su salida de audio. Una marca verde indica la salida activa. Arrastrar mueve el widget sin cambiar el audio; el doble clic abre los ajustes. También funciona con la posición bloqueada. Comparte las asignaciones y la opción de selección rápida con los iconos de la bandeja.
+
 ## Cambiar la salida de audio con un clic
 
 Haz clic en el icono de batería para cambiar la salida de audio de Windows a esos auriculares. Un círculo verde con una marca blanca indica la salida activa. Los dispositivos con una coincidencia única se asignan automáticamente; si no, elige la salida una vez en la selección rápida de audio. Se conservan las asignaciones manuales.

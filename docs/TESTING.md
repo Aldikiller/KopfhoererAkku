@@ -1,3 +1,10 @@
+# Teststand 1.6.1 · Widget-Direktwahl
+
+- Selbsttests für beide Widget-Anordnungen, Geräte-Treffflächen, Einzelklick, Ziehen, gesperrte Position, Doppelklick, ausgeschaltete Direktwahl und leere Geräteliste erfolgreich.
+- Aktives Häkchen auch ohne Gerätesymbole geprüft.
+- Windows-Layered-Widget mit Transparenz, Größenwechsel und allen drei Anzeigemodi geprüft.
+- Der reale Audio-Wechsel nutzt denselben bereits vorhandenen Umschaltpfad. Ein zusätzlicher manueller Alltagstest des Widget-Klicks mit beiden Kopfhörern steht noch aus.
+
 # Aktueller Teststand: 1.6.0 · 18. Oktober 2026
 
 - Build und Selbsttests erfolgreich: automatische Zuordnung, mehrdeutige und fehlende Gerätekennungen, manuelle Zuordnung, Intervallgrenzen und Aktiv-Markierung.
