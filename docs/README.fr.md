@@ -43,3 +43,8 @@ Supprimez la version installée via Paramètres Windows → Applications. Les pa
 Indiquez le modèle du casque, les versions de Windows et de l’application et les étapes du problème. Ne publiez pas d’adresses Bluetooth ni de données privées.
 
 MIT: [Code source](https://github.com/Aldikiller/KopfhoererAkku/blob/main/LICENSE)
+
+
+## Nouveautés de la version 1.4.0
+
+Un clic sur une icône de batterie dans la zone de notification ouvre la vue des deux casques. Un double-clic ouvre les paramètres. Chaque appareil possède sa propre heure de requête. Après une déconnexion, les anciennes valeurs sont indiquées comme non actuelles. L’application répète les requêtes après la veille, le déverrouillage et les changements de connexion Bluetooth. Windows peut conserver les valeurs en mémoire : l’heure indique la dernière requête Windows, pas une nouvelle mesure confirmée du casque.

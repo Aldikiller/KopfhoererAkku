@@ -1,4 +1,19 @@
-﻿# Build- und Testumfang
+# Aktueller Teststand: 1.4.0 · 18. Oktober 2026
+
+- Lokaler Build, Installer-Erstellung und bestehende Selbsttests erfolgreich.
+- Neue Tests für getrennte Zeitstempel, fehlende Werte, Trennung und begrenzte Wiederholungsabfragen erfolgreich.
+- Start der Bluetooth-Ereignisüberwachung, Übergabe an die Oberfläche und Aufräumen beim Beenden geprüft.
+- Geräteübersicht in allen fünf Sprachen gerendert; Sprachwechsel und Speicherung geprüft.
+- GitHub-Windows-Build für den veröffentlichten Quellcode erfolgreich.
+- Der Herausgeber meldet nach dem Test der Version 1.4.0: „scheint alles zu funktionieren“.
+
+Diese Rückmeldung ist kein Nachweis für alle Bluetooth-Modelle oder Windows-Konfigurationen. Die zuvor bestätigten Tests auf zwei PCs beziehen sich auf frühere Versionen. Windows-Abfragezeiten bestätigen keine neue Messung am Kopfhörer.
+
+## Frühere Testnotizen
+
+Die folgenden Angaben sind historische Notizen aus der Entwicklung und beschreiben nicht den aktuellen offenen Testumfang.
+
+## Build- und Testumfang
 
 ## Beta 2: neue Funktionen
 

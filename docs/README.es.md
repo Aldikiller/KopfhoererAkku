@@ -43,3 +43,8 @@ Elimina la versión instalada desde Configuración de Windows → Aplicaciones. 
 Comparte el modelo de auriculares, las versiones de Windows y de la aplicación y los pasos para reproducir el problema. No publiques direcciones Bluetooth ni datos privados.
 
 MIT: [Código fuente](https://github.com/Aldikiller/KopfhoererAkku/blob/main/LICENSE)
+
+
+## Novedades de la versión 1.4.0
+
+Haz un clic en un icono de batería de la bandeja para ver el resumen de ambos auriculares. Un doble clic abre los ajustes. Cada dispositivo tiene su propia hora de consulta. Al desconectarse, los valores anteriores se marcan como no actualizados. La aplicación repite la consulta después de reanudar Windows, desbloquear la sesión o cambiar la conexión Bluetooth. Windows puede guardar los valores en caché: la hora indica la última consulta a Windows, no una nueva medición confirmada de los auriculares.
