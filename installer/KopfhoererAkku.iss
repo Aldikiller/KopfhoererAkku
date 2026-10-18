@@ -1,6 +1,6 @@
-﻿; SPDX-License-Identifier: MIT
+; SPDX-License-Identifier: MIT
 #ifndef AppVersion
-  #define AppVersion "1.4.0"
+  #define AppVersion "1.6.0"
 #endif
 #define ProjectRoot ".."
 
@@ -10,7 +10,7 @@ AppName=Kopfhörer-Akku
 AppVersion={#AppVersion}
 AppVerName=Kopfhörer-Akku {#AppVersion}
 AppPublisher=Aldikiller
-VersionInfoVersion=1.4.0.0
+VersionInfoVersion=1.6.0.0
 VersionInfoCopyright=Copyright (c) 2026 Aldikiller
 DefaultDirName={localappdata}\Programs\KopfhoererAkku
 DefaultGroupName=Kopfhörer-Akku
@@ -159,3 +159,6 @@ begin
       Result := CustomMessage('StillRunning');
   end;
 end;
+
+
+
