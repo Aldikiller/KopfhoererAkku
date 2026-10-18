@@ -1,5 +1,21 @@
 Deutsch · [English](docs/README.en.md) · [Español](docs/README.es.md) · [Français](docs/README.fr.md) · [Українська](docs/README.uk.md)
 
+## English — Windows Bluetooth battery monitor and audio switcher
+
+**English is included in version 1.6.1.** Monitor two headphones and switch Windows audio with one click in the system tray or desktop widget. Free and open source under the MIT license.
+
+**[Read the full English guide](docs/README.en.md)** · [English website](https://aldikiller.github.io/KopfhoererAkku/en.html) · [Download 1.6.1](https://github.com/Aldikiller/KopfhoererAkku/releases/tag/v1.6.1)
+
+To enable English: double-click a tray icon → **Sprache / Language → English → Speichern (Save)**. The choice is remembered. Screenshot below: actual English interface with example devices.
+
+![English interface of Kopfhörer-Akku 1.6.1](docs/Settings-1.6.1-en.png)
+
+---
+
+## Deutsch — Anleitung und Download
+
+Deutsch bleibt die Standardsprache. Die deutsche Anleitung steht weiterhin vollständig unten.
+
 # Kopfhörer-Akku
 
 <img src="docs/logo.png" width="96" height="96" alt="Kopfhörer-Akku Logo">
