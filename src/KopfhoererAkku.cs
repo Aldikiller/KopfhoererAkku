@@ -18,13 +18,13 @@ using System.Text.RegularExpressions;
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
 [assembly: AssemblyProduct("Kopfhörer-Akku")]
-[assembly: AssemblyVersion("1.6.0.0")]
-[assembly: AssemblyFileVersion("1.6.0.0")]
-[assembly: AssemblyInformationalVersion("1.6.0")]
+[assembly: AssemblyVersion("1.6.1.0")]
+[assembly: AssemblyFileVersion("1.6.1.0")]
+[assembly: AssemblyInformationalVersion("1.6.1")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="1.6.0";
+ public const string Version="1.6.1";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;
@@ -212,10 +212,10 @@ partial class Tray : ApplicationContext {
   m.Items.Add(auto); m.Items.Add(L.T("Über Kopfhörer-Akku …"),null,(s,e)=>About()); m.Items.Add(L.T("Beenden"),null,(s,e)=>ExitThread()); return m;
  }
  void Notify(int duration,string title,string text,ToolTipIcon kind) { if(icons.Count==0) return; noticeUntil=DateTime.Now.AddSeconds(15); icons[0].Visible=true; icons[0].ShowBalloonTip(duration,title,text,kind); }
- List<WidgetItem> WidgetItems() { return selected.Select((id,i)=> { var d=devices.FirstOrDefault(x=>x.Id==id); return new WidgetItem{Name=d!=null ? settings.Name(d) : settings.Profile(id,i).Name.Length>0 ? settings.Profile(id,i).Name : L.T("Gespeicherter Kopfhörer"),Status=error.Length>0 ? L.T("Abfrage fehlgeschlagen") : d!=null && readings.Get(id).NeedsCheck ? L.T("Verbindung unbekannt") : d!=null ? d.Status : L.T("Verbindung unbekannt"),Battery=error.Length==0 && d!=null ? d.Battery : null,Connected=d!=null ? EffectiveConnection(d) : null,Profile=settings.Profile(id,i)}; }).ToList(); }
+ List<WidgetItem> WidgetItems() { return selected.Select((id,i)=> { var d=devices.FirstOrDefault(x=>x.Id==id); return new WidgetItem{Name=d!=null ? settings.Name(d) : settings.Profile(id,i).Name.Length>0 ? settings.Profile(id,i).Name : L.T("Gespeicherter Kopfhörer"),Status=error.Length>0 ? L.T("Abfrage fehlgeschlagen") : d!=null && readings.Get(id).NeedsCheck ? L.T("Verbindung unbekannt") : d!=null ? d.Status : L.T("Verbindung unbekannt"),Battery=error.Length==0 && d!=null ? d.Battery : null,Connected=d!=null ? EffectiveConnection(d) : null,Profile=settings.Profile(id,i),AudioActive=IsAudioActive(id,i)}; }).ToList(); }
  void Render() {
   if(settings.Widget.Mode!=DisplayMode.Infobereich) {
-   if(widget==null || widget.IsDisposed) widget=new BatteryWidget(()=>Options(),()=>Pick(),()=>ExitThread(),point=> { settings.Widget.X=point.X; settings.Widget.Y=point.Y; try { settings.Save(SettingsPath); } catch(Exception ex) { MessageBox.Show(L.T("Widget-Position konnte nicht gespeichert werden: ")+ex.Message); } });
+   if(widget==null || widget.IsDisposed) widget=new BatteryWidget(()=>Options(),()=>Pick(),()=>ExitThread(),point=> { settings.Widget.X=point.X; settings.Widget.Y=point.Y; try { settings.Save(SettingsPath); } catch(Exception ex) { MessageBox.Show(L.T("Widget-Position konnte nicht gespeichert werden: ")+ex.Message); } },slot=>SwitchAudio(slot));
    widget.UpdateContent(settings.Widget,settings,WidgetItems());
   } else if(widget!=null) { widget.Dispose(); widget=null; }
   int count=Math.Max(1,selected.Count);
@@ -461,7 +461,7 @@ static class Program {
   var alignment=new LocalizedAlignmentConverter(); if((string)alignment.ConvertTo(WidgetTextAlignment.Links,typeof(string))!="Left" || (WidgetTextAlignment)alignment.ConvertFrom("Right")!=WidgetTextAlignment.Rechts) throw new Exception("Alignment translation");
   L.Language="de"; if(L.T("Speichern")!="Speichern") throw new Exception("German UI text");
 
-  ReadingTests.Run();AudioTests.Run();AudioAssignment.Test();
+  ReadingTests.Run();AudioTests.Run();AudioAssignment.Test();WidgetAudioTests.Run();
   var config=new Settings(); var gate=new WarningGate(); var d=new Device{Id="test",Name="Test",Battery=15,Connected=true};
   Action<bool,string> check=(ok,message)=> { if(!ok) throw new Exception(message); };
   check(gate.Check(d,config),"initial low warning"); check(!gate.Check(d,config),"no repeated warnings");
@@ -522,7 +522,7 @@ static class Program {
   if(args.Contains("--diagnose")) { try { File.WriteAllLines(AppPaths.Report("Diagnose.txt"),Native.Scan().Select(d=>d.ToString()+"\t"+d.Id).Concat(new[]{Native.LinkDiagnostics})); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Diagnose.txt"),e.ToString()); } return; }
   if(args.Contains("--widget-check")) {
    Application.EnableVisualStyles();
-   var items=new List<WidgetItem>{new WidgetItem{Name="JBL · Büro",Status=L.T("Verbunden"),Battery=75,Connected=true,Profile=new DeviceProfile("#13705B")},new WidgetItem{Name="JLab · Musik",Status=L.T("Getrennt"),Battery=15,Connected=false,Profile=new DeviceProfile("#1C579F"){Symbol=3,Marker="B"}}};
+   var items=new List<WidgetItem>{new WidgetItem{Name="JBL · Büro",Status=L.T("Verbunden"),Battery=75,Connected=true,AudioActive=true,Profile=new DeviceProfile("#13705B")},new WidgetItem{Name="JLab · Musik",Status=L.T("Getrennt"),Battery=15,Connected=false,Profile=new DeviceProfile("#1C579F"){Symbol=3,Marker="B"}}};
    var settings=new Settings(); var options=new WidgetOptions();
    using(var bitmap=WidgetDrawing.Preview(options,settings,items,570,300)) bitmap.Save(AppPaths.Report("Widget-Standard.png"));
    options.BackgroundOpacity=0; options.BorderWidth=0;

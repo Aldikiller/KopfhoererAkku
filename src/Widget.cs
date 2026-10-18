@@ -54,18 +54,28 @@ class WidgetOptions {
  public IEnumerable<string> Lines() { foreach(var p in GetType().GetProperties()) { var value=p.GetValue(this,null); string text=p.PropertyType==typeof(Color) ? ColorTranslator.ToHtml((Color)value) : Convert.ToString(value,CultureInfo.InvariantCulture); yield return "Widget."+p.Name+"="+Uri.EscapeDataString(text); } }
  public void Read(string key,string value) { var p=GetType().GetProperty(key); if(p==null || !p.CanWrite) return; try { value=Uri.UnescapeDataString(value); object parsed=p.PropertyType==typeof(Color) ? (object)ColorTranslator.FromHtml(value) : p.PropertyType.IsEnum ? Enum.Parse(p.PropertyType,value) : Convert.ChangeType(value,p.PropertyType,CultureInfo.InvariantCulture); p.SetValue(this,parsed,null); } catch(ArgumentException) {} catch(FormatException) {} catch(OverflowException) {} }
 }
-class WidgetItem { public string Name,Status; public int? Battery; public bool? Connected; public DeviceProfile Profile; }
+class WidgetItem { public string Name,Status; public int? Battery; public bool? Connected; public bool AudioActive; public DeviceProfile Profile; }
 static class WidgetDrawing {
  static GraphicsPath Round(float x,float y,float w,float h,float radius) { var p=new GraphicsPath(); float d=Math.Min(radius*2,Math.Min(w,h)); if(d<1) p.AddRectangle(new RectangleF(x,y,w,h)); else { p.AddArc(x,y,d,d,180,90); p.AddArc(x+w-d,y,d,d,270,90); p.AddArc(x+w-d,y+h-d,d,d,0,90); p.AddArc(x,y+h-d,d,d,90,90); p.CloseFigure(); } return p; }
  static void Text(Graphics g,string text,string fontName,int size,FontStyle style,Brush brush,RectangleF area,WidgetTextAlignment alignment=WidgetTextAlignment.Links) { if(area.Width<4 || area.Height<4) return; Font font; try { font=new Font(fontName,size,style,GraphicsUnit.Pixel); } catch(ArgumentException) { font=new Font("Segoe UI",size,style,GraphicsUnit.Pixel); } using(font) using(var format=new StringFormat{Trimming=StringTrimming.EllipsisCharacter,FormatFlags=StringFormatFlags.NoWrap,LineAlignment=StringAlignment.Center,Alignment=alignment==WidgetTextAlignment.Zentriert ? StringAlignment.Center : alignment==WidgetTextAlignment.Rechts ? StringAlignment.Far : StringAlignment.Near}) g.DrawString(text,font,brush,area,format); }
+ public static RectangleF Cell(WidgetOptions o,int count,int i) {
+  count=Math.Max(1,count); float pad=Math.Min(o.Padding,Math.Min(o.Width,o.Height)/5f),gap=Math.Min(o.Gap,(o.Horizontal ? o.Width : o.Height)/8f);
+  float w=o.Horizontal ? (o.Width-2*pad-gap*(count-1))/count : o.Width-2*pad,h=o.Horizontal ? o.Height-2*pad : (o.Height-2*pad-gap*(count-1))/count;
+  return new RectangleF(pad+(o.Horizontal ? i*(w+gap) : 0),pad+(o.Horizontal ? 0 : i*(h+gap)),w,h);
+ }
+ public static int Hit(WidgetOptions o,int count,Point point) { for(int i=0;i<count;i++)if(Cell(o,count,i).Contains(point))return i;return -1; }
  public static Bitmap Render(WidgetOptions o,Settings settings,IList<WidgetItem> items) {
   var bitmap=new Bitmap(o.Width,o.Height,PixelFormat.Format32bppArgb);
   using(var g=Graphics.FromImage(bitmap)) { g.Clear(Color.Transparent); g.SmoothingMode=SmoothingMode.AntiAlias; g.TextRenderingHint=System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
    float inset=Math.Max(0.5f,o.BorderWidth/2f); using(var body=Round(inset,inset,o.Width-2*inset,o.Height-2*inset,o.Radius)) { using(var brush=new SolidBrush(Color.FromArgb(o.BackgroundOpacity*255/100,o.Background))) g.FillPath(brush,body); if(o.BorderWidth>0) using(var pen=new Pen(o.Border,o.BorderWidth)) g.DrawPath(pen,body); }
-   int count=Math.Max(1,items.Count); float pad=Math.Min(o.Padding,Math.Min(o.Width,o.Height)/5f),gap=Math.Min(o.Gap,(o.Horizontal ? o.Width : o.Height)/8f); float cellW=o.Horizontal ? (o.Width-2*pad-gap*(count-1))/count : o.Width-2*pad; float cellH=o.Horizontal ? o.Height-2*pad : (o.Height-2*pad-gap*(count-1))/count;
-   for(int i=0;i<count;i++) { var item=i<items.Count ? items[i] : new WidgetItem{Name=L.T("Keine Kopfhörer ausgewählt"),Status=L.T("Doppelklick: Einstellungen"),Profile=new DeviceProfile("#13705B")}; float x=pad+(o.Horizontal ? i*(cellW+gap) : 0),y=pad+(o.Horizontal ? 0 : i*(cellH+gap)); float iconSize=o.Icons ? Math.Min(o.IconSize,Math.Min(cellH,cellW*0.4f)) : 0;
+   int count=Math.Max(1,items.Count); float gap=Math.Min(o.Gap,(o.Horizontal ? o.Width : o.Height)/8f);
+   for(int i=0;i<count;i++) { var item=i<items.Count ? items[i] : new WidgetItem{Name=L.T("Keine Kopfhörer ausgewählt"),Status=L.T("Doppelklick: Einstellungen"),Profile=new DeviceProfile("#13705B")}; var cell=Cell(o,count,i);float x=cell.X,y=cell.Y,cellW=cell.Width,cellH=cell.Height; float iconSize=o.Icons ? Math.Min(o.IconSize,Math.Min(cellH,cellW*0.4f)) : 0;
     if(iconSize>0) using(var icon=Tray.BatteryIcon(item.Battery,i,item.Connected,item.Profile.Color,settings.NumbersOnly,settings,item.Profile.Symbol,item.Profile.Marker)) using(var image=icon.ToBitmap()) { g.InterpolationMode=InterpolationMode.HighQualityBicubic; g.DrawImage(image,new RectangleF(x,y+(cellH-iconSize)/2,iconSize,iconSize)); }
-    float textX=x+(iconSize>0 ? iconSize+Math.Min(12,gap+4) : 0),textW=cellW-(textX-x); float nameH=o.Names ? Math.Min(o.FontSize*1.5f,cellH*0.3f) : 0,statusH=o.Status ? Math.Min(o.FontSize*1.4f,cellH*0.25f) : 0,valueH=cellH-nameH-statusH;
+    float textX=x+(iconSize>0 ? iconSize+Math.Min(12,gap+4) : 0),textW=cellW-(textX-x)-(item.AudioActive ? 22 : 0); float nameH=o.Names ? Math.Min(o.FontSize*1.5f,cellH*0.3f) : 0,statusH=o.Status ? Math.Min(o.FontSize*1.4f,cellH*0.25f) : 0,valueH=cellH-nameH-statusH;
+    if(item.AudioActive) { float badge=Math.Min(20,Math.Min(cellW,cellH));float bx=x+cellW-badge,by=y+(cellH-badge)/2;
+     using(var brush=new SolidBrush(Color.FromArgb(18,151,76)))g.FillEllipse(brush,bx,by,badge,badge);
+     using(var pen=new Pen(Color.White,Math.Max(1,badge/9))) {pen.StartCap=LineCap.Round;pen.EndCap=LineCap.Round;g.DrawLines(pen,new[]{new PointF(bx+badge*.23f,by+badge*.51f),new PointF(bx+badge*.43f,by+badge*.71f),new PointF(bx+badge*.77f,by+badge*.29f)});}
+    }
     using(var brush=new SolidBrush(o.Foreground)) { if(o.Names) Text(g,item.Name,o.FontName,Math.Min(o.FontSize,(int)(nameH*0.85f)),o.NameBold ? FontStyle.Bold : FontStyle.Regular,brush,new RectangleF(textX,y,textW,nameH),o.Alignment); string value=item.Connected==false ? "–" : item.Battery.HasValue ? item.Battery+" %" : "?"; Text(g,value,o.ValueFontName,Math.Max(6,Math.Min(o.ValueSize,(int)(valueH*0.85f))),o.Bold ? FontStyle.Bold : FontStyle.Regular,brush,new RectangleF(textX,y+nameH,textW,valueH),o.Alignment); if(o.Status) Text(g,item.Status ?? L.T("Status unbekannt"),o.FontName,Math.Max(6,Math.Min(o.FontSize,(int)(statusH*0.85f))),FontStyle.Regular,brush,new RectangleF(textX,y+nameH+valueH,textW,statusH),o.Alignment); }
    }
   } return bitmap;
@@ -73,15 +83,28 @@ static class WidgetDrawing {
  public static Bitmap Preview(WidgetOptions options,Settings settings,IList<WidgetItem> items,int width,int height) { using(var raw=Render(options,settings,items)) { var result=new Bitmap(width,height); using(var g=Graphics.FromImage(result)) { for(int x=0;x<width;x+=12) for(int y=0;y<height;y+=12) using(var b=new SolidBrush((x/12+y/12)%2==0 ? Color.FromArgb(215,215,215) : Color.FromArgb(245,245,245))) g.FillRectangle(b,x,y,12,12); float scale=Math.Min((float)(width-8)/raw.Width,(float)(height-8)/raw.Height); var area=new RectangleF((width-raw.Width*scale)/2,(height-raw.Height*scale)/2,raw.Width*scale,raw.Height*scale); using(var attributes=new ImageAttributes()) { var matrix=new ColorMatrix(); matrix.Matrix33=options.Opacity/100f; attributes.SetColorMatrix(matrix); g.DrawImage(raw,Rectangle.Round(area),0,0,raw.Width,raw.Height,GraphicsUnit.Pixel,attributes); } } return result; } }
 }
 class BatteryWidget : Form {
- WidgetOptions options; Action<Point> moved; bool dragging; Point dragOrigin,windowOrigin;
+ WidgetOptions options; Action<Point> moved; Action<int> chooseAudio; int itemCount,pendingSlot=-1; bool quickAudio;
+ readonly WidgetGesture gesture=new WidgetGesture(); readonly System.Windows.Forms.Timer clickTimer=new System.Windows.Forms.Timer{Interval=SystemInformation.DoubleClickTime};
+ void CancelClick(){clickTimer.Stop();pendingSlot=-1;}
+ void CommitClick(){clickTimer.Stop();int slot=pendingSlot;pendingSlot=-1;if(quickAudio && slot>=0 && slot<itemCount && chooseAudio!=null)chooseAudio(slot);}
+ internal void FlushClickForTest(){CommitClick();}
+
  protected override CreateParams CreateParams { get { var p=base.CreateParams; p.ExStyle|=0x80000|0x80; return p; } }
  protected override bool ShowWithoutActivation {get {return true;}}
- public BatteryWidget(Action open,Action pick,Action quit,Action<Point> onMove) { moved=onMove; FormBorderStyle=FormBorderStyle.None; ShowInTaskbar=false; StartPosition=FormStartPosition.Manual; Text="Kopfhörer-Akku Widget"; var menu=new ContextMenuStrip(); menu.Items.Add(L.T("Einstellungen …"),null,(s,e)=>open()); menu.Items.Add(L.T("Geräte auswählen …"),null,(s,e)=>pick()); menu.Items.Add(L.T("Beenden"),null,(s,e)=>quit()); ContextMenuStrip=menu; DoubleClick+=(s,e)=>open(); }
- public void UpdateContent(WidgetOptions value,Settings settings,IList<WidgetItem> items) { options=value; TopMost=value.Topmost; var desired=new Rectangle(value.X,value.Y,value.Width,value.Height); if(value.X==-32000 || !Screen.AllScreens.Any(s=>Rectangle.Intersect(s.WorkingArea,desired).Width>=60 && Rectangle.Intersect(s.WorkingArea,desired).Height>=40)) { var area=Screen.PrimaryScreen.WorkingArea; desired.Location=new Point(area.Left+Math.Max(0,(area.Width-value.Width)/2),area.Top+Math.Max(0,(area.Height-value.Height)/2)); } if(!dragging) { Location=desired.Location; Size=desired.Size; } if(!Visible) Show(); using(var bitmap=WidgetDrawing.Render(value,settings,items)) Present(bitmap,(byte)(value.Opacity*255/100)); }
- protected override void OnMouseDown(MouseEventArgs e) { base.OnMouseDown(e); if(e.Button==MouseButtons.Left && options!=null && !options.Locked) { dragging=true; dragOrigin=Cursor.Position; windowOrigin=Location; Capture=true; } }
- protected override void OnMouseMove(MouseEventArgs e) { base.OnMouseMove(e); if(dragging) Location=new Point(windowOrigin.X+Cursor.Position.X-dragOrigin.X,windowOrigin.Y+Cursor.Position.Y-dragOrigin.Y); }
- protected override void OnMouseUp(MouseEventArgs e) { base.OnMouseUp(e); if(dragging) { dragging=false; Capture=false; moved(Location); } }
- protected override void Dispose(bool disposing) { if(disposing && ContextMenuStrip!=null) ContextMenuStrip.Dispose(); base.Dispose(disposing); }
+ public BatteryWidget(Action open,Action pick,Action quit,Action<Point> onMove,Action<int> onAudio=null) { moved=onMove;chooseAudio=onAudio;clickTimer.Tick+=(s,e)=>CommitClick(); FormBorderStyle=FormBorderStyle.None; ShowInTaskbar=false; StartPosition=FormStartPosition.Manual; Text="Kopfhörer-Akku Widget"; var menu=new ContextMenuStrip(); menu.Items.Add(L.T("Einstellungen …"),null,(s,e)=>open()); menu.Items.Add(L.T("Geräte auswählen …"),null,(s,e)=>pick()); menu.Items.Add(L.T("Beenden"),null,(s,e)=>quit()); ContextMenuStrip=menu; DoubleClick+=(s,e)=>{CancelClick();open();}; }
+ public void UpdateContent(WidgetOptions value,Settings settings,IList<WidgetItem> items) { options=value;itemCount=items.Count;quickAudio=settings.QuickAudio; TopMost=value.Topmost; var desired=new Rectangle(value.X,value.Y,value.Width,value.Height); if(value.X==-32000 || !Screen.AllScreens.Any(s=>Rectangle.Intersect(s.WorkingArea,desired).Width>=60 && Rectangle.Intersect(s.WorkingArea,desired).Height>=40)) { var area=Screen.PrimaryScreen.WorkingArea; desired.Location=new Point(area.Left+Math.Max(0,(area.Width-value.Width)/2),area.Top+Math.Max(0,(area.Height-value.Height)/2)); } if(!gesture.Pressed) { Location=desired.Location; Size=desired.Size; } if(!Visible) Show(); using(var bitmap=WidgetDrawing.Render(value,settings,items)) Present(bitmap,(byte)(value.Opacity*255/100)); }
+ protected override void OnMouseDown(MouseEventArgs e) { base.OnMouseDown(e);if(e.Button!=MouseButtons.Left || options==null)return;
+  if(e.Clicks>1){CancelClick();gesture.Cancel();return;}CancelClick();gesture.Begin(PointToScreen(e.Location),Location,WidgetDrawing.Hit(options,itemCount,e.Location));Capture=true;
+ }
+ protected override void OnMouseMove(MouseEventArgs e) { base.OnMouseMove(e);if(options==null)return;
+  var screen=PointToScreen(e.Location);gesture.Move(screen,SystemInformation.DragSize);if(gesture.Dragged && !options.Locked)Location=gesture.Position(screen);
+ }
+ protected override void OnMouseUp(MouseEventArgs e) { base.OnMouseUp(e);if(e.Button!=MouseButtons.Left || !gesture.Pressed || options==null)return;
+  gesture.Move(PointToScreen(e.Location),SystemInformation.DragSize);bool dragged=gesture.Dragged;int slot=gesture.End();Capture=false;
+  if(dragged){if(!options.Locked)moved(Location);return;}if(quickAudio && slot>=0 && WidgetDrawing.Hit(options,itemCount,e.Location)==slot){pendingSlot=slot;clickTimer.Start();}
+ }
+ protected override void OnMouseCaptureChanged(EventArgs e){base.OnMouseCaptureChanged(e);if(!Capture && gesture.Pressed)gesture.Cancel();}
+ protected override void Dispose(bool disposing) { if(disposing){CancelClick();clickTimer.Dispose();if(ContextMenuStrip!=null)ContextMenuStrip.Dispose();}base.Dispose(disposing); }
  [StructLayout(LayoutKind.Sequential)] struct POINT { public int X,Y; public POINT(int x,int y) {X=x;Y=y;} }
  [StructLayout(LayoutKind.Sequential)] struct SIZE { public int X,Y; public SIZE(int x,int y) {X=x;Y=y;} }
  [StructLayout(LayoutKind.Sequential,Pack=1)] struct BLEND { public byte Op,Flags,Alpha,Format; }
@@ -93,4 +116,14 @@ class BatteryWidget : Form {
  [DllImport("gdi32.dll")] static extern bool DeleteDC(IntPtr dc);
  [DllImport("user32.dll",SetLastError=true)] static extern bool UpdateLayeredWindow(IntPtr hwnd,IntPtr dst,ref POINT pos,ref SIZE size,IntPtr src,ref POINT origin,int color,ref BLEND blend,int flags);
  void Present(Bitmap bitmap,byte alpha) { IntPtr screen=GetDC(IntPtr.Zero),memory=IntPtr.Zero,hbitmap=IntPtr.Zero,old=IntPtr.Zero; try { memory=CreateCompatibleDC(screen); hbitmap=bitmap.GetHbitmap(Color.FromArgb(0)); old=SelectObject(memory,hbitmap); var pos=new POINT(Left,Top); var size=new SIZE(bitmap.Width,bitmap.Height); var origin=new POINT(0,0); var blend=new BLEND{Alpha=alpha,Format=1}; if(!UpdateLayeredWindow(Handle,screen,ref pos,ref size,memory,ref origin,0,ref blend,2)) throw new Win32Exception(Marshal.GetLastWin32Error()); } finally { if(old!=IntPtr.Zero) SelectObject(memory,old); if(hbitmap!=IntPtr.Zero) DeleteObject(hbitmap); if(memory!=IntPtr.Zero) DeleteDC(memory); if(screen!=IntPtr.Zero) ReleaseDC(IntPtr.Zero,screen); } }
+}
+
+// Uses screen coordinates so dragging remains stable while the window moves.
+class WidgetGesture {
+ public bool Pressed,Dragged;Point origin,window;int slot;
+ public void Begin(Point point,Point location,int hit){Pressed=true;Dragged=false;origin=point;window=location;slot=hit;}
+ public void Move(Point point,Size threshold){if(Pressed && (Math.Abs(point.X-origin.X)>=Math.Max(1,threshold.Width/2) || Math.Abs(point.Y-origin.Y)>=Math.Max(1,threshold.Height/2)))Dragged=true;}
+ public Point Position(Point point){return new Point(window.X+point.X-origin.X,window.Y+point.Y-origin.Y);}
+ public int End(){int result=Pressed && !Dragged ? slot : -1;Pressed=false;return result;}
+ public void Cancel(){Pressed=false;Dragged=false;}
 }
