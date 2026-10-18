@@ -10,13 +10,13 @@ Kostenlos und Open Source. Von **Aldikiller**.
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.0/KopfhoererAkku-1.3.0-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.1/KopfhoererAkku-1.3.1-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.0/KopfhoererAkku-1.3.0-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.1/KopfhoererAkku-1.3.1-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.0/KopfhoererAkku-1.3.0-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.0/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.1/KopfhoererAkku-1.3.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.3.1/SHA256SUMS.txt)
 
-Die aktuelle Version ist **1.3.0**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
+Die aktuelle Version ist **1.3.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
 ![So sehen die Symbole aus](docs/Symbole.png)
 
@@ -34,6 +34,10 @@ Unter **Updates** kannst du nach neuen Versionen suchen und die GitHub-Downloads
 Unter **Allgemein** kannst du die Akkuwarnung und das Abfrageintervall ändern. Mit **Test** lässt sich die Windows-Benachrichtigung ausprobieren.
 
 Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder ausschalten und das Programm beenden. Im Installer ist der Autostart vorausgewählt.
+
+## Einfache und erweiterte Einstellungen
+
+Ab Version 1.3.1 zeigt das Einstellungsfenster zunächst die wichtigsten Optionen: Akkuwarnung, Anzeigeort, Darstellungsart und Sprache. Mit **Erweiterte Einstellungen** oben werden die bisherigen Detailregler eingeblendet. Noch nicht gespeicherte Änderungen bleiben beim Umschalten erhalten. **Speichern** übernimmt sie; **Schließen** verwirft sie.
 
 ## Anzeige anpassen
 

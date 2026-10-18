@@ -1,3 +1,10 @@
+# 1.3.1
+
+- Neue einfache Einstellungsansicht als Standard.
+- Erweiterte Einstellungen blenden die bisherigen Detailregler ein.
+- Nicht gespeicherte Werte bleiben beim Wechsel der Ansicht erhalten.
+- Neue Beschriftungen in allen fünf Sprachen.
+
 # 1.3.0
 
 - Spanische, französische und ukrainische Oberfläche und Installertexte.
