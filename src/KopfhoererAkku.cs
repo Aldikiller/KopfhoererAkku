@@ -18,13 +18,13 @@ using System.Text.RegularExpressions;
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
 [assembly: AssemblyProduct("Kopfhörer-Akku")]
-[assembly: AssemblyVersion("1.3.2.0")]
-[assembly: AssemblyFileVersion("1.3.2.0")]
-[assembly: AssemblyInformationalVersion("1.3.2")]
+[assembly: AssemblyVersion("1.3.3.0")]
+[assembly: AssemblyFileVersion("1.3.3.0")]
+[assembly: AssemblyInformationalVersion("1.3.3")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="1.3.2";
+ public const string Version="1.3.3";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;
@@ -239,10 +239,31 @@ class Tray : ApplicationContext {
   ExitThread();
  }
  public void CheckWidgetModes() { foreach(DisplayMode mode in Enum.GetValues(typeof(DisplayMode))) { settings.Widget.Mode=mode; Render(); Application.DoEvents(); if(icons.Any(x=>x.Visible)!=(mode!=DisplayMode.Widget) || (widget!=null && widget.Visible)!=(mode!=DisplayMode.Infobereich)) throw new Exception("Anzeigemodus fehlerhaft: "+mode); } settings.Widget.Mode=DisplayMode.Infobereich; Render(); ExitThread(); }
- void About() {
-  MessageBox.Show("Kopfhörer-Akku "+AppPaths.Version+"\nAldikiller · MIT\n\n"+L.T("GitHub-Downloads öffnen")+": github.com/Aldikiller/KopfhoererAkku", L.T("Über Kopfhörer-Akku"),MessageBoxButtons.OK,MessageBoxIcon.Information);
+ public void About(bool preview=false) {
+  using(var form=new Form{Text=L.T("Über Kopfhörer-Akku"),Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),ClientSize=new Size(550,270),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,MinimizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi,BackColor=Color.FromArgb(245,245,245)}) {
+   Bitmap logo;
+   using(var stream=Assembly.GetExecutingAssembly().GetManifestResourceStream("KopfhoererAkku.Logo.png")) {
+    if(stream!=null) using(var image=Image.FromStream(stream)) logo=new Bitmap(image);
+    else using(var icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath)) logo=icon.ToBitmap();
+   }
+   using(logo) {
+    var picture=new PictureBox{Left=24,Top=28,Width=112,Height=112,Image=logo,SizeMode=PictureBoxSizeMode.Zoom,AccessibleName="Kopfhörer-Akku Logo",TabStop=false};
+    var title=new Label{Left=158,Top=29,Width=365,Height=34,Text="Kopfhörer-Akku "+AppPaths.Version,Font=new Font("Segoe UI",16,FontStyle.Bold),ForeColor=Color.FromArgb(41,45,50)};
+    var publisher=new Label{Left=160,Top=72,Width=350,Height=24,Text="Aldikiller · MIT",ForeColor=Color.FromArgb(90,95,100)};
+    var github=new LinkLabel{Left=160,Top=111,Width=365,Height=30,Text="github.com/Aldikiller/KopfhoererAkku",AccessibleName="GitHub",AutoEllipsis=true,LinkColor=Color.FromArgb(151,65,0),ActiveLinkColor=Color.FromArgb(110,45,0)};
+    github.LinkClicked+=(sender,args)=>OpenPage("https://github.com/Aldikiller/KopfhoererAkku");
+    var website=new LinkLabel{Left=160,Top=150,Width=365,Height=30,Text="aldikiller.github.io/KopfhoererAkku",AccessibleName="Website",AutoEllipsis=true,LinkColor=Color.FromArgb(151,65,0),ActiveLinkColor=Color.FromArgb(110,45,0)};
+    website.LinkClicked+=(sender,args)=>OpenPage("https://aldikiller.github.io/KopfhoererAkku/");
+    var close=new Button{Left=399,Top=215,Width=125,Height=32,Text=L.T("Schließen"),DialogResult=DialogResult.Cancel};
+    form.Controls.AddRange(new Control[]{picture,title,publisher,github,website,close});form.AcceptButton=close;form.CancelButton=close;
+    if(preview) { form.Show(); Application.DoEvents(); using(var bitmap=new Bitmap(form.Width,form.Height)) { form.DrawToBitmap(bitmap,new Rectangle(0,0,form.Width,form.Height));bitmap.Save(AppPaths.Report("About.png")); } if(github.Links.Count!=1 || website.Links.Count!=1) throw new Exception("About links missing"); form.Close(); }
+    else form.ShowDialog();
+    title.Font.Dispose();
+   }
+  }
  }
- string Describe(Device d) { return settings.Name(d)+" · "+d.Status+" · "+(d.Connected==false ? L.T("kein aktueller Akkustand") : d.Battery.HasValue ? d.Battery+(d.Connected==null ? L.T(" % (gespeichert)") : " %") : L.T("kein Akkustand")); }
+
+ string Describe(Device d) { return settings.Name(d)+" · "+d.Status+" · "+(d.Connected==false ? L.T("kein aktueller Akkustand") : d.Battery.HasValue ? d.Battery+(d.Connected==null ? L.T(" % (gespeichert)") : " %") : L.T("kein Akkustand")); }
  void CheckUpdates(bool manual) {
   if(updateBusy || exiting) return; updateBusy=true; updateStatusText=L.T("GitHub wird abgefragt …"); if(updateStatus!=null) updateStatus(); Render();
   var worker=new System.ComponentModel.BackgroundWorker(); worker.DoWork+=(a,b)=>b.Result=UpdateService.Check();
@@ -484,6 +505,7 @@ static class Program {
   if(args.Contains("--selftest")) { try { SelfTest(); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Testbericht.txt"),"FEHLER: "+e); Environment.ExitCode=1; } return; }
   Application.EnableVisualStyles(); Application.SetCompatibleTextRenderingDefault(false);
   if(args.Contains("--language-check")) { string dir=AppPaths.Report("language-ui"); Directory.CreateDirectory(dir); using(var context=new Tray(true,"de",dir)) context.CheckLanguages(); using(var context=new Tray(true,null,dir)) { if(L.Language!="en") throw new Exception("Language restart failed"); context.ExitThread(); } File.WriteAllText(AppPaths.Report("Language-Test.txt"),"OK: German/English/Spanish/French/Ukrainian switching, settings windows rebuilt, persistence and restart."); return; }
+  if(args.Contains("--about-check")) { using(var context=new Tray(true,"de")) { context.About(true);context.ExitThread(); } return; }
   if(args.Contains("--ui-check")) { var context=new Tray(true,args.Contains("--spanish") ? "es" : args.Contains("--french") ? "fr" : args.Contains("--ukrainian") ? "uk" : args.Contains("--english") ? "en" : "de"); context.Options(true); context.ExitThread(); context.Dispose(); return; }
   if(args.Contains("--diagnose")) { try { File.WriteAllLines(AppPaths.Report("Diagnose.txt"),Native.Scan().Select(d=>d.ToString()+"\t"+d.Id).Concat(new[]{Native.LinkDiagnostics})); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Diagnose.txt"),e.ToString()); } return; }
   if(args.Contains("--widget-check")) {
