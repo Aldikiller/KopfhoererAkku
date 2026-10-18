@@ -6,6 +6,8 @@ Ein kleines Windows-Tool, das den Akkustand von bis zu zwei Bluetooth-Kopfhörer
 
 Kostenlos und Open Source. Von **Aldikiller**.
 
+[Anleitung und Hilfe im Wiki](https://github.com/Aldikiller/KopfhoererAkku/wiki) · [Fragen und Erfahrungen](https://github.com/Aldikiller/KopfhoererAkku/discussions) · [Webseite](https://aldikiller.github.io/KopfhoererAkku/)
+
 ## Download
 
 **[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.2.0/KopfhoererAkku-1.2.0-Setup.exe)** – mit Installation und Deinstallation.
