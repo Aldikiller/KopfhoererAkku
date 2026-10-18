@@ -18,13 +18,13 @@ using System.Text.RegularExpressions;
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
 [assembly: AssemblyProduct("Kopfhörer-Akku")]
-[assembly: AssemblyVersion("1.3.1.0")]
-[assembly: AssemblyFileVersion("1.3.1.0")]
-[assembly: AssemblyInformationalVersion("1.3.1")]
+[assembly: AssemblyVersion("1.3.2.0")]
+[assembly: AssemblyFileVersion("1.3.2.0")]
+[assembly: AssemblyInformationalVersion("1.3.2")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="1.3.1";
+ public const string Version="1.3.2";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;
@@ -259,7 +259,7 @@ class Tray : ApplicationContext {
  void OpenPage(string page) { try { Process.Start(new ProcessStartInfo(page){UseShellExecute=true}); } catch(Exception ex) { MessageBox.Show(L.T("Browser konnte nicht geöffnet werden: ")+ex.Message); } }
  public void Options(bool preview=false) {
   if(settingsForm!=null) { settingsForm.Activate(); return; }
-  var f=new Form{Text=L.T("Kopfhörer-Akku · Einstellungen"),ClientSize=new Size(870,590),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f; Action liveRefresh=null;
+  var f=new Form{Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),Text=L.T("Kopfhörer-Akku · Einstellungen"),ClientSize=new Size(870,590),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f; Action liveRefresh=null;
   var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage(L.T("Allgemein")); var appearance=new TabPage(L.T("Namen & Anzeige")); var updates=new TabPage(L.T("Updates")); var design=new TabPage(L.T("Schrift & Batterie")); var widgetTab=new TabPage(L.T("Anzeige & Widget")); tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab});
   var status=new Label{Left=14,Top=14,Width=544,Height=112}; var updateLabel=new Label{Left=14,Top=190,Width=538,Height=60};
   updateStatus=()=> { status.Text=string.Join("\n",selected.Select(id=> { var d=devices.FirstOrDefault(x=>x.Id==id); return d==null ? L.T("Gerät nicht gefunden · Verbindung unbekannt") : Describe(d); }).ToArray())+L.T("\n\nLetzte Abfrage: ")+(lastScan.HasValue ? lastScan.Value.ToString("HH:mm:ss") : L.T("noch keine"))+(error.Length>0 ? L.T("\nFehler: ")+error : ""); updateLabel.Text=updateStatusText; if(liveRefresh!=null) liveRefresh(); }; updateStatus();
@@ -397,7 +397,7 @@ class Tray : ApplicationContext {
  }
  void Pick() {
   if(picker!=null) { picker.Activate(); return; }
-  var f=new Form{Text=L.T("Kopfhörer-Akku – Geräte auswählen"),ClientSize=new Size(560,350),StartPosition=FormStartPosition.CenterScreen,MinimumSize=new Size(576,389)}; picker=f;
+  var f=new Form{Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),Text=L.T("Kopfhörer-Akku – Geräte auswählen"),ClientSize=new Size(560,350),StartPosition=FormStartPosition.CenterScreen,MinimumSize=new Size(576,389)}; picker=f;
   var label=new Label{Text=L.T("Bis zu zwei Kopfhörer auswählen. Namen und Farben lassen sich in den Einstellungen ändern.\nEin Strich im Symbol bedeutet: Windows liefert gerade keinen Akkustand."),Dock=DockStyle.Top,Height=55,Padding=new Padding(10)};
   var list=new CheckedListBox{Dock=DockStyle.Fill,CheckOnClick=true,HorizontalScrollbar=true};
   Action populate=()=> { list.Items.Clear(); foreach(var d in devices) list.Items.Add(d,selected.Contains(d.Id)); foreach(var id in selected.Where(id=>!devices.Any(d=>d.Id==id))) list.Items.Add(new Device{Id=id,Name=L.T("Gespeichertes Gerät (nicht verfügbar)")},true); };
