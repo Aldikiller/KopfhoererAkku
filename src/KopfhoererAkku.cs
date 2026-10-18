@@ -18,13 +18,13 @@ using System.Text.RegularExpressions;
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
 [assembly: AssemblyProduct("Kopfhörer-Akku")]
-[assembly: AssemblyVersion("1.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.0.0")]
-[assembly: AssemblyInformationalVersion("1.3.0")]
+[assembly: AssemblyVersion("1.3.1.0")]
+[assembly: AssemblyFileVersion("1.3.1.0")]
+[assembly: AssemblyInformationalVersion("1.3.1")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="1.3.0";
+ public const string Version="1.3.1";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;
@@ -226,7 +226,12 @@ class Tray : ApplicationContext {
  public void CheckLanguages() {
   foreach(string target in new[]{"es","fr","uk","en","de","en"}) {
    Options(); var tab=settingsForm.Controls.OfType<TabControl>().Single().TabPages[0];
-   var language=tab.Controls.OfType<ComboBox>().Single(); language.SelectedIndex=Array.IndexOf(L.Codes,target);
+   var language=tab.Controls.OfType<ComboBox>().Single(x=>x.AccessibleName=="Language");
+   var mode=settingsForm.Controls.OfType<CheckBox>().Single(x=>x.AccessibleName=="AdvancedSettings");
+   var threshold=tab.Controls.OfType<NumericUpDown>().Single(); decimal previous=threshold.Value; threshold.Value=37;
+   mode.Checked=true; mode.Checked=false;
+   if(threshold.Value!=37 || language.Parent!=tab || settingsForm.Controls.OfType<TabControl>().Single().TabPages.Count!=2) throw new Exception("Settings view lost draft values");
+   threshold.Value=previous; language.SelectedIndex=Array.IndexOf(L.Codes,target);
    settingsForm.Controls.OfType<Button>().Single(x=>x.Text==L.T("Speichern")).PerformClick(); Application.DoEvents();
    if(Settings.Read(SettingsPath).Language!=target || L.Language!=target || settingsForm==null || settingsForm.Text!=L.T("Kopfhörer-Akku · Einstellungen")) throw new Exception("Language switch failed: "+target);
    settingsForm.Close();
@@ -254,7 +259,7 @@ class Tray : ApplicationContext {
  void OpenPage(string page) { try { Process.Start(new ProcessStartInfo(page){UseShellExecute=true}); } catch(Exception ex) { MessageBox.Show(L.T("Browser konnte nicht geöffnet werden: ")+ex.Message); } }
  public void Options(bool preview=false) {
   if(settingsForm!=null) { settingsForm.Activate(); return; }
-  var f=new Form{Text=L.T("Kopfhörer-Akku · Einstellungen"),ClientSize=new Size(870,550),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f; Action liveRefresh=null;
+  var f=new Form{Text=L.T("Kopfhörer-Akku · Einstellungen"),ClientSize=new Size(870,590),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f; Action liveRefresh=null;
   var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage(L.T("Allgemein")); var appearance=new TabPage(L.T("Namen & Anzeige")); var updates=new TabPage(L.T("Updates")); var design=new TabPage(L.T("Schrift & Batterie")); var widgetTab=new TabPage(L.T("Anzeige & Widget")); tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab});
   var status=new Label{Left=14,Top=14,Width=544,Height=112}; var updateLabel=new Label{Left=14,Top=190,Width=538,Height=60};
   updateStatus=()=> { status.Text=string.Join("\n",selected.Select(id=> { var d=devices.FirstOrDefault(x=>x.Id==id); return d==null ? L.T("Gerät nicht gefunden · Verbindung unbekannt") : Describe(d); }).ToArray())+L.T("\n\nLetzte Abfrage: ")+(lastScan.HasValue ? lastScan.Value.ToString("HH:mm:ss") : L.T("noch keine"))+(error.Length>0 ? L.T("\nFehler: ")+error : ""); updateLabel.Text=updateStatusText; if(liveRefresh!=null) liveRefresh(); }; updateStatus();
@@ -263,7 +268,7 @@ class Tray : ApplicationContext {
   var interval=new NumericUpDown{Left=245,Top=217,Width=75,Minimum=5,Maximum=300,Value=settings.Interval};
   var hint=new Label{Left=14,Top=268,Width=538,Height=92,Text=L.T("Beide ausgewählten Kopfhörer behalten ein eigenes Symbol.\nRot: niedriger Akku · Grau ×: getrennt · Gelb: Status unbekannt.\nWarnungen erscheinen nur bei bestätigter Verbindung.\nEigene Namen ändern den Bluetooth-Namen in Windows nicht.")};
   var test=new Button{Left=14,Top=376,Width=210,Height=32,Text=L.T("Benachrichtigung testen")}; test.Click+=(a,b)=> { if(icons.Count>0) Notify(5000,"Kopfhörer-Akku · Test",L.T("So erscheint eine Akkuwarnung."),ToolTipIcon.Info); };
-  var language=new ComboBox{Left=14,Top=438,Width=240,DropDownStyle=ComboBoxStyle.DropDownList}; language.Items.AddRange(new[]{"Deutsch","English","Español","Français","Українська"}); language.SelectedIndex=Array.IndexOf(L.Codes,settings.Language);
+  var language=new ComboBox{AccessibleName="Language",Left=14,Top=438,Width=240,DropDownStyle=ComboBoxStyle.DropDownList}; language.Items.AddRange(new[]{"Deutsch","English","Español","Français","Українська"}); language.SelectedIndex=Array.IndexOf(L.Codes,settings.Language);
   general.Controls.Add(new Label{Left=14,Top=414,Width=530,Text="Sprache / Language"}); general.Controls.Add(language);
   general.Controls.AddRange(new Control[]{status,warn,new Label{Left=14,Top=178,Width=225,Text=L.T("Warnung bei / unter (%)")},threshold,new Label{Left=14,Top=220,Width=225,Text=L.T("Abfrage alle (Sekunden)")},interval,hint,test});
   var symbolBoxes=new Dictionary<string,ComboBox>(); var markers=new Dictionary<string,TextBox>();
@@ -360,9 +365,33 @@ class Tray : ApplicationContext {
   var choose=new Button{Left=151,Top=506,Width=145,Height=32,Text=L.T("Geräte auswählen")}; choose.Click+=(a,b)=>Pick();
   var refresh=new Button{Left=308,Top=506,Width=125,Height=32,Text=L.T("Aktualisieren")}; refresh.Click+=(a,b)=>Refresh();
   var cancel=new Button{Left=445,Top=506,Width=145,Height=32,Text=L.T("Schließen")}; cancel.Click+=(a,b)=>f.Close();
-  f.Controls.AddRange(new Control[]{tabs,save,choose,refresh,cancel}); f.FormClosed+=(a,b)=> { liveRefresh=null; if(widgetPreview.Image!=null) widgetPreview.Image.Dispose(); if(livePicture.Image!=null) livePicture.Image.Dispose(); updateStatus=null; settingsForm=null; foreach(var picture in previews) if(picture.Image!=null) picture.Image.Dispose(); f.Dispose(); }; f.Show();
+  var simpleTab=new TabPage(L.T("Einfach"));
+  var advanced=new CheckBox{AccessibleName="AdvancedSettings",Left=16,Top=10,Width=570,Height=24,Text=L.T("Erweiterte Einstellungen")};
+  var shared=new Control[]{status,warn,threshold,widgetMode,style,language};
+  var originalParents=shared.Select(c=>c.Parent).ToArray();
+  var originalBounds=shared.Select(c=>c.Bounds).ToArray();
+  simpleTab.Controls.AddRange(new Control[]{
+   new Label{Left=14,Top=10,Width=535,Height=38,Text=L.T("Die wichtigsten Einstellungen. Weitere Optionen findest du unter Erweiterte Einstellungen.")},
+   new Label{Left=14,Top=178,Width=300,Text=L.T("Warnung bei / unter (%)")},
+   new Label{Left=14,Top=227,Width=535,Text=L.T("Wo soll die Anzeige stehen?")},
+   new Label{Left=14,Top=295,Width=535,Text=L.T("Darstellung für beide Symbole")},
+   new Label{Left=14,Top=363,Width=535,Text="Sprache / Language"}});
+  Action setSettingsMode=()=> {
+   tabs.TabPages.Clear();
+   if(advanced.Checked) {
+    for(int i=0;i<shared.Length;i++) { originalParents[i].Controls.Add(shared[i]); shared[i].Bounds=originalBounds[i]; }
+    tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab});
+   } else {
+    foreach(var control in shared) simpleTab.Controls.Add(control);
+    status.SetBounds(14,52,535,78); warn.SetBounds(14,141,535,28); threshold.SetBounds(340,175,90,26);
+    widgetMode.SetBounds(14,252,535,28); style.SetBounds(14,320,535,28); language.SetBounds(14,388,310,28);
+    tabs.TabPages.AddRange(new[]{simpleTab,updates});
+   }
+  };
+  advanced.CheckedChanged+=(a,b)=>setSettingsMode(); setSettingsMode();
+  f.Controls.AddRange(new Control[]{tabs,save,choose,refresh,cancel}); f.FormClosed+=(a,b)=> { liveRefresh=null; if(widgetPreview.Image!=null) widgetPreview.Image.Dispose(); if(livePicture.Image!=null) livePicture.Image.Dispose(); updateStatus=null; settingsForm=null; foreach(var picture in previews) if(picture.Image!=null) picture.Image.Dispose(); f.Dispose(); }; foreach(Control control in f.Controls) control.Top+=32; f.Controls.Add(advanced); f.Show();
   if(widgetGrid.SelectedGridItem!=null) { var root=widgetGrid.SelectedGridItem; while(root.Parent!=null) root=root.Parent; foreach(GridItem group in root.GridItems) if(group.GridItemType==GridItemType.Category && group.Label==L.T("1. Anzeige") && group.GridItems.Count>0) { group.Expanded=true; widgetGrid.SelectedGridItem=group.GridItems[0]; break; } }
-  if(preview) { File.WriteAllText(AppPaths.Report("Symbol-Check.txt"),"Ausgewählte Geräte: "+selected.Count+"; angelegte Symbole: "+icons.Count+"; sichtbar an Windows übergeben: "+icons.Count(x=>x.Visible)); foreach(TabPage tab in tabs.TabPages) { tabs.SelectedTab=tab; using(var bitmap=new Bitmap(f.Width,f.Height)) { f.DrawToBitmap(bitmap,new Rectangle(0,0,f.Width,f.Height)); bitmap.Save(AppPaths.Report("Einstellungen-"+tabs.SelectedIndex+".png")); } }
+  if(preview) { using(var basic=new Bitmap(f.Width,f.Height)) { f.DrawToBitmap(basic,new Rectangle(0,0,f.Width,f.Height)); basic.Save(AppPaths.Report("Einstellungen-Einfach.png")); } advanced.Checked=true; File.WriteAllText(AppPaths.Report("Symbol-Check.txt"),"Ausgewählte Geräte: "+selected.Count+"; angelegte Symbole: "+icons.Count+"; sichtbar an Windows übergeben: "+icons.Count(x=>x.Visible)); foreach(TabPage tab in tabs.TabPages) { tabs.SelectedTab=tab; using(var bitmap=new Bitmap(f.Width,f.Height)) { f.DrawToBitmap(bitmap,new Rectangle(0,0,f.Width,f.Height)); bitmap.Save(AppPaths.Report("Einstellungen-"+tabs.SelectedIndex+".png")); } }
    if(ids.Length>0) { symbolBoxes[ids[0]].SelectedIndex=3; markers[ids[0]].Text="A"; if(ids.Length>1) symbolBoxes[ids[1]].SelectedIndex=1; useSample.Checked=true; sample.Value=15; tabs.SelectedTab=appearance; using(var bitmap=new Bitmap(f.Width,f.Height)) { f.DrawToBitmap(bitmap,new Rectangle(0,0,f.Width,f.Height)); bitmap.Save(AppPaths.Report("Livevorschau-Zeichen.png")); } }
    f.Close(); }
  }

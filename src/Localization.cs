@@ -8,7 +8,12 @@ static class L {
  public static readonly string[] Codes={"de","en","es","fr","uk"};
  public static bool Supported(string value) { return Array.IndexOf(Codes,value)>=0; }
  public static bool English { get { return Language=="en"; } }
- public static string T(string text) { string result; if(text=="Updates") return Language=="es" ? "Actualizaciones" : Language=="fr" ? "Mises à jour" : Language=="uk" ? "Оновлення" : text; Dictionary<string,string> map; if(Extra.TryGetValue(Language,out map) && map.TryGetValue(text,out result)) return result; return English && Words.TryGetValue(text,out result) ? result : text; }
+ static readonly Dictionary<string,string[]> SimpleWords=new Dictionary<string,string[]> {
+ {"Einfach",new[]{"Simple","Sencillo","Simple","Прості"}},
+ {"Erweiterte Einstellungen",new[]{"Advanced settings","Ajustes avanzados","Paramètres avancés","Розширені налаштування"}},
+ {"Die wichtigsten Einstellungen. Weitere Optionen findest du unter Erweiterte Einstellungen.",new[]{"The essentials. Find more options under Advanced settings.","Lo esencial. Más opciones en Ajustes avanzados.","L’essentiel. Plus d’options dans Paramètres avancés.","Основні параметри. Більше опцій у розширених налаштуваннях."}}
+ };
+ public static string T(string text) { string[] simple; int index=Array.IndexOf(Codes,Language)-1; if(index>=0 && SimpleWords.TryGetValue(text,out simple)) return simple[index]; string result; if(text=="Updates") return Language=="es" ? "Actualizaciones" : Language=="fr" ? "Mises à jour" : Language=="uk" ? "Оновлення" : text; Dictionary<string,string> map; if(Extra.TryGetValue(Language,out map) && map.TryGetValue(text,out result)) return result; return English && Words.TryGetValue(text,out result) ? result : text; }
  static readonly Dictionary<string,string> Words=new Dictionary<string,string> {
 {"Beim Windows-Start ausführen","Run at Windows startup"},
 {"Kopfhörer-Akku niedrig","Headphone battery low"},
