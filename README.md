@@ -16,7 +16,7 @@ Kostenlos und Open Source. Von **Aldikiller**.
 
 ![Aktive Audioausgabe mit grünem Häkchen](docs/Audio-Direktwahl-1.6.0.png)
 
-Beispielansicht: links aktiv, rechts nicht aktiv; darunter die kleinen Infobereich-Symbole.
+Beispielansicht: links aktiv, rechts nicht aktiv; daneben die kleinen Infobereich-Symbole.
 
 Ein Doppelklick öffnet die Einstellungen. Die Geräteübersicht und die Zuordnung erreichst du per Rechtsklick. Wer die Direktwahl nicht verwenden möchte, kann sie abschalten.
 
@@ -34,20 +34,16 @@ Die aktuelle Version ist **1.6.0**. Du brauchst Windows 10 ab Version 2004 oder 
 
 ![So sehen die Symbole aus](docs/Symbole.png)
 
-## Bisherige Anzeige im Video (1.4.0)
+## Ansichten aus Version 1.6.0
 
-[![35 Sekunden Bilderdemo mit Beispieldaten](docs/Demo-1.4.0-de-Poster.png)](https://aldikiller.github.io/KopfhoererAkku/#demo)
-
-[Demo abspielen (35 Sekunden, ohne Ton)](https://aldikiller.github.io/KopfhoererAkku/#demo) · [English demo](https://aldikiller.github.io/KopfhoererAkku/en.html#demo)
+Die Bilder zeigen Beispieldaten aus der aktuellen Version. Die Direktwahl stellst du unter **Audio-Schnellauswahl** ein. Die Geräteübersicht bleibt über das Rechtsklick-Menü erreichbar.
 
 <details>
-<summary>Aktuelle Geräteübersicht und einfache Einstellungen</summary>
+<summary>Audio-Schnellauswahl und Geräteübersicht ansehen</summary>
 
-Die folgenden Bilder und das Video zeigen Version 1.4.0 ohne Audio-Direktwahl.
+![Audio-Schnellauswahl 1.6.0](docs/Audio-Schnellauswahl-1.6.0-de.png)
 
-![Geräteübersicht](docs/Geraeteuebersicht-1.4.0-de.png)
-
-![Einfache Einstellungen](docs/Einstellungen-Einfach-1.4.0-de.png)
+![Geräteübersicht 1.6.0](docs/Geraeteuebersicht-1.6.0-de.png)
 
 </details>
 
