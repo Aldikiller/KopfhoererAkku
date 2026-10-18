@@ -1,3 +1,8 @@
+# 1.3.3
+
+- Über-Dialog mit eigenem Logo und anklickbaren Links zu GitHub und Webseite.
+- Logo ist in der Programmdatei eingebettet und auch portabel verfügbar.
+
 # 1.3.2
 
 - Eigenes orange-graues Logo für Programm, Installer und Webseite.

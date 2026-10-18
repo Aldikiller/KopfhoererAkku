@@ -10,6 +10,7 @@ if (!(Test-Path -LiteralPath $csc)) { throw 'Der .NET-Framework-C#-Compiler fehl
 New-Item -ItemType Directory -Force -Path $dist, $portable | Out-Null
 $exe = Join-Path $portable 'KopfhoererAkku.exe'
 $compilerArgs = @('/nologo','/target:winexe','/platform:x64','/optimize+',('/out:'+$exe),
+  ('/resource:'+(Join-Path $projectRoot 'docs\logo.png')+',KopfhoererAkku.Logo.png'),
   '/reference:System.Web.Extensions.dll','/reference:System.Windows.Forms.dll','/reference:System.Drawing.dll',
   ('/reference:'+(Join-Path $framework 'System.Runtime.dll')),
   ('/reference:'+(Join-Path $env:WINDIR 'System32\WinMetadata\Windows.Devices.winmd')),
