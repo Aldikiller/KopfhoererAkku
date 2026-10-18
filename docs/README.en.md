@@ -15,3 +15,5 @@ Requires Windows 10 build 19041 or newer, or Windows 11, x64, with .NET Framewor
 Free and open source under the MIT license. No ads or telemetry. The optional update check sends your IP address and app version to GitHub, but does not send device names or battery levels. No updates are installed automatically.
 
 Provided without warranty to the extent permitted by law. See the MIT license for the full terms.
+
+Languages: Deutsch · English · Español · Français · Українська. Choose a language in general settings and save. German remains the default.
