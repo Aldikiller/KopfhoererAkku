@@ -9,6 +9,23 @@ static class L {
  public static bool Supported(string value) { return Array.IndexOf(Codes,value)>=0; }
  public static bool English { get { return Language=="en"; } }
  static readonly Dictionary<string,string[]> SimpleWords=new Dictionary<string,string[]> {
+ {"Eindeutige Geräte werden automatisch zugeordnet. Bei mehreren Ausgängen bitte auswählen. Grün mit Häkchen: aktive Ausgabe.",new[]{"Unique devices are assigned automatically. Choose an output if several match. Green check: active output.","Los dispositivos únicos se asignan automáticamente. Si hay varias salidas, selecciona una. Marca verde: salida activa.","Les appareils uniques sont associés automatiquement. Choisissez si plusieurs sorties correspondent. Coche verte : sortie active.","Однозначні пристрої призначаються автоматично. Якщо виходів кілька, виберіть потрібний. Зелена позначка: активний вихід."}},
+ {"Neu laden",new[]{"Reload","Recargar","Recharger","Оновити"}},
+ {"Diagnose",new[]{"Diagnostics","Diagnóstico","Diagnostic","Діагностика"}},
+ {"Windows-Audioausgaben gefunden: ",new[]{"Windows audio outputs found: ","Salidas de audio de Windows encontradas: ","Sorties audio Windows trouvées : ","Знайдені аудіовиходи Windows: "}},
+ {"Bitte die passende Ausgabe auswählen.",new[]{"Please select the matching output.","Selecciona la salida correspondiente.","Sélectionnez la sortie correspondante.","Виберіть відповідний вихід."}},
+ {"Audioausgaben konnten nicht gelesen werden.",new[]{"Could not read audio outputs.","No se pudieron leer las salidas de audio.","Impossible de lire les sorties audio.","Не вдалося прочитати аудіовиходи."}},
+ {"Keine Audioausgabe gefunden. Kopfhörer verbinden und dieses Fenster erneut öffnen.",new[]{"No audio output found. Connect your headphones and reopen this window.","No se encontró ninguna salida. Conecta los auriculares y vuelve a abrir esta ventana.","Aucune sortie audio trouvée. Connectez le casque et rouvrez cette fenêtre.","Аудіовиходів не знайдено. Підключіть навушники та відкрийте це вікно знову."}},
+ {"Audio-Schnellauswahl",new[]{"Quick audio selection","Selección rápida de audio","Sélection audio rapide","Швидкий вибір аудіо"}},
+ {"Ein Klick auf das Akkusymbol wechselt die Audioausgabe",new[]{"Single-click a battery icon to switch audio output","Un clic en el icono cambia la salida de audio","Un clic sur l’icône change la sortie audio","Один клік на значку змінює аудіовихід"}},
+ {"Jedem Kopfhörer einmal seine Windows-Audioausgabe zuordnen. Grün mit Häkchen bedeutet: aktive Standardausgabe.",new[]{"Assign each headphone its Windows output once. A green check marks the active default output.","Asigna una salida de Windows a cada auricular. La marca verde indica la salida activa.","Associez une sortie Windows à chaque casque. La coche verte indique la sortie active.","Призначте кожним навушникам вихід Windows. Зелена позначка вказує активний вихід."}},
+ {"Nicht zugeordnet",new[]{"Not assigned","Sin asignar","Non attribué","Не призначено"}},
+ {"Keine kurzen Zusatzabfragen nach Standby. Manuelles Aktualisieren bleibt möglich.",new[]{"No rapid extra queries after sleep. Manual refresh is still available.","Sin consultas rápidas tras suspender. Puedes actualizar manualmente.","Aucune requête rapide après la veille. L’actualisation manuelle reste possible.","Без частих додаткових запитів після сну. Можна оновити вручну."}},
+ {"Bitte unterschiedliche Audioausgaben zuordnen.",new[]{"Please assign different audio outputs.","Asigna salidas de audio diferentes.","Veuillez attribuer des sorties audio différentes.","Призначте різні аудіовиходи."}},
+ {"Ton hier wiedergeben",new[]{"Play audio here","Reproducir aquí","Écouter ici","Відтворювати тут"}},
+ {"Audioausgabe nicht verbunden.",new[]{"Audio output is not connected.","Salida de audio no conectada.","La sortie audio n’est pas connectée.","Аудіовихід не підключено."}},
+ {"Audioausgabe wurde nicht übernommen.",new[]{"Audio output did not change.","La salida de audio no cambió.","La sortie audio n’a pas changé.","Аудіовихід не змінився."}},
+ {"Audioausgabe konnte nicht umgeschaltet werden.",new[]{"Could not switch audio output.","No se pudo cambiar la salida de audio.","Impossible de changer la sortie audio.","Не вдалося змінити аудіовихід."}},
  {"Geräteübersicht",new[]{"Device overview","Resumen de dispositivos","Vue des appareils","Огляд пристроїв"}},
  {"Wird neu geprüft …",new[]{"Checking again …","Comprobando de nuevo …","Nouvelle vérification …","Повторна перевірка …"}},
  {"Geprüft vor: ",new[]{"Query age: ","Comprobado hace: ","Vérifié il y a : ","Час після перевірки: "}},

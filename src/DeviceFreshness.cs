@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
 
@@ -28,12 +28,6 @@ sealed class ReadingBook {
   return seconds/86400+" d";
  }
 }
-sealed class RecoveryWindow {
- static readonly int[] Seconds={2,5,10,20,30};
- DateTime started;int index=Seconds.Length;
- public void Schedule(DateTime now) {if(index<Seconds.Length && now<started.AddSeconds(30))return;started=now;index=0;}
- public bool TakeDue(DateTime now) {if(index>=Seconds.Length || now<started.AddSeconds(Seconds[index]))return false;while(index<Seconds.Length && now>=started.AddSeconds(Seconds[index]))index++;return true;}
-}
 static class ReadingTests {
  public static void Run() {
   Action<bool,string> check=(ok,text)=>{if(!ok)throw new Exception(text);};var time=new DateTime(2026,1,1,12,0,0,DateTimeKind.Utc);
@@ -43,6 +37,5 @@ static class ReadingTests {
   a.Connected=true;a.Battery=null;book.Observe(new[]{a},time.AddSeconds(40));check(book.Get("a").LastValue==70,"Missing data replaced known value");
   book.Invalidate(new[]{"a","b"});check(book.Get("a").NeedsCheck && book.Get("b").NeedsCheck,"Resume did not invalidate readings");book.Observe(new[]{a},time.AddSeconds(50));check(!book.Get("a").NeedsCheck && book.Get("b").NeedsCheck,"Unverified device incorrectly refreshed");
   check(ReadingBook.Age(time,time.AddSeconds(-5))=="0 s","Clock rollback");check(ReadingBook.Age(time,time.AddSeconds(61))=="1 min","Relative age");
-  var recovery=new RecoveryWindow();recovery.Schedule(time);check(!recovery.TakeDue(time.AddSeconds(1)),"No event debounce");check(recovery.TakeDue(time.AddSeconds(2)),"Initial recovery missing");recovery.Schedule(time.AddSeconds(3));check(recovery.TakeDue(time.AddSeconds(5)),"Event storm deferred recovery");check(recovery.TakeDue(time.AddSeconds(80)) && !recovery.TakeDue(time.AddSeconds(81)),"Recovery burst must end");recovery.Schedule(time.AddSeconds(90));check(recovery.TakeDue(time.AddSeconds(92)),"New reconnect recovery missing");
  }
 }

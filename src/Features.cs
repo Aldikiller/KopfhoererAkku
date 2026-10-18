@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 
 class DeviceProfile {
- public string Name="",Marker="A";
+ public string Name="",Marker="A",AudioId="";
  public int Symbol=0;
  public string ColorHex;
  public DeviceProfile(string color) { ColorHex=color; }
@@ -21,8 +21,9 @@ class Settings {
  public string Language="de";
  public WidgetOptions Widget=new WidgetOptions();
  public FontFamily FontFamily() { try { var f=new FontFamily(FontName); if(f.IsStyleAvailable(FontStyle.Bold)) return f; f.Dispose(); } catch(ArgumentException) {} return new FontFamily("Segoe UI"); }
+ public bool QuickAudio=true;
  public bool Warnings=true,CheckAtStartup=false,NumbersOnly=false;
- public int Threshold=20,Interval=15,TextSize=21,BatteryShape=0,BatteryRadius=4,BatteryStroke=13,BatteryWidth=28,BatteryHeight=27;
+ public int Threshold=20,Interval=30,TextSize=21,BatteryShape=0,BatteryRadius=4,BatteryStroke=13,BatteryWidth=28,BatteryHeight=27;
  public string FontName="Arial",TextColor="Auto";
  public Dictionary<string,DeviceProfile> Profiles=new Dictionary<string,DeviceProfile>(StringComparer.OrdinalIgnoreCase);
  public DeviceProfile Profile(string id,int slot) { DeviceProfile p; return id!=null && Profiles.TryGetValue(id,out p) ? p : new DeviceProfile(slot==0 ? "#13705B" : "#1C579F"); }
@@ -33,6 +34,7 @@ class Settings {
   var x=new Settings(); if(!File.Exists(file)) return x;
   foreach(var line in File.ReadAllLines(file)) {
    int split=line.IndexOf('='); if(split<1) continue; string key=line.Substring(0,split),value=line.Substring(split+1); int n; bool b;
+   if(key=="QuickAudio" && bool.TryParse(value,out b)) x.QuickAudio=b;
    if(key=="Language" && L.Supported(value)) x.Language=value;
    if(key.StartsWith("Widget.",StringComparison.Ordinal)) x.Widget.Read(key.Substring(7),value);
    if(key=="FontName") { try { x.FontName=Decode(value); } catch(FormatException) {} }
@@ -47,10 +49,11 @@ class Settings {
    if(key=="CheckAtStartup" && bool.TryParse(value,out b)) x.CheckAtStartup=b;
    if(key=="NumbersOnly" && bool.TryParse(value,out b)) x.NumbersOnly=b;
    if(key=="Threshold" && int.TryParse(value,out n)) x.Threshold=Math.Max(1,Math.Min(90,n));
-   if(key=="Interval" && int.TryParse(value,out n)) x.Interval=Math.Max(5,Math.Min(300,n));
+   if(key=="Interval" && int.TryParse(value,out n)) x.Interval=Math.Max(30,Math.Min(300,n));
    if(key.StartsWith("Device.",StringComparison.Ordinal)) { try {
     int suffix=key.LastIndexOf('.'); if(suffix<=7) continue; string id=Decode(key.Substring(7,suffix-7)),field=key.Substring(suffix+1); if(id.Length==0) continue;
     DeviceProfile p; if(!x.Profiles.TryGetValue(id,out p)) { p=new DeviceProfile("#13705B"); x.Profiles[id]=p; }
+    if(field=="AudioId") p.AudioId=Decode(value);
     if(field=="Name") { var name=Decode(value); p.Name=name.Length>40 ? name.Substring(0,40) : name; }
     if(field=="Symbol" && int.TryParse(value,out n)) p.Symbol=Math.Max(0,Math.Min(4,n));
     if(field=="Marker") { var mark=Decode(value); p.Marker=CleanMarker(mark); }
@@ -63,9 +66,9 @@ class Settings {
  }
  public static string CleanMarker(string value) { if(string.IsNullOrWhiteSpace(value)) return "A"; var e=System.Globalization.StringInfo.GetTextElementEnumerator(value.Trim()); return e.MoveNext() ? (string)e.Current : "A"; }
  public void Save(string file) {
-  var lines=new List<string>{"Language="+Language,"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
+  var lines=new List<string>{"QuickAudio="+QuickAudio,"Language="+Language,"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
   lines.AddRange(Widget.Lines());
-  foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); lines.Add(prefix+"Symbol="+item.Value.Symbol); lines.Add(prefix+"Marker="+Encode(item.Value.Marker)); }
+  foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"AudioId="+Encode(item.Value.AudioId)); lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); lines.Add(prefix+"Symbol="+item.Value.Symbol); lines.Add(prefix+"Marker="+Encode(item.Value.Marker)); }
   Directory.CreateDirectory(Path.GetDirectoryName(file)); string temp=file+"."+Guid.NewGuid().ToString("N")+".tmp";
   try { File.WriteAllLines(temp,lines,Encoding.UTF8); if(File.Exists(file)) File.Replace(temp,file,null); else File.Move(temp,file); } finally { if(File.Exists(temp)) File.Delete(temp); }
  }
