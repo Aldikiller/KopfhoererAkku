@@ -1,3 +1,9 @@
+# 1.3.2
+
+- Eigenes orange-graues Logo für Programm, Installer und Webseite.
+- Mehrere Icongrößen für Windows und neues Installer-Layout.
+- Keine Änderung der individuell einstellbaren Akkuanzeigen.
+
 # 1.3.1
 
 - Neue einfache Einstellungsansicht als Standard.
