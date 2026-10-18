@@ -5,9 +5,11 @@ Gerätenamen, Verbindungsstatus und von Windows bereitgestellte Akkuwerte.
 Ohne Update-Prüfung stellt sie keine Netzwerkverbindungen her. Sie sendet keine Telemetrie.
 
 Gespeichert werden höchstens zwei ausgewählte Gerätekennungen und lokale
-Einstellungen zu Warnungen, Abfrageintervall, eigenen Anzeigenamen, Gerätefarben und Anzeigemodus. Installierte Version:
+Einstellungen zu Warnungen, Abfrageintervall, eigenen Anzeigenamen, Gerätefarben, Schrift, Symbolen, Batterieform, Sprache, Update-Prüfung und Widget-Anzeige. Installierte Version:
 `%LOCALAPPDATA%\KopfhoererAkku`; portable Version: `Einstellungen` neben der EXE.
 Autostart nutzt eine lokale Verknüpfung im Autostartordner des angemeldeten Nutzers.
+
+Abfragezeiten und zuletzt gelesene Akkuwerte für die Geräteübersicht bleiben im Arbeitsspeicher der laufenden Anwendung und werden nicht übertragen. Die App beobachtet lokale Bluetooth-Verbindungsereignisse sowie Standby und Entsperren, um erneut abzufragen.
 
 Die freiwillige Diagnose `--diagnose` erzeugt `Diagnose.txt` im Datenordner.
 Sie kann Gerätenamen, Bluetooth-Adressen und Gerätekennungen enthalten.
@@ -27,3 +29,4 @@ https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-s
 Die Prüfung lädt keine Programmupdates herunter und installiert nichts.
 Die Downloadseite öffnet sich nur nach einem ausdrücklichen Klick oder einer
 Bestätigung im normalen Browser. Beim Browseraufruf gelten dessen Einstellungen.
+

@@ -33,7 +33,7 @@ Ein Klick auf ein Akkusymbol öffnet die Geräteübersicht. Dort stehen beide Ko
 3. Im Tool bis zu zwei Geräte auswählen und auf **Übernehmen** klicken. Falls ein Gerät mehrmals auftaucht, den Eintrag mit Akkustand nehmen.
 4. Sind die Symbole nicht neben der Uhr zu sehen, unter **^** nachschauen und herausziehen.
 
-Ein Doppelklick auf ein Symbol öffnet die Einstellungen. Unter **Namen & Anzeige** kannst du jeden Kopfhörer umbenennen und seine Farbe auswählen. Das ändert nur die Anzeige im Tool, nicht den Bluetooth-Namen in Windows. Dort kannst du auch zwischen der Batterieanzeige und **nur Zahl mit Kopfhörerzeichen** wechseln.
+Ein Klick auf ein Symbol im Infobereich öffnet die Geräteübersicht, ein Doppelklick die Einstellungen. Für die folgenden Detailregler **Erweiterte Einstellungen** aktivieren. Unter **Namen & Anzeige** kannst du jeden Kopfhörer umbenennen und seine Farbe auswählen. Das ändert nur die Anzeige im Tool, nicht den Bluetooth-Namen in Windows. Dort kannst du auch zwischen der Batterieanzeige und **nur Zahl mit Kopfhörerzeichen** wechseln.
 
 Unter **Updates** kannst du nach neuen Versionen suchen und die GitHub-Downloadseite öffnen. Auf Wunsch prüft das Tool auch bei jedem Programmstart. Das ist zunächst ausgeschaltet. Es installiert nichts automatisch.
 
@@ -43,7 +43,7 @@ Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder aus
 
 ## Einfache und erweiterte Einstellungen
 
-Ab Version 1.4.0 zeigt das Einstellungsfenster zunächst die wichtigsten Optionen: Akkuwarnung, Anzeigeort, Darstellungsart und Sprache. Mit **Erweiterte Einstellungen** oben werden die bisherigen Detailregler eingeblendet. Noch nicht gespeicherte Änderungen bleiben beim Umschalten erhalten. **Speichern** übernimmt sie; **Schließen** verwirft sie.
+Das Einstellungsfenster zeigt zunächst die wichtigsten Optionen: Akkuwarnung, Anzeigeort, Darstellungsart und Sprache. Mit **Erweiterte Einstellungen** oben werden die bisherigen Detailregler eingeblendet. Noch nicht gespeicherte Änderungen bleiben beim Umschalten erhalten. **Speichern** übernimmt sie; **Schließen** verwirft sie.
 
 ## Anzeige anpassen
 
@@ -110,4 +110,5 @@ SignPath Foundation hat den Antrag vorerst wegen zu geringer öffentlicher Bekan
 ## Sprache
 
 Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Français oder Українська wählen. Nach Speichern wird die Oberfläche sofort umgestellt. Die Auswahl bleibt beim nächsten Start erhalten. Standard ist Deutsch.
+
 
