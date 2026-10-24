@@ -21,6 +21,8 @@ class Settings {
  public string Language="de";
  public WidgetOptions Widget=new WidgetOptions();
  public FontFamily FontFamily() { try { var f=new FontFamily(FontName); if(f.IsStyleAvailable(FontStyle.Bold)) return f; f.Dispose(); } catch(ArgumentException) {} return new FontFamily("Segoe UI"); }
+ public string PulseColor="#FF9119";
+ public bool PulseLow=false; public int PulseThreshold=20;
  public bool QuickAudio=true;
  public bool Warnings=true,CheckAtStartup=false,NumbersOnly=false;
  public int Threshold=20,Interval=30,TextSize=21,BatteryShape=0,BatteryRadius=4,BatteryStroke=13,BatteryWidth=28,BatteryHeight=27;
@@ -45,6 +47,9 @@ class Settings {
    if(key=="BatteryWidth" && int.TryParse(value,out n)) x.BatteryWidth=Math.Max(16,Math.Min(28,n));
    if(key=="BatteryHeight" && int.TryParse(value,out n)) x.BatteryHeight=Math.Max(16,Math.Min(27,n));
    if(key=="TextColor" && (value=="Auto" || Regex.IsMatch(value,@"\A#[0-9a-fA-F]{6}\z"))) x.TextColor=value;
+   if(key=="PulseColor" && Regex.IsMatch(value,@"\A#[0-9a-fA-F]{6}\z")) x.PulseColor=value;
+   if(key=="PulseLow" && bool.TryParse(value,out b)) x.PulseLow=b;
+   if(key=="PulseThreshold" && int.TryParse(value,out n)) x.PulseThreshold=Math.Max(1,Math.Min(90,n));
    if(key=="Warnings" && bool.TryParse(value,out b)) x.Warnings=b;
    if(key=="CheckAtStartup" && bool.TryParse(value,out b)) x.CheckAtStartup=b;
    if(key=="NumbersOnly" && bool.TryParse(value,out b)) x.NumbersOnly=b;
@@ -66,7 +71,7 @@ class Settings {
  }
  public static string CleanMarker(string value) { if(string.IsNullOrWhiteSpace(value)) return "A"; var e=System.Globalization.StringInfo.GetTextElementEnumerator(value.Trim()); return e.MoveNext() ? (string)e.Current : "A"; }
  public void Save(string file) {
-  var lines=new List<string>{"QuickAudio="+QuickAudio,"Language="+Language,"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
+  var lines=new List<string>{"PulseColor="+PulseColor,"PulseLow="+PulseLow,"PulseThreshold="+PulseThreshold,"QuickAudio="+QuickAudio,"Language="+Language,"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
   lines.AddRange(Widget.Lines());
   foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"AudioId="+Encode(item.Value.AudioId)); lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); lines.Add(prefix+"Symbol="+item.Value.Symbol); lines.Add(prefix+"Marker="+Encode(item.Value.Marker)); }
   Directory.CreateDirectory(Path.GetDirectoryName(file)); string temp=file+"."+Guid.NewGuid().ToString("N")+".tmp";

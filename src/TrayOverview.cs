@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -59,7 +59,13 @@ partial class Tray {
   var device=devices.FirstOrDefault(d=>selected.Count>slot && d.Id==selected[slot]);if(device==null)return L.T("Kopfhörer-Akku · Doppelklick: Einstellungen");
   string name=(IsAudioActive(device.Id,slot) ? "✓ " : "")+settings.Name(device);if(name.Length>24)name=name.Substring(0,23)+"…";
   string value=EffectiveConnection(device)==true && device.Battery.HasValue ? device.Battery+"%" : "–";
-  string text=name+" · "+value+" · "+(error.Length>0 ? L.T("Abfrage fehlgeschlagen") : QueryAge(device.Id));return text.Length>63 ? text.Substring(0,63) : text;
+  string text;
+  if(EffectiveConnection(device)!=true) {
+   int? last=readings.Get(device.Id).LastValue ?? device.Battery;
+   if(name.Length>12) name=name.Substring(0,11)+"…";
+   text=name+" · "+(EffectiveConnection(device)==false ? L.T("Getrennt") : L.T("Verbindung unbekannt"))+(last.HasValue ? " · "+L.T("Zuletzt: ")+last+"%" : "");
+  } else text=name+" · "+value+" · "+(error.Length>0 ? L.T("Abfrage fehlgeschlagen") : QueryAge(device.Id));
+  return text.Length>63 ? text.Substring(0,63) : text;
  }
  void AddOverviewClicks(NotifyIcon icon) {
   if(clickDelay==null){clickDelay=new System.Windows.Forms.Timer{Interval=SystemInformation.DoubleClickTime};clickDelay.Tick+=(s,e)=>{clickDelay.Stop();if(settings.QuickAudio)SwitchAudio(clickSlot);else ShowOverview();};}

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Aldikiller
 using System;
 using System.Collections.Generic;
@@ -18,13 +18,13 @@ using System.Text.RegularExpressions;
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
 [assembly: AssemblyProduct("Kopfhörer-Akku")]
-[assembly: AssemblyVersion("1.6.1.0")]
-[assembly: AssemblyFileVersion("1.6.1.0")]
-[assembly: AssemblyInformationalVersion("1.6.1")]
+[assembly: AssemblyVersion("1.6.2.0")]
+[assembly: AssemblyFileVersion("1.6.2.0")]
+[assembly: AssemblyInformationalVersion("1.6.2")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="1.6.1";
+ public const string Version="1.6.2";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;
@@ -130,18 +130,22 @@ partial class Tray : ApplicationContext {
   if(demo) { selected=new List<string>{"demo-1","demo-2"}; devices=new List<Device>{new Device{Id="demo-1",Name="Kopfhörer 1",Battery=75,Connected=true},new Device{Id="demo-2",Name="Kopfhörer 2",Battery=65,Connected=true}}; lastScan=DateTime.Now; }
   if(demo) readings.Observe(devices,DateTime.UtcNow);
   firstRun=selected.Count==0;
-  Render(); timer.Interval=1000; int elapsed=0; timer.Tick+=(s,e)=> { if(stopEvent.WaitOne(0)) { ExitThread(); return; } if(noticeUntil!=DateTime.MinValue && DateTime.Now>noticeUntil) { noticeUntil=DateTime.MinValue; Render(); } if(updateOverview!=null)updateOverview(); elapsed++; if(elapsed>=settings.Interval) { elapsed=0; Refresh(); } }; timer.Start(); if(!demo) { StartObservers(); Refresh(); if(settings.CheckAtStartup) CheckUpdates(false); }
+  StartPulse(); Render(); timer.Interval=1000; int elapsed=0; timer.Tick+=(s,e)=> { if(stopEvent.WaitOne(0)) { ExitThread(); return; } if(noticeUntil!=DateTime.MinValue && DateTime.Now>noticeUntil) { noticeUntil=DateTime.MinValue; Render(); } if(updateOverview!=null)updateOverview(); elapsed++; if(elapsed>=settings.Interval) { elapsed=0; Refresh(); } }; timer.Start(); if(!demo) { StartObservers(); Refresh(); if(settings.CheckAtStartup) CheckUpdates(false); }
  }
  static GraphicsPath Rounded(float x,float y,float w,float h,float r) {
   var p=new GraphicsPath(); r=Math.Max(0,Math.Min(r,Math.Min(w,h)/2)); if(r<0.1f) { p.AddRectangle(new RectangleF(x,y,w,h)); return p; } p.AddArc(x,y,r*2,r*2,180,90); p.AddArc(x+w-r*2,y,r*2,r*2,270,90); p.AddArc(x+w-r*2,y+h-r*2,r*2,r*2,0,90); p.AddArc(x,y+h-r*2,r*2,r*2,90,90); p.CloseFigure(); return p;
  }
  static Icon CopyIcon(Bitmap b) { var h=b.GetHicon(); try { return (Icon)Icon.FromHandle(h).Clone(); } finally { Native.DestroyIcon(h); } }
- public static Icon BatteryIcon(int? value,int slot,bool? connected=true,Color? custom=null,bool numbersOnly=false,Settings look=null,int symbol=0,string marker="A",bool audioActive=false) {
-  using(var b=new Bitmap(32,32)) using(var g=Graphics.FromImage(b)) {
-   g.SmoothingMode=SmoothingMode.AntiAlias; g.Clear(Color.Transparent);
+ public static Icon BatteryIcon(int? value,int slot,bool? connected=true,Color? custom=null,bool numbersOnly=false,Settings look=null,int symbol=0,string marker="A",bool audioActive=false,float pulse=0,int pixels=32) {
+  if(connected!=true) value=null;
+  pixels=Math.Max(16,Math.Min(64,pixels));
+  using(var b=new Bitmap(128,128)) using(var g=Graphics.FromImage(b)) {
+   g.ScaleTransform(4,4); g.SmoothingMode=SmoothingMode.AntiAlias; g.PixelOffsetMode=PixelOffsetMode.HighQuality; g.Clear(Color.Transparent);
    Color bg=custom ?? (slot==0 ? Color.FromArgb(19,112,91) : Color.FromArgb(28,87,159));
    if(value.HasValue && value<=20) bg=Color.FromArgb(166,35,49);
    if(connected!=true) bg=connected==false ? Color.FromArgb(75,75,75) : Color.FromArgb(103,86,39);
+   Color pulseColor=ColorTranslator.FromHtml(look==null ? "#FF9119" : look.PulseColor);
+   if(pulse>0 && connected==true) bg=Color.FromArgb((int)(bg.R+(pulseColor.R-bg.R)*pulse),(int)(bg.G+(pulseColor.G-bg.G)*pulse),(int)(bg.B+(pulseColor.B-bg.B)*pulse));
    Color fg=0.2126*bg.R+0.7152*bg.G+0.0722*bg.B>155 ? Color.Black : Color.White;
    float stroke=look==null ? 1.3f : look.BatteryStroke/10f;
    float width=look==null ? 28 : look.BatteryWidth, height=look==null ? 27 : look.BatteryHeight;
@@ -178,7 +182,7 @@ partial class Tray : ApplicationContext {
      if(filled) { using(var brush=new SolidBrush(fg)) g.FillPath(brush,mark); } else using(var pen=new Pen(fg,2.1f)) g.DrawPath(pen,mark);
     }
    }
-   string text=connected==false ? "×" : value.HasValue ? value.Value.ToString() : connected==null ? "?" : "–";
+   string text=connected==false ? "–" : value.HasValue ? value.Value.ToString() : connected==null ? "?" : "–";
    using(var path=new GraphicsPath()) using(var family=(look==null ? new FontFamily("Segoe UI") : look.FontFamily())) {
     path.AddString(text,family,(int)FontStyle.Bold,(look==null ? 21f : look.TextSize)*(value==100 ? 16f/21f : 1f),PointF.Empty,StringFormat.GenericTypographic);
     var bounds=path.GetBounds(); float availableWidth=numbersOnly ? 26.2f : bodyWidth-2, availableHeight=numbersOnly ? 16.5f : Math.Min(16.5f,bodyHeight-3); float scale=Math.Min(1f,Math.Min(availableWidth/bounds.Width,availableHeight/bounds.Height)); using(var matrix=new Matrix()) { matrix.Translate((numbersOnly ? 14.6f : left+width/2)-bounds.Width*scale/2,(numbersOnly ? 22f : top+bodyHeight-availableHeight/2-1.5f)-bounds.Height*scale/2); matrix.Scale(scale,scale); matrix.Translate(-bounds.Left,-bounds.Top); path.Transform(matrix); }
@@ -186,7 +190,8 @@ partial class Tray : ApplicationContext {
     using(var brush=new SolidBrush(look!=null && look.TextColor!="Auto" ? ColorTranslator.FromHtml(look.TextColor) : numbersOnly ? bg : fg)) g.FillPath(brush,path);
    }
    if(audioActive)AudioBadge(g);
-   return CopyIcon(b);
+   if(pulse>0 && connected==true) using(var glow=new Pen(Color.FromArgb((int)(100+155*pulse),pulseColor),1.5f)) using(var edge=Rounded(1,1,29,29,5)) g.DrawPath(glow,edge);
+   using(var result=new Bitmap(pixels,pixels,System.Drawing.Imaging.PixelFormat.Format32bppPArgb)) using(var scaled=Graphics.FromImage(result)) { scaled.CompositingMode=CompositingMode.SourceCopy; scaled.InterpolationMode=InterpolationMode.HighQualityBicubic; scaled.PixelOffsetMode=PixelOffsetMode.HighQuality; using(var attributes=new System.Drawing.Imaging.ImageAttributes()) { attributes.SetWrapMode(WrapMode.TileFlipXY); scaled.DrawImage(b,new Rectangle(0,0,pixels,pixels),0,0,128,128,GraphicsUnit.Pixel,attributes); } return CopyIcon(result); }
   }
  }
  void Refresh() {
@@ -222,7 +227,7 @@ partial class Tray : ApplicationContext {
   while(icons.Count<count) { var ni=new NotifyIcon(); AddOverviewClicks(ni); icons.Add(ni); }
   while(icons.Count>count) { var ni=icons[icons.Count-1]; ni.Visible=false; if(ni.Icon!=null) ni.Icon.Dispose(); ni.Dispose(); icons.RemoveAt(icons.Count-1); }
   for(int i=0;i<count;i++) { var ni=icons[i]; var d=selected.Count>i ? devices.FirstOrDefault(x=>x.Id==selected[i]) : null;
-   var old=ni.Icon; ni.Icon=BatteryIcon(error.Length==0 && d!=null ? d.Battery : null,i,d!=null ? EffectiveConnection(d) : null,settings.Profile(selected.Count>i ? selected[i] : null,i).Color,settings.NumbersOnly,settings,settings.Profile(selected.Count>i ? selected[i] : null,i).Symbol,settings.Profile(selected.Count>i ? selected[i] : null,i).Marker,selected.Count>i && IsAudioActive(selected[i],i)); if(old!=null) old.Dispose();
+   var old=ni.Icon; ni.Icon=BatteryIcon(error.Length==0 && d!=null ? d.Battery : null,i,d!=null ? EffectiveConnection(d) : null,settings.Profile(selected.Count>i ? selected[i] : null,i).Color,settings.NumbersOnly,settings,settings.Profile(selected.Count>i ? selected[i] : null,i).Symbol,settings.Profile(selected.Count>i ? selected[i] : null,i).Marker,selected.Count>i && IsAudioActive(selected[i],i),0,SystemInformation.SmallIconSize.Width); if(old!=null) old.Dispose();
    ni.Text=HoverText(i);
    var menu=ni.ContextMenuStrip; ni.ContextMenuStrip=Menu(); if(menu!=null) menu.Dispose(); ni.Visible=settings.Widget.Mode!=DisplayMode.Widget || (i==0 && DateTime.Now<noticeUntil);
   }
@@ -267,7 +272,7 @@ partial class Tray : ApplicationContext {
   }
  }
 
- string Describe(Device d) { return settings.Name(d)+" · "+d.Status+" · "+(d.Connected==false ? L.T("kein aktueller Akkustand") : d.Battery.HasValue ? d.Battery+(d.Connected==null ? L.T(" % (gespeichert)") : " %") : L.T("kein Akkustand")); }
+ string Describe(Device d) { bool? connected=EffectiveConnection(d); return settings.Name(d)+" · "+(connected==false ? L.T("Getrennt") : connected==true ? L.T("Verbunden") : L.T("Verbindung unbekannt"))+" · "+(connected==true && d.Battery.HasValue ? d.Battery+" %" : L.T("kein aktueller Akkustand")); }
 
  void CheckUpdates(bool manual) {
   if(updateBusy || exiting) return; updateBusy=true; if(updateStatus!=null) updateStatus(); Render();
@@ -286,17 +291,29 @@ partial class Tray : ApplicationContext {
  public void Options(bool preview=false) {
   if(settingsForm!=null) { settingsForm.Activate(); return; }
   var f=new Form{Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),Text=L.T("Kopfhörer-Akku · Einstellungen"),ClientSize=new Size(870,630),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f; Action liveRefresh=null;
-  var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage(L.T("Allgemein")); var appearance=new TabPage(L.T("Namen & Anzeige")); var updates=new TabPage(L.T("Updates")); var design=new TabPage(L.T("Schrift & Batterie")); var widgetTab=new TabPage(L.T("Anzeige & Widget")); tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab});
-  var status=new Label{Left=14,Top=14,Width=544,Height=112}; var updateLabel=new Label{Left=14,Top=190,Width=538,Height=60};
+  var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage(L.T("Allgemein")){AutoScroll=true}; var appearance=new TabPage(L.T("Namen & Anzeige")); var updates=new TabPage(L.T("Updates")); var design=new TabPage(L.T("Schrift & Batterie")); var widgetTab=new TabPage(L.T("Anzeige & Widget")); tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab});
+  var status=new Label{Left=14,Top=14,Width=544,Height=98}; var updateLabel=new Label{Left=14,Top=190,Width=538,Height=60};
   updateStatus=()=> { status.Text=string.Join("\n",selected.Select(id=> { var d=devices.FirstOrDefault(x=>x.Id==id); return d==null ? L.T("Gerät nicht gefunden · Verbindung unbekannt") : Describe(d); }).ToArray())+L.T("\n\nLetzte Abfrage: ")+(lastScan.HasValue ? lastScan.Value.ToString("HH:mm:ss") : L.T("noch keine"))+(error.Length>0 ? L.T("\nFehler: ")+error : ""); updateLabel.Text=updateStatusText; if(liveRefresh!=null) liveRefresh(); }; updateStatus();
-  var warn=new CheckBox{Left=14,Top=136,Width=530,Text=L.T("Bei niedrigem Akku benachrichtigen"),Checked=settings.Warnings};
-  var threshold=new NumericUpDown{Left=245,Top=175,Width=75,Minimum=1,Maximum=90,Value=settings.Threshold};
-  var interval=new NumericUpDown{Left=245,Top=217,Width=75,Minimum=30,Maximum=300,Value=settings.Interval};
-  var hint=new Label{Left=14,Top=268,Width=538,Height=92,Text=L.T("Beide ausgewählten Kopfhörer behalten ein eigenes Symbol.\nRot: niedriger Akku · Grau ×: getrennt · Gelb: Status unbekannt.\nWarnungen erscheinen nur bei bestätigter Verbindung.\nEigene Namen ändern den Bluetooth-Namen in Windows nicht.")};
-  var test=new Button{Left=14,Top=376,Width=210,Height=32,Text=L.T("Benachrichtigung testen")}; test.Click+=(a,b)=> { if(icons.Count>0) Notify(5000,"Kopfhörer-Akku · Test",L.T("So erscheint eine Akkuwarnung."),ToolTipIcon.Info); };
-  var language=new ComboBox{AccessibleName="Language",Left=14,Top=438,Width=240,DropDownStyle=ComboBoxStyle.DropDownList}; language.Items.AddRange(new[]{"Deutsch","English","Español","Français","Українська"}); language.SelectedIndex=Array.IndexOf(L.Codes,settings.Language);
-  general.Controls.Add(new Label{Left=14,Top=414,Width=530,Text="Sprache / Language"}); general.Controls.Add(language);
-  general.Controls.AddRange(new Control[]{status,warn,new Label{Left=14,Top=178,Width=225,Text=L.T("Warnung bei / unter (%)")},threshold,new Label{Left=14,Top=220,Width=225,Text=L.T("Abfrage alle (Sekunden)")},interval,hint,test});
+  var warn=new CheckBox{Left=14,Top=122,Width=530,Text=L.T("Bei niedrigem Akku benachrichtigen"),Checked=settings.Warnings};
+  var threshold=new NumericUpDown{Left=245,Top=160,Width=75,Minimum=1,Maximum=90,Value=settings.Threshold};
+  var interval=new NumericUpDown{Left=245,Top=202,Width=75,Minimum=30,Maximum=300,Value=settings.Interval};
+  var hint=new Label{Left=14,Top=244,Width=538,Height=72,Text=L.T("Beide ausgewählten Kopfhörer behalten ein eigenes Symbol.\nRot: niedriger Akku · Grau –: getrennt · Gelb: Status unbekannt.\nWarnungen erscheinen nur bei bestätigter Verbindung.\nEigene Namen ändern den Bluetooth-Namen in Windows nicht.")};
+  var test=new Button{Left=14,Top=326,Width=230,Height=32,Text=L.T("Benachrichtigung testen")}; test.Click+=(a,b)=> { if(icons.Count>0) Notify(5000,"Kopfhörer-Akku · Test",L.T("So erscheint eine Akkuwarnung."),ToolTipIcon.Info); };
+  var language=new ComboBox{AccessibleName="Language",Left=14,Top=390,Width=300,DropDownStyle=ComboBoxStyle.DropDownList}; language.Items.AddRange(new[]{"Deutsch","English","Español","Français","Українська"}); language.SelectedIndex=Array.IndexOf(L.Codes,settings.Language);
+  general.Controls.Add(new Label{Left=14,Top=366,Width=530,Text="Sprache / Language"}); general.Controls.Add(language);
+  general.Controls.AddRange(new Control[]{status,warn,new Label{Left=14,Top=163,Width=225,Text=L.T("Warnung bei / unter (%)")},threshold,new Label{Left=14,Top=205,Width=225,Text=L.T("Abfrage alle (Sekunden)")},interval,hint,test});
+  var pulseTab=new TabPage(L.T("Leuchtwarnung"));
+  var pulseEnabled=new CheckBox{Left=14,Top=20,Width=530,Text=L.T("Akkusymbol im Infobereich pulsieren lassen"),Checked=settings.PulseLow};
+  var pulseThreshold=new NumericUpDown{Left=300,Top=62,Width=80,Minimum=1,Maximum=90,Value=settings.PulseThreshold};
+  pulseTab.Controls.AddRange(new Control[]{pulseEnabled,new Label{Left=14,Top=65,Width=280,Text=L.T("Pulsieren bei / unter (%)")},pulseThreshold,new Label{Left=14,Top=110,Width=530,Height=80,Text=L.T("Nur bei bestätigter Verbindung und bekanntem Akkustand. Die Vorschau zeigt 15 %. Akkuabfragen bleiben unverändert.")}});
+  var pulsePreview=new PictureBox{Left=30,Top=210,Width=96,Height=96,SizeMode=PictureBoxSizeMode.Zoom,BackColor=Color.FromArgb(30,30,30)}; pulseTab.Controls.Add(pulsePreview);
+  var pulseLook=new Settings{PulseColor=settings.PulseColor};
+  var pulseColorButton=new Button{Left=160,Top=218,Width=220,Height=32,Text=L.T("Pulsfarbe …"),BackColor=ColorTranslator.FromHtml(pulseLook.PulseColor),UseVisualStyleBackColor=false}; pulseColorButton.ForeColor=pulseColorButton.BackColor.GetBrightness()>0.5f ? Color.Black : Color.White; pulseTab.Controls.Add(pulseColorButton);
+  var pulseTestButton=new Button{Left=160,Top=266,Width=300,Height=36,Text=L.T("Im Infobereich testen (30 s)")}; pulseTab.Controls.Add(pulseTestButton);
+  pulseTestButton.Click+=(a,b)=> { if(pulseTestColor!=null) StopPulseTest(); else { pulseTestColor=()=>pulseLook.PulseColor; pulseTestUntil=DateTime.UtcNow.AddSeconds(30); } };
+  var pulsePreviewTimer=new System.Windows.Forms.Timer{Interval=150};
+  Action drawPulsePreview=()=> { using(var icon=BatteryIcon(15,0,true,null,false,pulseLook,0,"A",false,pulseEnabled.Checked && 15<=pulseThreshold.Value ? PulseAmount() : 0)) { var old=pulsePreview.Image; pulsePreview.Image=icon.ToBitmap(); if(old!=null) old.Dispose(); } }; pulsePreviewTimer.Tick+=(a,b)=> { drawPulsePreview(); pulseTestButton.Text=L.T(pulseTestColor!=null ? "Test beenden" : "Im Infobereich testen (30 s)"); }; pulseEnabled.CheckedChanged+=(a,b)=>drawPulsePreview(); pulseThreshold.ValueChanged+=(a,b)=>drawPulsePreview(); drawPulsePreview(); pulsePreviewTimer.Start();
+  pulseColorButton.Click+=(a,b)=> { using(var dialog=new ColorDialog{Color=ColorTranslator.FromHtml(pulseLook.PulseColor),FullOpen=true}) if(dialog.ShowDialog(f)==DialogResult.OK) { pulseLook.PulseColor="#"+dialog.Color.R.ToString("X2")+dialog.Color.G.ToString("X2")+dialog.Color.B.ToString("X2"); pulseColorButton.BackColor=dialog.Color; pulseColorButton.ForeColor=dialog.Color.GetBrightness()>0.5f ? Color.Black : Color.White; drawPulsePreview(); } };
   var symbolBoxes=new Dictionary<string,ComboBox>(); var markers=new Dictionary<string,TextBox>();
   var names=new Dictionary<string,TextBox>(); var colors=new Dictionary<string,Color>(); var previews=new List<PictureBox>(); var ids=selected.ToArray();
   var style=new ComboBox{Left=14,Top=352,Width=340,DropDownStyle=ComboBoxStyle.DropDownList}; style.Items.AddRange(new[]{L.T("Batterie mit Zahl und Zeichen"),L.T("Nur Zahl mit Zeichen")}); style.SelectedIndex=settings.NumbersOnly ? 1 : 0;
@@ -341,7 +358,7 @@ partial class Tray : ApplicationContext {
       using(var format=new StringFormat{Trimming=StringTrimming.EllipsisCharacter,FormatFlags=StringFormatFlags.NoWrap}) g.DrawString(title,labelFont,SystemBrushes.ControlText,new RectangleF(0,y,236,22),format);
       using(var dark=new SolidBrush(Color.FromArgb(30,30,30))) g.FillRectangle(dark,0,y+26,114,132);
       using(var light=new SolidBrush(Color.FromArgb(240,240,240))) g.FillRectangle(light,120,y+26,114,132);
-      using(var image=icon.ToBitmap()) { g.InterpolationMode=InterpolationMode.NearestNeighbor; g.PixelOffsetMode=PixelOffsetMode.Half; g.DrawImage(image,new Rectangle(25,y+34,64,64)); g.DrawImage(image,new Rectangle(145,y+34,64,64)); g.DrawImageUnscaled(image,41,y+114); g.DrawImageUnscaled(image,161,y+114); }
+      using(var image=icon.ToBitmap()) { g.InterpolationMode=InterpolationMode.HighQualityBicubic; g.PixelOffsetMode=PixelOffsetMode.HighQuality; g.DrawImage(image,new Rectangle(25,y+34,64,64)); g.DrawImage(image,new Rectangle(145,y+34,64,64)); g.DrawImageUnscaled(image,41,y+114); g.DrawImageUnscaled(image,161,y+114); }
      }
     }
     var previous=livePicture.Image; livePicture.Image=(Bitmap)canvas.Clone(); if(previous!=null) previous.Dispose();
@@ -383,7 +400,7 @@ partial class Tray : ApplicationContext {
   updates.Controls.AddRange(new Control[]{autoCheck,privacy,new Label{Left=14,Top=169,Width=530,Text=L.T("Installiert: ")+AppPaths.Version},updateLabel,check,downloads});
   var save=new Button{Left=14,Top=506,Width=125,Height=32,Text=L.T("Speichern")}; save.Click+=(a,b)=> {
    widgetGrid.Focus(); widgetLook.Normalize(); if(widgetLook.X==originalWidgetX) widgetLook.X=settings.Widget.X; if(widgetLook.Y==originalWidgetY) widgetLook.Y=settings.Widget.Y;
-   var next=new Settings{QuickAudio=settings.QuickAudio,Language=L.Codes[Math.Max(0,language.SelectedIndex)],Widget=widgetLook.Copy(),Warnings=warn.Checked,Threshold=(int)threshold.Value,Interval=(int)interval.Value,CheckAtStartup=autoCheck.Checked,NumbersOnly=style.SelectedIndex==1,FontName=look.FontName,TextSize=look.TextSize,BatteryShape=look.BatteryShape,TextColor=look.TextColor,BatteryRadius=look.BatteryRadius,BatteryStroke=look.BatteryStroke,BatteryWidth=look.BatteryWidth,BatteryHeight=look.BatteryHeight};
+   var next=new Settings{PulseColor=pulseLook.PulseColor,PulseLow=pulseEnabled.Checked,PulseThreshold=(int)pulseThreshold.Value,QuickAudio=settings.QuickAudio,Language=L.Codes[Math.Max(0,language.SelectedIndex)],Widget=widgetLook.Copy(),Warnings=warn.Checked,Threshold=(int)threshold.Value,Interval=(int)interval.Value,CheckAtStartup=autoCheck.Checked,NumbersOnly=style.SelectedIndex==1,FontName=look.FontName,TextSize=look.TextSize,BatteryShape=look.BatteryShape,TextColor=look.TextColor,BatteryRadius=look.BatteryRadius,BatteryStroke=look.BatteryStroke,BatteryWidth=look.BatteryWidth,BatteryHeight=look.BatteryHeight};
    foreach(var item in settings.Profiles) next.Profiles[item.Key]=new DeviceProfile(item.Value.ColorHex){Name=item.Value.Name,Symbol=item.Value.Symbol,AudioId=item.Value.AudioId,Marker=item.Value.Marker};
    foreach(var id in ids) next.Profiles[id]=new DeviceProfile("#"+colors[id].R.ToString("X2")+colors[id].G.ToString("X2")+colors[id].B.ToString("X2")){Name=names[id].Text.Trim(),Symbol=symbolBoxes[id].SelectedIndex,AudioId=settings.Profile(id,Array.IndexOf(ids,id)).AudioId,Marker=Settings.CleanMarker(markers[id].Text)};
    try { next.Save(SettingsPath); if(next.Threshold!=settings.Threshold || next.Warnings!=settings.Warnings) warnings.Reset(); bool changedLanguage=settings.Language!=next.Language; settings=next; L.Language=settings.Language; if(changedLanguage) { updateStatusText=L.T("Noch nicht geprüft"); if(widget!=null) { widget.Close(); widget.Dispose(); widget=null; } if(picker!=null) picker.Close(); } Render(); Refresh(); f.Close(); if(changedLanguage) Options(); } catch(Exception ex) { MessageBox.Show(L.T("Speichern fehlgeschlagen: ")+ex.Message); }
@@ -407,16 +424,16 @@ partial class Tray : ApplicationContext {
    tabs.TabPages.Clear();
    if(advanced.Checked) {
     for(int i=0;i<shared.Length;i++) { originalParents[i].Controls.Add(shared[i]); shared[i].Bounds=originalBounds[i]; }
-    tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab});
+    tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab,pulseTab});
    } else {
     foreach(var control in shared) simpleTab.Controls.Add(control);
     status.SetBounds(14,52,535,78); warn.SetBounds(14,141,535,28); threshold.SetBounds(340,175,90,26);
     widgetMode.SetBounds(14,252,535,28); style.SetBounds(14,320,535,28); language.SetBounds(14,388,310,28); interval.SetBounds(340,422,90,26);
-    tabs.TabPages.AddRange(new[]{simpleTab,updates});
+    tabs.TabPages.AddRange(new[]{simpleTab,pulseTab,updates});
    }
   };
   advanced.CheckedChanged+=(a,b)=>setSettingsMode(); setSettingsMode();
-  f.Controls.AddRange(new Control[]{tabs,save,choose,refresh,cancel}); f.FormClosed+=(a,b)=> { liveRefresh=null; if(widgetPreview.Image!=null) widgetPreview.Image.Dispose(); if(livePicture.Image!=null) livePicture.Image.Dispose(); updateStatus=null; settingsForm=null; foreach(var picture in previews) if(picture.Image!=null) picture.Image.Dispose(); f.Dispose(); }; foreach(Control control in f.Controls) control.Top+=32; f.Controls.Add(advanced); f.Show();
+  f.Controls.AddRange(new Control[]{tabs,save,choose,refresh,cancel}); f.FormClosed+=(a,b)=> { StopPulseTest(); pulsePreviewTimer.Dispose(); if(pulsePreview.Image!=null) pulsePreview.Image.Dispose(); liveRefresh=null; if(widgetPreview.Image!=null) widgetPreview.Image.Dispose(); if(livePicture.Image!=null) livePicture.Image.Dispose(); updateStatus=null; settingsForm=null; foreach(var picture in previews) if(picture.Image!=null) picture.Image.Dispose(); f.Dispose(); }; foreach(Control control in f.Controls) control.Top+=32; f.Controls.Add(advanced); f.Show();
   if(widgetGrid.SelectedGridItem!=null) { var root=widgetGrid.SelectedGridItem; while(root.Parent!=null) root=root.Parent; foreach(GridItem group in root.GridItems) if(group.GridItemType==GridItemType.Category && group.Label==L.T("1. Anzeige") && group.GridItems.Count>0) { group.Expanded=true; widgetGrid.SelectedGridItem=group.GridItems[0]; break; } }
   if(preview) { using(var basic=new Bitmap(f.Width,f.Height)) { f.DrawToBitmap(basic,new Rectangle(0,0,f.Width,f.Height)); basic.Save(AppPaths.Report("Einstellungen-Einfach.png")); } advanced.Checked=true; File.WriteAllText(AppPaths.Report("Symbol-Check.txt"),"Ausgewählte Geräte: "+selected.Count+"; angelegte Symbole: "+icons.Count+"; sichtbar an Windows übergeben: "+icons.Count(x=>x.Visible)); foreach(TabPage tab in tabs.TabPages) { tabs.SelectedTab=tab; using(var bitmap=new Bitmap(f.Width,f.Height)) { f.DrawToBitmap(bitmap,new Rectangle(0,0,f.Width,f.Height)); bitmap.Save(AppPaths.Report("Einstellungen-"+tabs.SelectedIndex+".png")); } }
    if(ids.Length>0) { symbolBoxes[ids[0]].SelectedIndex=3; markers[ids[0]].Text="A"; if(ids.Length>1) symbolBoxes[ids[1]].SelectedIndex=1; useSample.Checked=true; sample.Value=15; tabs.SelectedTab=appearance; using(var bitmap=new Bitmap(f.Width,f.Height)) { f.DrawToBitmap(bitmap,new Rectangle(0,0,f.Width,f.Height)); bitmap.Save(AppPaths.Report("Livevorschau-Zeichen.png")); } }
@@ -435,7 +452,28 @@ partial class Tray : ApplicationContext {
   var hint=new Label{Text=L.T("Kopfhörer vor der Suche einschalten und mit Windows verbinden."),AutoSize=true}; panel.Controls.Add(save); panel.Controls.Add(reload); panel.Controls.Add(hint);
   f.Controls.Add(list); f.Controls.Add(label); f.Controls.Add(panel); f.FormClosed+=(s,e)=> { reloadPicker=false; picker=null; updatePicker=null; f.Dispose(); }; f.Show();
  }
- protected override void ExitThreadCore() { if(exiting) return; exiting=true; StopObservers(); timer.Stop(); stopEvent.Dispose(); timer.Dispose(); if(widget!=null) widget.Dispose(); if(settingsForm!=null) settingsForm.Close(); foreach(var ni in icons) { ni.Visible=false; if(ni.Icon!=null) ni.Icon.Dispose(); if(ni.ContextMenuStrip!=null) ni.ContextMenuStrip.Dispose(); ni.Dispose(); } if(picker!=null) picker.Close(); base.ExitThreadCore(); }
+ protected override void ExitThreadCore() { if(exiting) return; exiting=true; StopObservers(); pulseTimer.Dispose(); timer.Stop(); stopEvent.Dispose(); timer.Dispose(); if(widget!=null) widget.Dispose(); if(settingsForm!=null) settingsForm.Close(); foreach(var ni in icons) { ni.Visible=false; if(ni.Icon!=null) ni.Icon.Dispose(); if(ni.ContextMenuStrip!=null) ni.ContextMenuStrip.Dispose(); ni.Dispose(); } if(picker!=null) picker.Close(); base.ExitThreadCore(); }
+}
+// Both names exclude early prototypes as well as installed and portable releases.
+sealed class SingleInstance : IDisposable {
+ readonly List<Mutex> owned=new List<Mutex>();
+ public bool Acquired { get; private set; }
+ public SingleInstance() {
+  try {
+   foreach(string name in new[]{"Local\\KopfhoererAkku.Tray",AppPaths.MutexName}) {
+    var mutex=new Mutex(false,name); bool acquired=false;
+    try { try { acquired=mutex.WaitOne(0); } catch(AbandonedMutexException) { acquired=true; } }
+    finally { if(!acquired) mutex.Dispose(); }
+    if(!acquired) { Dispose(); return; }
+    owned.Add(mutex);
+   }
+   Acquired=true;
+  } catch { Dispose(); throw; }
+ }
+ public void Dispose() {
+  for(int i=owned.Count-1;i>=0;i--) { owned[i].ReleaseMutex(); owned[i].Dispose(); }
+  owned.Clear(); Acquired=false;
+ }
 }
 static class Program {
  public static void EnableAutostart() {
@@ -461,7 +499,7 @@ static class Program {
   var alignment=new LocalizedAlignmentConverter(); if((string)alignment.ConvertTo(WidgetTextAlignment.Links,typeof(string))!="Left" || (WidgetTextAlignment)alignment.ConvertFrom("Right")!=WidgetTextAlignment.Rechts) throw new Exception("Alignment translation");
   L.Language="de"; if(L.T("Speichern")!="Speichern") throw new Exception("German UI text");
 
-  ReadingTests.Run();AudioTests.Run();AudioAssignment.Test();WidgetAudioTests.Run();
+  PulseTests.Run();ReadingTests.Run();AudioTests.Run();AudioAssignment.Test();WidgetAudioTests.Run();
   var config=new Settings(); var gate=new WarningGate(); var d=new Device{Id="test",Name="Test",Battery=15,Connected=true};
   Action<bool,string> check=(ok,message)=> { if(!ok) throw new Exception(message); };
   check(gate.Check(d,config),"initial low warning"); check(!gate.Check(d,config),"no repeated warnings");
@@ -484,7 +522,7 @@ static class Program {
   check(Settings.CleanMarker("AB")=="A" && Settings.CleanMarker(" ")=="A" && Settings.CleanMarker("Ä")=="Ä","single marker normalization");
   foreach(int symbolTest in new[]{0,1,2,3,4}) foreach(bool numericTest in new[]{false,true}) using(var icon=Tray.BatteryIcon(75,0,true,Color.Teal,numericTest,new Settings(),symbolTest,"A")) check(icon.Width==32,"all marker variants");
   using(var markIcon=Tray.BatteryIcon(75,0,true,Color.Teal,false,new Settings(),0)) using(var plainIcon=Tray.BatteryIcon(75,0,true,Color.Teal,false,new Settings(),4)) using(var markImage=markIcon.ToBitmap()) using(var plainImage=plainIcon.ToBitmap()) {
-   check(markImage.GetPixel(8,10).ToArgb()==plainImage.GetPixel(8,10).ToArgb() && markImage.GetPixel(8,10).A>0,"battery remains visible through headphone gaps");
+   var gap=markImage.GetPixel(8,10); var baseGap=plainImage.GetPixel(8,10); check(Math.Abs(gap.R-baseGap.R)+Math.Abs(gap.G-baseGap.G)+Math.Abs(gap.B-baseGap.B)<40 && gap.A>240,"battery remains visible through headphone gaps");
    check(markImage.GetPixel(0,0).A==0,"mark background remains transparent");
   }
   var widgetFile=AppPaths.Report("widget-test.ini"); var widgetConfig=new Settings(); widgetConfig.Widget.Mode=DisplayMode.Beides; widgetConfig.Widget.BackgroundOpacity=0; widgetConfig.Widget.Opacity=65; widgetConfig.Widget.Width=610; widgetConfig.Widget.Height=180; widgetConfig.Widget.X=-450; widgetConfig.Widget.Y=140; widgetConfig.Widget.Horizontal=true; widgetConfig.Widget.FontName="Arial"; widgetConfig.Widget.Foreground=Color.Gold; widgetConfig.Save(widgetFile); var widgetLoaded=Settings.Read(widgetFile).Widget; File.Delete(widgetFile);
@@ -512,6 +550,7 @@ static class Program {
   if(args.Contains("--selftest")) { try { SelfTest(); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Testbericht.txt"),"FEHLER: "+e); Environment.ExitCode=1; } return; }
   Application.EnableVisualStyles(); Application.SetCompatibleTextRenderingDefault(false);
   if(args.Contains("--language-check")) { string dir=AppPaths.Report("language-ui"); Directory.CreateDirectory(dir); using(var context=new Tray(true,"de",dir)) context.CheckLanguages(); using(var context=new Tray(true,null,dir)) { if(L.Language!="en") throw new Exception("Language restart failed"); context.ExitThread(); } File.WriteAllText(AppPaths.Report("Language-Test.txt"),"OK: German/English/Spanish/French/Ukrainian switching, settings windows rebuilt, persistence and restart."); return; }
+  if(args.Contains("--pulse-check")) { using(var context=new Tray(true,"de")) context.CheckPulseButton(); return; }
   if(args.Contains("--quiet-ui-check")) { using(var context=new Tray(true,"de")) { context.QuietOverviewCheck();context.ExitThread(); } return; }
   if(args.Contains("--audio-check")) { using(var context=new Tray(true,"de")) { context.AudioCheck(args.Contains("--same-output"));context.ExitThread(); } return; }
   if(args.Contains("--audio-options-check")) { using(var context=new Tray(true,args.Contains("--english") ? "en" : "de")) { context.AudioOptionsPreview();context.ExitThread(); } return; }
@@ -541,8 +580,8 @@ static class Program {
   if(args.Contains("--enable-autostart")) { try { EnableAutostart(); File.WriteAllText(AppPaths.Report("Autostart-Status.txt"),"Aktiv: Windows-Autostartverknüpfung"); } catch(Exception e) { File.WriteAllText(AppPaths.Report("Autostart-Status.txt"),e.ToString()); Environment.ExitCode=1; } return; }
 
   if(args.Contains("--replace") && !StopRunning()) { MessageBox.Show(L.T("Die laufende Version konnte nicht beendet werden. Bitte über das Symbol beenden.")); return; }
-  bool created; using(var mutex=new Mutex(true,AppPaths.MutexName,out created)) {
-   if(!created) { MessageBox.Show(L.T("Kopfhörer-Akku läuft bereits. Die Symbole stehen ggf. unter ^ neben der Uhr."),"Kopfhörer-Akku"); return; }
+  using(var instance=new SingleInstance()) {
+   if(!instance.Acquired) return;
    try { Application.Run(new Tray()); } catch(Exception ex) { MessageBox.Show(L.T("Kopfhörer-Akku konnte nicht gestartet werden: ")+ex.Message,"Kopfhörer-Akku",MessageBoxButtons.OK,MessageBoxIcon.Error); Environment.ExitCode=1; }
   }
  }
