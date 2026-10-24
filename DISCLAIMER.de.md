@@ -1,6 +1,6 @@
 # Nutzungshinweise und Haftung
 
-Kopfhörer-Akku ist kostenlose Open-Source-Software unter der MIT-Lizenz.
+BleAirDock ist kostenlose Open-Source-Software unter der MIT-Lizenz.
 Herausgeber: Aldikiller. Version 1.1.0.
 
 Die Software wird im vorhandenen Zustand bereitgestellt. Eine fehlerfreie

@@ -6,3 +6,7 @@
 *.yml text eol=lf
 *.ico binary
 *.png binary
+
+assets/logo.svg -text
+docs/brand.svg -text
+VERSION text eol=lf

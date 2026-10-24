@@ -3,12 +3,12 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = $PSScriptRoot
 $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'VERSION') -Raw).Trim()
 $dist = Join-Path $projectRoot 'dist'
-$portable = Join-Path $dist "KopfhoererAkku-$version-portable"
+$portable = Join-Path $dist "BleAirDock-$version-portable"
 $framework = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319'
 $csc = Join-Path $framework 'csc.exe'
 if (!(Test-Path -LiteralPath $csc)) { throw 'Der .NET-Framework-C#-Compiler fehlt. Windows x64 mit .NET Framework 4.8 wird benötigt.' }
 New-Item -ItemType Directory -Force -Path $dist, $portable | Out-Null
-$exe = Join-Path $portable 'KopfhoererAkku.exe'
+$exe = Join-Path $portable 'BleAirDock.exe'
 $compilerArgs = @('/nologo','/target:winexe','/platform:x64','/optimize+',('/out:'+$exe),
   ('/resource:'+(Join-Path $projectRoot 'docs\logo.png')+',KopfhoererAkku.Logo.png'),
   '/reference:System.Web.Extensions.dll','/reference:System.Windows.Forms.dll','/reference:System.Drawing.dll',
@@ -27,6 +27,7 @@ foreach ($name in @('LICENSE','README.md','DISCLAIMER.de.md','PRIVACY.md','CHANG
   Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination $portable
 }
 Copy-Item -LiteralPath (Join-Path $projectRoot 'docs') -Destination $portable -Recurse -Force
+Copy-Item -LiteralPath (Join-Path $projectRoot 'assets') -Destination $portable -Recurse -Force
 if (!$SkipTests) {
   $testDir = Join-Path $projectRoot 'work\tests'
   New-Item -ItemType Directory -Force -Path $testDir | Out-Null
@@ -36,7 +37,7 @@ if (!$SkipTests) {
   if (!$report.StartsWith('OK:')) { throw $report }
   Write-Host $report.Trim()
 }
-$zip = Join-Path $dist "KopfhoererAkku-$version-portable.zip"
+$zip = Join-Path $dist "BleAirDock-$version-portable.zip"
 Compress-Archive -Path $portable -DestinationPath $zip -Force
 if ($Installer) {
   if (!$Iscc) {
@@ -47,11 +48,15 @@ if ($Installer) {
     }
   }
   if (!$Iscc -or !(Test-Path -LiteralPath $Iscc)) { throw 'Inno Setup fehlt. build.ps1 -Installer -Iscc <Pfad zu ISCC.exe> verwenden.' }
-  & $Iscc ('/DAppVersion='+$version) (Join-Path $projectRoot 'installer\KopfhoererAkku.iss')
+  & $Iscc ('/DAppVersion='+$version) (Join-Path $projectRoot 'installer\BleAirDock.iss')
   if ($LASTEXITCODE -ne 0) { throw 'Installer konnte nicht gebaut werden.' }
 }
-$hashFiles = @(Get-Item -LiteralPath $zip)
-$setup = Join-Path $dist "KopfhoererAkku-$version-Setup.exe"
+$sourceZip = Join-Path $dist "BleAirDock-$version-source.zip"
+$sourceFiles = @(Get-ChildItem -LiteralPath $projectRoot -File | Where-Object { $_.Name -ne '.git' } | ForEach-Object { $_.FullName })
+$sourceFiles += @('src','assets','docs','installer','.github') | ForEach-Object { Join-Path $projectRoot $_ }
+Compress-Archive -LiteralPath $sourceFiles -DestinationPath $sourceZip -Force
+$hashFiles = @(Get-Item -LiteralPath $zip), @(Get-Item -LiteralPath $sourceZip)
+$setup = Join-Path $dist "BleAirDock-$version-Setup.exe"
 if (Test-Path -LiteralPath $setup) { $hashFiles += Get-Item -LiteralPath $setup }
 $hashes = foreach ($file in $hashFiles) { (Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash.ToLowerInvariant()+'  '+$file.Name }
 [IO.File]::WriteAllLines((Join-Path $dist 'SHA256SUMS.txt'), $hashes, [Text.Encoding]::ASCII)
