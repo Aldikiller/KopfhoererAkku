@@ -7,9 +7,10 @@ partial class Tray {
  readonly System.Windows.Forms.Timer pulseTimer=new System.Windows.Forms.Timer();
  readonly System.Diagnostics.Stopwatch pulseClock=System.Diagnostics.Stopwatch.StartNew();
  bool pulseWasActive;
- Func<string> pulseTestColor; DateTime pulseTestUntil;
- void StopPulseTest() { pulseTestColor=null; pulseWasActive=false; if(!exiting) Render(); }
- float PulseAmount() { return (float)(0.15+0.6*(1-Math.Cos(pulseClock.Elapsed.TotalSeconds*Math.PI))/2); }
+ Func<string> pulseTestColor; Func<Settings> pulseTestMotion; DateTime pulseTestUntil;
+ void StopPulseTest() { pulseTestColor=null; pulseTestMotion=null; pulseWasActive=false; if(!exiting) Render(); }
+ float PulseAmount(Settings config=null) { var look=config ?? settings; return PulseLevel(look,pulseClock.Elapsed.TotalSeconds); }
+ internal static float PulseLevel(Settings config,double seconds) { float maximum=config.PulseStrength/100f; return config.PulseSteady ? maximum : (float)(maximum*(0.2+0.8*(1-Math.Cos(seconds*2*Math.PI/(config.PulsePeriod/10.0)))/2)); }
  internal static bool ShouldPulse(Settings config,int? battery,bool? connected) {
   return config.PulseLow && connected==true && battery.HasValue && battery.Value>=0 && battery.Value<=config.PulseThreshold;
  }
@@ -40,14 +41,15 @@ partial class Tray {
    for(int i=0;i<icons.Count;i++) {
     string id=i<selected.Count ? selected[i] : null; var d=devices.FirstOrDefault(x=>x.Id==id);
     bool testing=i==0 && pulseTestColor!=null;
-    bool low=testing || (d!=null && error.Length==0 && ShouldPulse(settings,d.Battery,EffectiveConnection(d)));
+    var warningLook=WarningSettings(id);
+    bool low=testing || (warningsPausedUntil<=DateTime.UtcNow && d!=null && error.Length==0 && ShouldPulse(warningLook,d.Battery,EffectiveConnection(d)));
     if(low) active=true;
     if(testing) icons[i].Visible=true;
     if(!icons[i].Visible || (!low && !pulseWasActive)) continue;
-    var profile=settings.Profile(id,i); var look=settings;
-    if(testing) { look=new Settings{PulseColor=pulseTestColor(),BatteryRadius=settings.BatteryRadius,BatteryStroke=settings.BatteryStroke,BatteryWidth=settings.BatteryWidth,BatteryHeight=settings.BatteryHeight,FontName=settings.FontName,TextSize=settings.TextSize,TextColor=settings.TextColor}; icons[i].Text="Kopfhörer-Akku · "+L.T("Leuchtwarnung")+" · TEST"; }
+    var profile=settings.Profile(id,i); var look=warningLook;
+    if(testing) { look=new Settings{PulseColor=pulseTestColor(),BatteryRadius=settings.BatteryRadius,BatteryStroke=settings.BatteryStroke,BatteryWidth=settings.BatteryWidth,BatteryHeight=settings.BatteryHeight,FontName=settings.FontName,TextSize=settings.TextSize,TextColor=settings.TextColor}; if(pulseTestMotion!=null) { var motion=pulseTestMotion(); look.PulsePeriod=motion.PulsePeriod; look.PulseStrength=motion.PulseStrength; look.PulseSteady=motion.PulseSteady; } icons[i].Text="Kopfhörer-Akku · "+L.T("Leuchtwarnung")+" · TEST"; }
     var old=icons[i].Icon;
-    icons[i].Icon=BatteryIcon(testing ? 15 : error.Length==0 && d!=null ? d.Battery : null,i,testing ? true : d!=null ? EffectiveConnection(d) : null,profile.Color,settings.NumbersOnly,look,profile.Symbol,profile.Marker,id!=null && IsAudioActive(id,i),low ? PulseAmount() : 0,System.Windows.Forms.SystemInformation.SmallIconSize.Width);
+    icons[i].Icon=BatteryIcon(testing ? 15 : error.Length==0 && d!=null ? d.Battery : null,i,testing ? true : d!=null ? EffectiveConnection(d) : null,profile.Color,settings.NumbersOnly,look,profile.Symbol,profile.RenderMarker,id!=null && IsAudioActive(id,i),low ? PulseAmount(look) : 0,System.Windows.Forms.SystemInformation.SmallIconSize.Width,true);
     if(old!=null) old.Dispose();
    }
    pulseWasActive=active;

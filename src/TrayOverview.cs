@@ -63,8 +63,9 @@ partial class Tray {
   if(EffectiveConnection(device)!=true) {
    int? last=readings.Get(device.Id).LastValue ?? device.Battery;
    if(name.Length>12) name=name.Substring(0,11)+"…";
-   text=name+" · "+(EffectiveConnection(device)==false ? L.T("Getrennt") : L.T("Verbindung unbekannt"))+(last.HasValue ? " · "+L.T("Zuletzt: ")+last+"%" : "");
-  } else text=name+" · "+value+" · "+(error.Length>0 ? L.T("Abfrage fehlgeschlagen") : QueryAge(device.Id));
+   text=name+" · "+DeviceStatus(device)+(last.HasValue ? " · "+L.T("Zuletzt: ")+last+"%" : "");
+  } else if(!device.Battery.HasValue) text=name+" · "+DeviceStatus(device);
+  else text=name+" · "+value+" · "+(error.Length>0 ? L.T("Abfrage fehlgeschlagen") : QueryAge(device.Id));
   return text.Length>63 ? text.Substring(0,63) : text;
  }
  void AddOverviewClicks(NotifyIcon icon) {
@@ -99,7 +100,7 @@ partial class Tray {
     labels[0].Text=device==null ? settings.Profile(names[i],i).Name : settings.Name(device);if(IsAudioActive(names[i],i))labels[0].Text="✓ "+labels[0].Text;
     bool current=device!=null && EffectiveConnection(device)==true && device.Battery.HasValue;
     labels[1].Text=current ? device.Battery+" %" : "–";labels[1].ForeColor=current && device.Battery<=20 ? Color.Firebrick : Color.FromArgb(41,45,50);
-    labels[2].Text=error.Length>0 ? L.T("Abfrage fehlgeschlagen") : entry.NeedsCheck ? L.T("Verbindung unbekannt") : device==null ? L.T("Status unbekannt") : device.Status;
+    labels[2].Text=error.Length>0 ? L.T("Abfrage fehlgeschlagen") : entry.NeedsCheck ? L.T("Verbindung unbekannt") : device==null ? L.T("Status unbekannt") : DeviceStatus(device);
     labels[3].Text=QueryAge(names[i])+"\n"+(entry.LastValue.HasValue ? L.T("Letzter Windows-Wert: ")+entry.LastValue+" % · "+L.T("Gelesen vor: ")+ReadingBook.Age(entry.ValueReadUtc,DateTime.UtcNow)+(current ? "" : " · "+L.T("nicht aktuell")) : L.T("kein Akkustand"));
    }
   };updateOverview();

@@ -11,7 +11,11 @@ using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 
 class DeviceProfile {
- public string Name="",Marker="A",AudioId="";
+ public string Name="",Marker="A",AudioId="",IconFile="";
+ public bool RememberVolume=false; public int SavedVolume=-1;
+ public string RenderMarker { get { return Symbol==5 ? IconFile : Marker; } }
+ public bool WarningOverride=false,DeviceWarnings=true,DevicePulse=true;
+ public int WarningThreshold=20,PulseThreshold=20; public string PulseColor="#FF9119";
  public int Symbol=0;
  public string ColorHex;
  public DeviceProfile(string color) { ColorHex=color; }
@@ -21,6 +25,10 @@ class Settings {
  public string Language="de";
  public WidgetOptions Widget=new WidgetOptions();
  public FontFamily FontFamily() { try { var f=new FontFamily(FontName); if(f.IsStyleAvailable(FontStyle.Bold)) return f; f.Dispose(); } catch(ArgumentException) {} return new FontFamily("Segoe UI"); }
+ public bool HotkeyOne=false,HotkeyTwo=false; public int HotkeyOneModifiers=3,HotkeyTwoModifiers=3,HotkeyOneKey=74,HotkeyTwoKey=76;
+ public int PulsePeriod=20,PulseStrength=75; public bool PulseSteady=false;
+ public Settings Copy() { return (Settings)MemberwiseClone(); }
+ public bool HotkeyEnabled=false; public int HotkeyModifiers=3,HotkeyKey=0;
  public string PulseColor="#FF9119";
  public bool PulseLow=false; public int PulseThreshold=20;
  public bool QuickAudio=true;
@@ -47,6 +55,18 @@ class Settings {
    if(key=="BatteryWidth" && int.TryParse(value,out n)) x.BatteryWidth=Math.Max(16,Math.Min(28,n));
    if(key=="BatteryHeight" && int.TryParse(value,out n)) x.BatteryHeight=Math.Max(16,Math.Min(27,n));
    if(key=="TextColor" && (value=="Auto" || Regex.IsMatch(value,@"\A#[0-9a-fA-F]{6}\z"))) x.TextColor=value;
+   if(key=="HotkeyOne" && bool.TryParse(value,out b)) x.HotkeyOne=b;
+   if(key=="HotkeyTwo" && bool.TryParse(value,out b)) x.HotkeyTwo=b;
+   if(key=="PulseSteady" && bool.TryParse(value,out b)) x.PulseSteady=b;
+   if(key=="HotkeyOneModifiers" && int.TryParse(value,out n)) x.HotkeyOneModifiers=Math.Max(1,Math.Min(15,n));
+   if(key=="HotkeyTwoModifiers" && int.TryParse(value,out n)) x.HotkeyTwoModifiers=Math.Max(1,Math.Min(15,n));
+   if(key=="HotkeyOneKey" && int.TryParse(value,out n)) x.HotkeyOneKey=Math.Max(65,Math.Min(90,n));
+   if(key=="HotkeyTwoKey" && int.TryParse(value,out n)) x.HotkeyTwoKey=Math.Max(65,Math.Min(90,n));
+   if(key=="PulsePeriod" && int.TryParse(value,out n)) x.PulsePeriod=Math.Max(10,Math.Min(100,n));
+   if(key=="PulseStrength" && int.TryParse(value,out n)) x.PulseStrength=Math.Max(10,Math.Min(100,n));
+   if(key=="HotkeyEnabled" && bool.TryParse(value,out b)) x.HotkeyEnabled=b;
+   if(key=="HotkeyModifiers" && int.TryParse(value,out n) && n>0 && n<=15) x.HotkeyModifiers=n;
+   if(key=="HotkeyKey" && int.TryParse(value,out n) && n>=65 && n<=90) x.HotkeyKey=n;
    if(key=="PulseColor" && Regex.IsMatch(value,@"\A#[0-9a-fA-F]{6}\z")) x.PulseColor=value;
    if(key=="PulseLow" && bool.TryParse(value,out b)) x.PulseLow=b;
    if(key=="PulseThreshold" && int.TryParse(value,out n)) x.PulseThreshold=Math.Max(1,Math.Min(90,n));
@@ -58,9 +78,18 @@ class Settings {
    if(key.StartsWith("Device.",StringComparison.Ordinal)) { try {
     int suffix=key.LastIndexOf('.'); if(suffix<=7) continue; string id=Decode(key.Substring(7,suffix-7)),field=key.Substring(suffix+1); if(id.Length==0) continue;
     DeviceProfile p; if(!x.Profiles.TryGetValue(id,out p)) { p=new DeviceProfile("#13705B"); x.Profiles[id]=p; }
+    if(field=="WarningOverride" && bool.TryParse(value,out b)) p.WarningOverride=b;
+    if(field=="DeviceWarnings" && bool.TryParse(value,out b)) p.DeviceWarnings=b;
+    if(field=="DevicePulse" && bool.TryParse(value,out b)) p.DevicePulse=b;
+    if(field=="WarningThreshold" && int.TryParse(value,out n)) p.WarningThreshold=Math.Max(1,Math.Min(90,n));
+    if(field=="PulseThreshold" && int.TryParse(value,out n)) p.PulseThreshold=Math.Max(1,Math.Min(90,n));
+    if(field=="PulseColor" && Regex.IsMatch(value,@"\A#[0-9a-fA-F]{6}\z")) p.PulseColor=value;
+    if(field=="RememberVolume" && bool.TryParse(value,out b)) p.RememberVolume=b;
+    if(field=="SavedVolume" && int.TryParse(value,out n)) p.SavedVolume=Math.Max(-1,Math.Min(100,n));
+    if(field=="IconFile") p.IconFile=Decode(value);
     if(field=="AudioId") p.AudioId=Decode(value);
     if(field=="Name") { var name=Decode(value); p.Name=name.Length>40 ? name.Substring(0,40) : name; }
-    if(field=="Symbol" && int.TryParse(value,out n)) p.Symbol=Math.Max(0,Math.Min(4,n));
+    if(field=="Symbol" && int.TryParse(value,out n)) p.Symbol=Math.Max(0,Math.Min(5,n));
     if(field=="Marker") { var mark=Decode(value); p.Marker=CleanMarker(mark); }
     if(field=="Color" && Regex.IsMatch(value,@"\A#[0-9a-fA-F]{6}\z")) p.ColorHex=value;
    } catch(FormatException) {} }
@@ -71,9 +100,9 @@ class Settings {
  }
  public static string CleanMarker(string value) { if(string.IsNullOrWhiteSpace(value)) return "A"; var e=System.Globalization.StringInfo.GetTextElementEnumerator(value.Trim()); return e.MoveNext() ? (string)e.Current : "A"; }
  public void Save(string file) {
-  var lines=new List<string>{"PulseColor="+PulseColor,"PulseLow="+PulseLow,"PulseThreshold="+PulseThreshold,"QuickAudio="+QuickAudio,"Language="+Language,"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
+  var lines=new List<string>{"HotkeyOne="+HotkeyOne,"HotkeyTwo="+HotkeyTwo,"HotkeyOneModifiers="+HotkeyOneModifiers,"HotkeyTwoModifiers="+HotkeyTwoModifiers,"HotkeyOneKey="+HotkeyOneKey,"HotkeyTwoKey="+HotkeyTwoKey,"PulsePeriod="+PulsePeriod,"PulseStrength="+PulseStrength,"PulseSteady="+PulseSteady,"HotkeyEnabled="+HotkeyEnabled,"HotkeyModifiers="+HotkeyModifiers,"HotkeyKey="+HotkeyKey,"PulseColor="+PulseColor,"PulseLow="+PulseLow,"PulseThreshold="+PulseThreshold,"QuickAudio="+QuickAudio,"Language="+Language,"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
   lines.AddRange(Widget.Lines());
-  foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"AudioId="+Encode(item.Value.AudioId)); lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); lines.Add(prefix+"Symbol="+item.Value.Symbol); lines.Add(prefix+"Marker="+Encode(item.Value.Marker)); }
+  foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"WarningOverride="+item.Value.WarningOverride);lines.Add(prefix+"DeviceWarnings="+item.Value.DeviceWarnings);lines.Add(prefix+"DevicePulse="+item.Value.DevicePulse);lines.Add(prefix+"WarningThreshold="+item.Value.WarningThreshold);lines.Add(prefix+"PulseThreshold="+item.Value.PulseThreshold);lines.Add(prefix+"PulseColor="+item.Value.PulseColor);lines.Add(prefix+"RememberVolume="+item.Value.RememberVolume);lines.Add(prefix+"SavedVolume="+item.Value.SavedVolume);lines.Add(prefix+"IconFile="+Encode(item.Value.IconFile));lines.Add(prefix+"AudioId="+Encode(item.Value.AudioId)); lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); lines.Add(prefix+"Symbol="+item.Value.Symbol); lines.Add(prefix+"Marker="+Encode(item.Value.Marker)); }
   Directory.CreateDirectory(Path.GetDirectoryName(file)); string temp=file+"."+Guid.NewGuid().ToString("N")+".tmp";
   try { File.WriteAllLines(temp,lines,Encoding.UTF8); if(File.Exists(file)) File.Replace(temp,file,null); else File.Move(temp,file); } finally { if(File.Exists(temp)) File.Delete(temp); }
  }

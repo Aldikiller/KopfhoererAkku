@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+﻿// SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,10 +15,10 @@ partial class Tray {
  void SwitchAudio(int slot){
   if(slot<0 || slot>=selected.Count)return;UpdateAudio();string id=selected[slot];var profile=settings.Profile(id,slot);
   if(profile.AudioId.Length==0){AudioOptions(id);if(settings.QuickAudio && settings.Profile(id,slot).AudioId.Length>0)SwitchAudio(slot);return;}
-  try{AudioApi.Switch(profile.AudioId);UpdateAudio();Render();if(updateOverview!=null)updateOverview();}
+  try{RememberCurrentVolume(profile.AudioId); if(profile.RememberVolume && profile.SavedVolume>=0) EndpointVolume.Set(profile.AudioId,profile.SavedVolume); AudioApi.Switch(profile.AudioId); UpdateAudio();Render();if(updateOverview!=null)updateOverview();}
   catch(Exception ex){UpdateAudio();Render();MessageBox.Show(L.T("Audioausgabe konnte nicht umgeschaltet werden.")+"\n"+ex.Message,"Kopfhörer-Akku",MessageBoxButtons.OK,MessageBoxIcon.Information);}
  }
- static void AudioBadge(Graphics g){
+ internal static void AudioBadge(Graphics g){
   using(var shadow=new SolidBrush(Color.FromArgb(25,35,30)))g.FillEllipse(shadow,17,0,15,15);
   using(var green=new SolidBrush(Color.FromArgb(18,151,76)))g.FillEllipse(green,18,1,13,13);
   using(var pen=new Pen(Color.White,2)){pen.StartCap=System.Drawing.Drawing2D.LineCap.Round;pen.EndCap=System.Drawing.Drawing2D.LineCap.Round;g.DrawLines(pen,new[]{new PointF(21,7),new PointF(24,10),new PointF(29,4)});}
