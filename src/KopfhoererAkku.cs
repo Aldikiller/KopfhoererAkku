@@ -14,17 +14,17 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-[assembly: AssemblyTitle("Kopfhörer-Akku")]
+[assembly: AssemblyTitle("BleAirDock")]
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
-[assembly: AssemblyProduct("Kopfhörer-Akku")]
-[assembly: AssemblyVersion("1.6.5.0")]
-[assembly: AssemblyFileVersion("1.6.5.0")]
-[assembly: AssemblyInformationalVersion("1.6.5")]
+[assembly: AssemblyProduct("BleAirDock")]
+[assembly: AssemblyVersion("1.7.0.0")]
+[assembly: AssemblyFileVersion("1.7.0.0")]
+[assembly: AssemblyInformationalVersion("1.7.0")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="1.6.5";
+ public const string Version="1.7.0";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;
@@ -199,12 +199,12 @@ partial class Tray : ApplicationContext {
   if(exiting)return;if(busy){pendingRefresh=true;return;} busy=true;
   var known=selected.ToArray(); var worker=new System.ComponentModel.BackgroundWorker(); worker.DoWork+=(s,e)=>e.Result=Native.Scan(known);
   worker.RunWorkerCompleted+=(s,e)=> { if(exiting) { worker.Dispose(); return; } busy=false; error=e.Error==null ? "" : e.Error.Message; if(e.Error==null) { var fresh=(List<Device>)e.Result; foreach(var d in fresh.Where(x=>x.Name==L.T("Gespeicherter Kopfhörer"))) { var old=devices.FirstOrDefault(x=>x.Id==d.Id); if(old!=null) d.Name=old.Name; } devices=fresh; UpdateAudio(); readings.Observe(fresh,DateTime.UtcNow); lastScan=DateTime.Now; } Render();
-   if(e.Error==null) { var alerts=new List<string>(); foreach(var id in selected) { var d=devices.FirstOrDefault(x=>x.Id==id); if(warningsPausedUntil<=DateTime.UtcNow && warnings.Check(d,WarningSettings(d.Id))) alerts.Add(settings.Name(d)+L.T(": noch ")+d.Battery+L.T(" % Akku.")); } if(alerts.Count>0 && icons.Count>0) Notify(8000,L.T("Kopfhörer-Akku niedrig"),string.Join("\n",alerts.ToArray()),ToolTipIcon.Warning); }
+   if(e.Error==null) { var alerts=new List<string>(); foreach(var id in selected) { var d=devices.FirstOrDefault(x=>x.Id==id); if(warningsPausedUntil<=DateTime.UtcNow && warnings.Check(d,WarningSettings(d.Id))) alerts.Add(settings.Name(d)+L.T(": noch ")+d.Battery+L.T(" % Akku.")); } if(alerts.Count>0 && icons.Count>0) Notify(8000,L.T("BleAirDock niedrig"),string.Join("\n",alerts.ToArray()),ToolTipIcon.Warning); }
    if(firstRun && e.Error==null) { firstRun=false; Pick(); }
    if(reloadPicker && updatePicker!=null) updatePicker(); reloadPicker=false; if(updateStatus!=null) updateStatus(); worker.Dispose(); if(updateOverview!=null)updateOverview(); if(pendingRefresh){pendingRefresh=false;Refresh();} }; worker.RunWorkerAsync();
  }
  ContextMenuStrip Menu() {
-  var m=new ContextMenuStrip(); AddWidgetVisibility(m); m.Items.Add(L.T("Lautstärke je Kopfhörer"),null,(s,e)=>VolumeOptions()); AddWarningPause(m); m.Items.Add("Kopfhörer-Akku").Enabled=false;
+  var m=new ContextMenuStrip(); AddWidgetVisibility(m); m.Items.Add(L.T("Lautstärke je Kopfhörer"),null,(s,e)=>VolumeOptions()); AddWarningPause(m); m.Items.Add("BleAirDock").Enabled=false;
   foreach(var id in selected) { var d=devices.FirstOrDefault(x=>x.Id==id); m.Items.Add(d==null ? L.T("Nicht verfügbar / getrennt") : Describe(d)).Enabled=false; }
   if(error.Length>0) m.Items.Add(L.T("Abfrage fehlgeschlagen: ")+error).Enabled=false;
   m.Items.Add(L.T("Nach Updates suchen …"),null,(s,e)=>CheckUpdates(true)).Enabled=!updateBusy;
@@ -215,7 +215,7 @@ partial class Tray : ApplicationContext {
   var auto=new ToolStripMenuItem(L.T("Beim Windows-Start ausführen")); auto.Checked=File.Exists(startup);
   auto.Click+=(s,e)=> { try { if(File.Exists(startup)) File.Delete(startup); else Program.EnableAutostart(); Render(); } catch(Exception ex) { MessageBox.Show(L.T("Autostart konnte nicht geändert werden: ")+ex.Message); } };
   var modes=new ToolStripMenuItem(L.T("Anzeigemodus")); foreach(DisplayMode mode in Enum.GetValues(typeof(DisplayMode))) { var choice=mode; var item=new ToolStripMenuItem(mode==DisplayMode.Infobereich ? L.T("Nur Infobereich") : mode==DisplayMode.Widget ? L.T("Nur Desktop-Widget") : L.T("Beides")){Checked=settings.Widget.Mode==mode}; item.Click+=(s,e)=> { var previous=settings.Widget.Mode; settings.Widget.Mode=choice; try { settings.Save(SettingsPath); Render(); } catch(Exception ex) { settings.Widget.Mode=previous; Render(); MessageBox.Show(L.T("Anzeigemodus konnte nicht gespeichert werden: ")+ex.Message); } }; modes.DropDownItems.Add(item); } m.Items.Add(modes);
-  m.Items.Add(auto); m.Items.Add(L.T("Über Kopfhörer-Akku …"),null,(s,e)=>About()); m.Items.Add(L.T("Beenden"),null,(s,e)=>ExitThread()); return m;
+  m.Items.Add(auto); m.Items.Add(L.T("Über BleAirDock …"),null,(s,e)=>About()); m.Items.Add(L.T("Beenden"),null,(s,e)=>ExitThread()); return m;
  }
  void Notify(int duration,string title,string text,ToolTipIcon kind) { if(icons.Count==0) return; noticeUntil=DateTime.Now.AddSeconds(15); icons[0].Visible=true; icons[0].ShowBalloonTip(duration,title,text,kind); }
  List<WidgetItem> WidgetItems() { return selected.Select((id,i)=> { var d=devices.FirstOrDefault(x=>x.Id==id); return new WidgetItem{Name=d!=null ? settings.Name(d) : settings.Profile(id,i).Name.Length>0 ? settings.Profile(id,i).Name : L.T("Gespeicherter Kopfhörer"),Status=error.Length>0 ? L.T("Abfrage fehlgeschlagen") : d!=null ? DeviceStatus(d) : L.T("Verbindung unbekannt"),Battery=error.Length==0 && d!=null ? d.Battery : null,Connected=d!=null ? EffectiveConnection(d) : null,Profile=settings.Profile(id,i),AudioActive=IsAudioActive(id,i)}; }).ToList(); }
@@ -240,31 +240,31 @@ partial class Tray : ApplicationContext {
    var mode=settingsForm.Controls.OfType<CheckBox>().Single(x=>x.AccessibleName=="AdvancedSettings");
    var threshold=tab.Controls.OfType<NumericUpDown>().Single(x=>x.Maximum==90); decimal previous=threshold.Value; threshold.Value=37;
    mode.Checked=true; mode.Checked=false;
-   if(threshold.Value!=37 || language.Parent!=tab || settingsForm.Controls.OfType<TabControl>().Single().TabPages.Count!=2) throw new Exception("Settings view lost draft values");
+   if(threshold.Value!=37 || language.Parent!=tab || settingsForm.Controls.OfType<TabControl>().Single().TabPages.Count!=3) throw new Exception("Settings view lost draft values");
    threshold.Value=previous; language.SelectedIndex=Array.IndexOf(L.Codes,target);
    settingsForm.Controls.OfType<Button>().Single(x=>x.Text==L.T("Speichern")).PerformClick(); Application.DoEvents();
-   if(Settings.Read(SettingsPath).Language!=target || L.Language!=target || settingsForm==null || settingsForm.Text!=L.T("Kopfhörer-Akku · Einstellungen")) throw new Exception("Language switch failed: "+target);
+   if(Settings.Read(SettingsPath).Language!=target || L.Language!=target || settingsForm==null || settingsForm.Text!=L.T("BleAirDock · Einstellungen")) throw new Exception("Language switch failed: "+target);
    settingsForm.Close();
   }
   ExitThread();
  }
  public void CheckWidgetModes() { foreach(DisplayMode mode in Enum.GetValues(typeof(DisplayMode))) { settings.Widget.Mode=mode; Render(); Application.DoEvents(); if(icons.Any(x=>x.Visible)!=(mode!=DisplayMode.Widget) || (widget!=null && widget.Visible)!=(mode!=DisplayMode.Infobereich)) throw new Exception("Anzeigemodus fehlerhaft: "+mode); } settings.Widget.Mode=DisplayMode.Infobereich; Render(); ExitThread(); }
  public void About(bool preview=false) {
-  using(var form=new Form{Text=L.T("Über Kopfhörer-Akku"),Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),ClientSize=new Size(550,270),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,MinimizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi,BackColor=Color.FromArgb(245,245,245)}) {
+  using(var form=new Form{Text=L.T("Über BleAirDock"),Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),ClientSize=new Size(550,330),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,MinimizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi,BackColor=Color.FromArgb(245,245,245)}) {
    Bitmap logo;
    using(var stream=Assembly.GetExecutingAssembly().GetManifestResourceStream("KopfhoererAkku.Logo.png")) {
     if(stream!=null) using(var image=Image.FromStream(stream)) logo=new Bitmap(image);
     else using(var icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath)) logo=icon.ToBitmap();
    }
    using(logo) {
-    var picture=new PictureBox{Left=24,Top=28,Width=112,Height=112,Image=logo,SizeMode=PictureBoxSizeMode.Zoom,AccessibleName="Kopfhörer-Akku Logo",TabStop=false};
-    var title=new Label{Left=158,Top=29,Width=365,Height=34,Text="Kopfhörer-Akku "+AppPaths.Version,Font=new Font("Segoe UI",16,FontStyle.Bold),ForeColor=Color.FromArgb(41,45,50)};
-    var publisher=new Label{Left=160,Top=72,Width=350,Height=24,Text="Aldikiller · MIT",ForeColor=Color.FromArgb(90,95,100)};
-    var github=new LinkLabel{Left=160,Top=111,Width=365,Height=30,Text="github.com/Aldikiller/KopfhoererAkku",AccessibleName="GitHub",AutoEllipsis=true,LinkColor=Color.FromArgb(151,65,0),ActiveLinkColor=Color.FromArgb(110,45,0)};
+    var picture=new PictureBox{Left=24,Top=28,Width=502,Height=94,Image=logo,SizeMode=PictureBoxSizeMode.Zoom,AccessibleName="BleAirDock Logo",TabStop=false};
+    var title=new Label{Left=24,Top=130,Width=365,Height=34,Text="BleAirDock "+AppPaths.Version,Font=new Font("Segoe UI",16,FontStyle.Bold),ForeColor=Color.FromArgb(41,45,50)};
+    var publisher=new Label{Left=24,Top=169,Width=350,Height=24,Text="Aldikiller · MIT",ForeColor=Color.FromArgb(90,95,100)};
+    var github=new LinkLabel{Left=24,Top=204,Width=365,Height=30,Text="github.com/Aldikiller/KopfhoererAkku",AccessibleName="GitHub",AutoEllipsis=true,LinkColor=Color.FromArgb(151,65,0),ActiveLinkColor=Color.FromArgb(110,45,0)};
     github.LinkClicked+=(sender,args)=>OpenPage("https://github.com/Aldikiller/KopfhoererAkku");
-    var website=new LinkLabel{Left=160,Top=150,Width=365,Height=30,Text="aldikiller.github.io/KopfhoererAkku",AccessibleName="Website",AutoEllipsis=true,LinkColor=Color.FromArgb(151,65,0),ActiveLinkColor=Color.FromArgb(110,45,0)};
+    var website=new LinkLabel{Left=24,Top=240,Width=365,Height=30,Text="aldikiller.github.io/KopfhoererAkku",AccessibleName="Website",AutoEllipsis=true,LinkColor=Color.FromArgb(151,65,0),ActiveLinkColor=Color.FromArgb(110,45,0)};
     website.LinkClicked+=(sender,args)=>OpenPage("https://aldikiller.github.io/KopfhoererAkku/");
-    var close=new Button{Left=399,Top=215,Width=125,Height=32,Text=L.T("Schließen"),DialogResult=DialogResult.Cancel};
+    var close=new Button{Left=399,Top=281,Width=125,Height=32,Text=L.T("Schließen"),DialogResult=DialogResult.Cancel};
     form.Controls.AddRange(new Control[]{picture,title,publisher,github,website,close});form.AcceptButton=close;form.CancelButton=close;
     if(preview) { form.Show(); Application.DoEvents(); using(var bitmap=new Bitmap(form.Width,form.Height)) { form.DrawToBitmap(bitmap,new Rectangle(0,0,form.Width,form.Height));bitmap.Save(AppPaths.Report("About.png")); } if(github.Links.Count!=1 || website.Links.Count!=1) throw new Exception("About links missing"); form.Close(); }
     else form.ShowDialog();
@@ -291,7 +291,7 @@ partial class Tray : ApplicationContext {
  void OpenPage(string page) { try { Process.Start(new ProcessStartInfo(page){UseShellExecute=true}); } catch(Exception ex) { MessageBox.Show(L.T("Browser konnte nicht geöffnet werden: ")+ex.Message); } }
  public void Options(bool preview=false) {
   if(settingsForm!=null) { settingsForm.Activate(); return; }
-  var f=new Form{Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),Text=L.T("Kopfhörer-Akku · Einstellungen"),ClientSize=new Size(870,630),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f; Action liveRefresh=null;
+  var f=new Form{Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),Text=L.T("BleAirDock · Einstellungen"),ClientSize=new Size(870,630),FormBorderStyle=FormBorderStyle.FixedDialog,MaximizeBox=false,StartPosition=FormStartPosition.CenterScreen,AutoScaleMode=AutoScaleMode.Dpi}; settingsForm=f; Action liveRefresh=null;
   var tabs=new TabControl{Left=12,Top=12,Width=586,Height=478}; var general=new TabPage(L.T("Allgemein")){AutoScroll=true}; var appearance=new TabPage(L.T("Namen & Anzeige")); var updates=new TabPage(L.T("Updates")); var design=new TabPage(L.T("Schrift & Batterie")); var widgetTab=new TabPage(L.T("Anzeige & Widget")); tabs.TabPages.AddRange(new[]{general,appearance,updates,design,widgetTab});
   var status=new Label{Left=14,Top=14,Width=544,Height=98}; var updateLabel=new Label{Left=14,Top=190,Width=538,Height=60};
   updateStatus=()=> { status.Text=string.Join("\n",selected.Select(id=> { var d=devices.FirstOrDefault(x=>x.Id==id); return d==null ? L.T("Gerät nicht gefunden · Verbindung unbekannt") : Describe(d); }).ToArray())+L.T("\n\nLetzte Abfrage: ")+(lastScan.HasValue ? lastScan.Value.ToString("HH:mm:ss") : L.T("noch keine"))+(error.Length>0 ? L.T("\nFehler: ")+error : ""); updateLabel.Text=updateStatusText; if(liveRefresh!=null) liveRefresh(); }; updateStatus();
@@ -299,7 +299,7 @@ partial class Tray : ApplicationContext {
   var threshold=new NumericUpDown{Left=245,Top=160,Width=75,Minimum=1,Maximum=90,Value=settings.Threshold};
   var interval=new NumericUpDown{Left=245,Top=202,Width=75,Minimum=30,Maximum=300,Value=settings.Interval};
   var hint=new Label{Left=14,Top=244,Width=538,Height=72,Text=L.T("Beide ausgewählten Kopfhörer behalten ein eigenes Symbol.\nRot: niedriger Akku · Grau –: getrennt · Gelb: Status unbekannt.\nWarnungen erscheinen nur bei bestätigter Verbindung.\nEigene Namen ändern den Bluetooth-Namen in Windows nicht.")};
-  var test=new Button{Left=14,Top=326,Width=230,Height=32,Text=L.T("Benachrichtigung testen")}; test.Click+=(a,b)=> { if(icons.Count>0) Notify(5000,"Kopfhörer-Akku · Test",L.T("So erscheint eine Akkuwarnung."),ToolTipIcon.Info); };
+  var test=new Button{Left=14,Top=326,Width=230,Height=32,Text=L.T("Benachrichtigung testen")}; test.Click+=(a,b)=> { if(icons.Count>0) Notify(5000,"BleAirDock · Test",L.T("So erscheint eine Akkuwarnung."),ToolTipIcon.Info); };
   var language=new ComboBox{AccessibleName="Language",Left=14,Top=390,Width=300,DropDownStyle=ComboBoxStyle.DropDownList}; language.Items.AddRange(new[]{"Deutsch","English","Español","Français","Українська"}); language.SelectedIndex=Array.IndexOf(L.Codes,settings.Language);
   general.Controls.Add(new Label{Left=14,Top=366,Width=530,Text="Sprache / Language"}); general.Controls.Add(language);
   general.Controls.AddRange(new Control[]{status,warn,new Label{Left=14,Top=163,Width=225,Text=L.T("Warnung bei / unter (%)")},threshold,new Label{Left=14,Top=205,Width=225,Text=L.T("Abfrage alle (Sekunden)")},interval,hint,test});
@@ -453,7 +453,7 @@ partial class Tray : ApplicationContext {
  }
  void Pick() {
   if(picker!=null) { picker.Activate(); return; }
-  var f=new Form{Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),Text=L.T("Kopfhörer-Akku – Geräte auswählen"),ClientSize=new Size(560,350),StartPosition=FormStartPosition.CenterScreen,MinimumSize=new Size(576,389)}; picker=f;
+  var f=new Form{Icon=Icon.ExtractAssociatedIcon(Application.ExecutablePath),Text=L.T("BleAirDock – Geräte auswählen"),ClientSize=new Size(560,350),StartPosition=FormStartPosition.CenterScreen,MinimumSize=new Size(576,389)}; picker=f;
   var label=new Label{Text=L.T("Bis zu zwei Kopfhörer auswählen. Namen und Farben lassen sich in den Einstellungen ändern.\nEin Strich im Symbol bedeutet: Windows liefert gerade keinen Akkustand."),Dock=DockStyle.Top,Height=55,Padding=new Padding(10)};
   var list=new CheckedListBox{Dock=DockStyle.Fill,CheckOnClick=true,HorizontalScrollbar=true};
   Action populate=()=> { list.Items.Clear(); foreach(var d in devices) list.Items.Add(d,selected.Contains(d.Id)); foreach(var id in selected.Where(id=>!devices.Any(d=>d.Id==id))) list.Items.Add(new Device{Id=id,Name=L.T("Gespeichertes Gerät (nicht verfügbar)")},true); };
@@ -495,7 +495,7 @@ static class Program {
    shortcut=shell.GetType().InvokeMember("CreateShortcut",BindingFlags.InvokeMethod,null,shell,new object[]{AppPaths.Startup});
    shortcut.GetType().InvokeMember("TargetPath",BindingFlags.SetProperty,null,shortcut,new object[]{Application.ExecutablePath});
    shortcut.GetType().InvokeMember("WorkingDirectory",BindingFlags.SetProperty,null,shortcut,new object[]{AppPaths.Base});
-   shortcut.GetType().InvokeMember("Description",BindingFlags.SetProperty,null,shortcut,new object[]{"Bluetooth-Kopfhörer-Akkuanzeige"});
+   shortcut.GetType().InvokeMember("Description",BindingFlags.SetProperty,null,shortcut,new object[]{"Bluetooth-BleAirDockanzeige"});
    shortcut.GetType().InvokeMember("Save",BindingFlags.InvokeMethod,null,shortcut,null);
   } finally { if(shortcut!=null) Marshal.FinalReleaseComObject(shortcut); if(shell!=null) Marshal.FinalReleaseComObject(shell); }
  }
@@ -597,17 +597,7 @@ static class Program {
   if(args.Contains("--replace") && !StopRunning()) { MessageBox.Show(L.T("Die laufende Version konnte nicht beendet werden. Bitte über das Symbol beenden.")); return; }
   using(var instance=new SingleInstance()) {
    if(!instance.Acquired) return;
-   try { Application.Run(new Tray()); } catch(Exception ex) { MessageBox.Show(L.T("Kopfhörer-Akku konnte nicht gestartet werden: ")+ex.Message,"Kopfhörer-Akku",MessageBoxButtons.OK,MessageBoxIcon.Error); Environment.ExitCode=1; }
+   try { Application.Run(new Tray()); } catch(Exception ex) { MessageBox.Show(L.T("BleAirDock konnte nicht gestartet werden: ")+ex.Message,"BleAirDock",MessageBoxButtons.OK,MessageBoxIcon.Error); Environment.ExitCode=1; }
   }
  }
 }
-
-
-
-
-
-
-
-
-
-

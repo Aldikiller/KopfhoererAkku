@@ -47,7 +47,7 @@ partial class Tray {
     if(testing) icons[i].Visible=true;
     if(!icons[i].Visible || (!low && !pulseWasActive)) continue;
     var profile=settings.Profile(id,i); var look=warningLook;
-    if(testing) { look=new Settings{PulseColor=pulseTestColor(),BatteryRadius=settings.BatteryRadius,BatteryStroke=settings.BatteryStroke,BatteryWidth=settings.BatteryWidth,BatteryHeight=settings.BatteryHeight,FontName=settings.FontName,TextSize=settings.TextSize,TextColor=settings.TextColor}; if(pulseTestMotion!=null) { var motion=pulseTestMotion(); look.PulsePeriod=motion.PulsePeriod; look.PulseStrength=motion.PulseStrength; look.PulseSteady=motion.PulseSteady; } icons[i].Text="Kopfhörer-Akku · "+L.T("Leuchtwarnung")+" · TEST"; }
+    if(testing) { look=new Settings{PulseColor=pulseTestColor(),BatteryRadius=settings.BatteryRadius,BatteryStroke=settings.BatteryStroke,BatteryWidth=settings.BatteryWidth,BatteryHeight=settings.BatteryHeight,FontName=settings.FontName,TextSize=settings.TextSize,TextColor=settings.TextColor}; if(pulseTestMotion!=null) { var motion=pulseTestMotion(); look.PulsePeriod=motion.PulsePeriod; look.PulseStrength=motion.PulseStrength; look.PulseSteady=motion.PulseSteady; } icons[i].Text="BleAirDock · "+L.T("Leuchtwarnung")+" · TEST"; }
     var old=icons[i].Icon;
     icons[i].Icon=BatteryIcon(testing ? 15 : error.Length==0 && d!=null ? d.Battery : null,i,testing ? true : d!=null ? EffectiveConnection(d) : null,profile.Color,settings.NumbersOnly,look,profile.Symbol,profile.RenderMarker,id!=null && IsAudioActive(id,i),low ? PulseAmount(look) : 0,System.Windows.Forms.SystemInformation.SmallIconSize.Width,true);
     if(old!=null) old.Dispose();

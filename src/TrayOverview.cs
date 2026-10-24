@@ -14,7 +14,7 @@ partial class Tray {
  readonly ReadingBook readings=new ReadingBook();
  Control dispatcher;DeviceWatcher watcher;volatile bool watcherReady;bool pendingRefresh;
  readonly ConcurrentDictionary<string,string> watcherAddresses=new ConcurrentDictionary<string,string>();
- 
+
  Form overview;Action updateOverview;System.Windows.Forms.Timer clickDelay;DateTime ignoreClickUntil;
  void StartObservers() {
   dispatcher=new Control();var handle=dispatcher.Handle;StartAudioEvents();
@@ -56,7 +56,7 @@ partial class Tray {
  }
  string QueryAge(string id) {var entry=readings.Get(id);return L.T("Geprüft vor: ")+ReadingBook.Age(entry.CheckedUtc,DateTime.UtcNow);}
  string HoverText(int slot) {
-  var device=devices.FirstOrDefault(d=>selected.Count>slot && d.Id==selected[slot]);if(device==null)return L.T("Kopfhörer-Akku · Doppelklick: Einstellungen");
+  var device=devices.FirstOrDefault(d=>selected.Count>slot && d.Id==selected[slot]);if(device==null)return L.T("BleAirDock · Doppelklick: Einstellungen");
   string name=(IsAudioActive(device.Id,slot) ? "✓ " : "")+settings.Name(device);if(name.Length>24)name=name.Substring(0,23)+"…";
   string value=EffectiveConnection(device)==true && device.Battery.HasValue ? device.Battery+"%" : "–";
   string text;
@@ -117,7 +117,3 @@ partial class Tray {
  }
  static IEnumerable<Control> Descendants(Control control){yield return control;foreach(Control child in control.Controls)foreach(var descendant in Descendants(child))yield return descendant;}
 }
-
-
-
-

@@ -16,7 +16,7 @@ partial class Tray {
   if(slot<0 || slot>=selected.Count)return;UpdateAudio();string id=selected[slot];var profile=settings.Profile(id,slot);
   if(profile.AudioId.Length==0){AudioOptions(id);if(settings.QuickAudio && settings.Profile(id,slot).AudioId.Length>0)SwitchAudio(slot);return;}
   try{RememberCurrentVolume(profile.AudioId); if(profile.RememberVolume && profile.SavedVolume>=0) EndpointVolume.Set(profile.AudioId,profile.SavedVolume); AudioApi.Switch(profile.AudioId); UpdateAudio();Render();if(updateOverview!=null)updateOverview();}
-  catch(Exception ex){UpdateAudio();Render();MessageBox.Show(L.T("Audioausgabe konnte nicht umgeschaltet werden.")+"\n"+ex.Message,"Kopfhörer-Akku",MessageBoxButtons.OK,MessageBoxIcon.Information);}
+  catch(Exception ex){UpdateAudio();Render();MessageBox.Show(L.T("Audioausgabe konnte nicht umgeschaltet werden.")+"\n"+ex.Message,"BleAirDock",MessageBoxButtons.OK,MessageBoxIcon.Information);}
  }
  internal static void AudioBadge(Graphics g){
   using(var shadow=new SolidBrush(Color.FromArgb(25,35,30)))g.FillEllipse(shadow,17,0,15,15);
@@ -46,7 +46,7 @@ partial class Tray {
     for(int i=0;i<boxes.Count;i++){boxes[i].BeginUpdate();boxes[i].Items.Clear();boxes[i].Items.AddRange(values.Cast<object>().ToArray());boxes[i].SelectedIndex=Math.Max(0,values.FindIndex(x=>x.Id==previous[i].Id));boxes[i].EndUpdate();}
     note.Text=audioError.Length>0 ? L.T("Audioausgaben konnten nicht gelesen werden.")+" "+audioError : audioOutputs.Count==0 ? L.T("Keine Audioausgabe gefunden. Kopfhörer verbinden und dieses Fenster erneut öffnen.") : L.T("Windows-Audioausgaben gefunden: ")+audioOutputs.Count+". "+L.T("Bitte die passende Ausgabe auswählen.");
    };
-   var diagnostic=new Button{Text=L.T("Diagnose"),Left=174,Top=344,Width=155,Height=32};diagnostic.Click+=(s,e)=>MessageBox.Show("Kopfhörer-Akku "+AppPaths.Version+"\nWindows: "+Environment.OSVersion.Version+"\n"+L.T("Windows-Audioausgaben gefunden: ")+audioOutputs.Count+"\nActive: "+audioOutputs.Count(x=>x.Active)+"\nDefault: "+(activeOutput.Length>0)+"\n"+audioError,L.T("Diagnose"));
+   var diagnostic=new Button{Text=L.T("Diagnose"),Left=174,Top=344,Width=155,Height=32};diagnostic.Click+=(s,e)=>MessageBox.Show("BleAirDock "+AppPaths.Version+"\nWindows: "+Environment.OSVersion.Version+"\n"+L.T("Windows-Audioausgaben gefunden: ")+audioOutputs.Count+"\nActive: "+audioOutputs.Count(x=>x.Active)+"\nDefault: "+(activeOutput.Length>0)+"\n"+audioError,L.T("Diagnose"));
    save.Click+=(s,e)=>{try{var next=Settings.Read(SettingsPath);next.QuickAudio=quick.Checked;next.Interval=(int)interval.Value;
     for(int i=0;i<selected.Count;i++){DeviceProfile profile;if(!next.Profiles.TryGetValue(selected[i],out profile)){profile=new DeviceProfile(i==0 ? "#13705B" : "#1C579F");next.Profiles[selected[i]]=profile;}profile.AudioId=values[boxes[i].SelectedIndex].Id;}
     if(selected.Count==2 && next.Profile(selected[0],0).AudioId.Length>0 && next.Profile(selected[0],0).AudioId==next.Profile(selected[1],1).AudioId){MessageBox.Show(L.T("Bitte unterschiedliche Audioausgaben zuordnen."));return;}
@@ -73,4 +73,3 @@ static class AudioTests {
   try{var settings=new Settings();if(settings.Interval!=30)throw new Exception("Polling default is not 30s");settings.QuickAudio=false;settings.Interval=60;settings.Profiles["Bluetooth test"]=new DeviceProfile("#13705B"){AudioId="{endpoint}=ä",Name="Test"};settings.Save(file);var saved=Settings.Read(file);if(saved.QuickAudio || saved.Interval!=60 || saved.Profile("Bluetooth test",0).AudioId!="{endpoint}=ä")throw new Exception("Audio settings persistence");File.WriteAllText(file,"Interval=5\n");if(Settings.Read(file).Interval!=30)throw new Exception("Old short interval was not migrated");}finally{if(File.Exists(file))File.Delete(file);}
  }
 }
-

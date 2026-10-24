@@ -142,7 +142,7 @@ static class UpdateService {
  public static ReleaseVersion Check() {
   ServicePointManager.SecurityProtocol|=SecurityProtocolType.Tls12;
   var request=(HttpWebRequest)WebRequest.Create("https://api.github.com/repos/Aldikiller/KopfhoererAkku/releases?per_page=100");
-  request.UserAgent="KopfhoererAkku/"+AppPaths.Version; request.Accept="application/vnd.github+json"; request.Timeout=8000; request.ReadWriteTimeout=8000; request.AllowAutoRedirect=false;
+  request.UserAgent="BleAirDock/"+AppPaths.Version; request.Accept="application/vnd.github+json"; request.Timeout=8000; request.ReadWriteTimeout=8000; request.AllowAutoRedirect=false;
   using(var response=(HttpWebResponse)request.GetResponse()) using(var stream=response.GetResponseStream()) using(var reader=new StreamReader(stream,Encoding.UTF8)) {
    if(response.StatusCode!=HttpStatusCode.OK) throw new WebException(L.T("GitHub-Abfrage fehlgeschlagen."));
    char[] buffer=new char[4096]; var text=new StringBuilder(); int n; while((n=reader.Read(buffer,0,buffer.Length))>0) { if(text.Length+n>524288) throw new FormatException(L.T("GitHub-Antwort zu groß.")); text.Append(buffer,0,n); }
