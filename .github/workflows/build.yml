@@ -32,6 +32,7 @@ jobs:
           path: |
             dist/*-Setup.exe
             dist/*-portable.zip
+            dist/*-source.zip
             dist/SHA256SUMS.txt
           if-no-files-found: error
   release-draft:
@@ -46,7 +47,7 @@ jobs:
         with:
           name: windows-packages
           path: packages
-      - name: Create prerelease draft
+      - name: Publish release
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
@@ -54,5 +55,5 @@ jobs:
           if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
             echo "Release already exists; keeping the reviewed uploaded assets."
           else
-            gh release create "$RELEASE_TAG" packages/* --verify-tag --draft --prerelease --title "Kopfhoerer-Akku $RELEASE_TAG" --notes-file docs/RELEASE-NOTES.md
+            gh release create "$RELEASE_TAG" packages/* --verify-tag --latest --title "BleAirDock $RELEASE_TAG" --notes-file docs/RELEASE-NOTES.md
           fi
