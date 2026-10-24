@@ -1,6 +1,6 @@
 ﻿; SPDX-License-Identifier: MIT
 #ifndef AppVersion
-  #define AppVersion "1.6.2"
+  #define AppVersion "1.6.5"
 #endif
 #define ProjectRoot ".."
 
