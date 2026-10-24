@@ -1,16 +1,22 @@
 ﻿# Kopfhörer-Akku
 
-**Version actuelle : 1.6.2**
+**Version actuelle : 1.6.5**
 
-## Nouveautés de la version 1.6.2
+## Nouveautés de la version 1.6.5
 
-Alerte lumineuse facultative dans la zone de notification, avec couleur personnalisable et seuil indépendant de 1 à 90 %. Dans Alerte lumineuse, testez l’icône réelle pendant 30 secondes et ajustez la couleur en direct. Désactivée initialement ; aucune requête Bluetooth supplémentaire.
+- Widgets standard et mini : deux icônes cliquables, taille, disposition, polices, couleurs et transparence réglables. Le mini-widget affiche le nom et l’état au survol ; alignement facultatif sur les bords. Masquez ou affichez le widget depuis le menu ; une icône de notification reste accessible.
 
-Les casques déconnectés affichent un tiret au lieu d’un pourcentage actuel. Les valeurs mémorisées sont signalées comme le dernier niveau connu au survol. Si la connexion est inconnue, une valeur mémorisée n’est pas présentée comme une mesure actuelle.
+- Alertes par casque avec seuil et couleur propres. Alerte lumineuse : 1–90 %, période de 1–10 secondes, intensité de 10–100 % ou éclairage fixe. Test de 30 secondes sur l’icône réelle. Suspension des alertes pendant 30, 60 ou 120 minutes, sans requêtes Bluetooth supplémentaires.
 
-Icônes plus lisses, paramètres compacts avec un sélecteur de langue entièrement visible et meilleure protection contre les lancements multiples.
+- Trois raccourcis personnalisables : alterner, activer le casque 1, activer le casque 2. Combinez Ctrl, Alt, Maj et Win avec A–Z. Désactivés initialement ; les combinaisons indisponibles sont signalées.
 
-## Sélection audio aussi dans le widget · 1.6.2
+- Mémorisation du volume facultative par casque : choisissez le niveau initial ; l’application mémorise ensuite le volume en quittant un appareil et le rétablit lors de sa sélection audio. Le mode muet et le microphone restent inchangés.
+
+- Importez une image PNG/ICO dans Noms et affichage → Choisir une icône. Cinq exemples SVG et PNG se trouvent dans docs/symbols. SVG est la source modifiable ; PNG/ICO est importé. Le mini-widget peut afficher uniquement l’image. Contraste renforcé dans la zone de notification ; couleurs originales conservées dans le widget.
+
+- Les états distinguent appareil déconnecté, connexion inconnue, absence de niveau de batterie Windows et échec de requête. Les valeurs mémorisées ne sont pas présentées comme une mesure actuelle confirmée.
+
+## Sélection audio aussi dans le widget
 
 Cliquez sur le symbole, le nom ou le pourcentage du casque dans le widget pour sélectionner sa sortie audio. Une coche verte indique la sortie active. Glisser déplace le widget sans changer le son ; un double clic ouvre les paramètres. La sélection fonctionne aussi lorsque la position est verrouillée. Le widget utilise les mêmes associations et le même réglage de sélection rapide que les icônes de notification.
 

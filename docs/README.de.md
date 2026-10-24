@@ -1,14 +1,20 @@
 ﻿**[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
 
-**Aktuelle Version: 1.6.2**
+**Aktuelle Version: 1.6.5**
 
-## Neu in 1.6.2
+## Neu in 1.6.5
 
-Optionale Leuchtwarnung im Infobereich mit frei wählbarer Farbe und eigenem Schwellenwert von 1–90 %. Unter Leuchtwarnung kannst du das echte Symbol 30 Sekunden lang testen und die Farbe direkt anpassen. Die Funktion ist zunächst ausgeschaltet und löst keine zusätzlichen Bluetooth-Abfragen aus.
+- Standard- und Tiny-Widget: zwei anklickbare Symbole, Größe, Anordnung, Schriften, Farben und Transparenz einstellbar. Tiny zeigt Gerätenamen und Status per Mouseover; optionales Einrasten am Bildschirmrand. Widget ausblenden / anzeigen ist im Menü erreichbar; beim Ausblenden bleibt ein Tray-Symbol verfügbar.
 
-Getrennte Kopfhörer zeigen einen Strich statt eines aktuellen Prozentwerts. Alte Werte sind im Mouseover als zuletzt bekannt gekennzeichnet. Unbekannte Verbindungen zeigen keinen gespeicherten Wert als aktuellen Akkustand.
+- Warnungen je Kopfhörer mit eigener Schwelle und Pulsfarbe. Leuchtwarnung: 1–90 %, Pulsdauer 1–10 Sekunden, Stärke 10–100 % oder Dauerleuchten. Der 30-Sekunden-Test zeigt das echte Tray-Symbol. Warnpause für 30, 60 oder 120 Minuten; keine zusätzlichen Bluetooth-Abfragen.
 
-Geglättete Symbole, kompaktere Einstellungen mit vollständig sichtbarer Sprachauswahl und eine verbesserte Sperre gegen mehrfachen Programmstart.
+- Drei frei definierbare Tastenkürzel: Wechseln, Kopfhörer 1 aktivieren, Kopfhörer 2 aktivieren. Strg, Alt, Umschalt und Win mit A–Z kombinierbar. Zunächst ausgeschaltet; belegte Kombinationen werden gemeldet.
+
+- Lautstärke je Kopfhörer ist freiwillig: ersten Zielwert festlegen, danach merkt sich die App beim Verlassen eines Geräts dessen Lautstärke und stellt sie bei der Audio-Direktwahl wieder her. Stummschaltung und Mikrofon bleiben unverändert.
+
+- Eigene PNG-/ICO-Symbole unter Namen & Anzeige → Symbol wählen. Fünf Vorlagen als SVG und PNG liegen unter docs/symbols. SVG dient als bearbeitbare Vorlage; importiert wird PNG/ICO. Tiny kann nur das Bildsymbol zeigen. Tray-Symbole werden für kleine Größen kontrastreicher dargestellt; das Widget behält die Originalfarben.
+
+- Statusmeldungen unterscheiden Nicht verbunden, Verbindung unbekannt, Windows liefert keinen Akkustand und Abfrage fehlgeschlagen. Gespeicherte Werte werden nicht als aktuelle Messung ausgegeben.
 
 # Kopfhörer-Akku
 
@@ -34,11 +40,11 @@ Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunik
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.2-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/KopfhoererAkku-1.6.5-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.2-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/KopfhoererAkku-1.6.5-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/SHA256SUMS.txt)
 
 Die aktuelle Version ist **1.6.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
@@ -163,6 +169,3 @@ Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Françai
 [Kopfhörer-Akku auf AlternativeTo ansehen](https://alternativeto.net/software/kopfhorer-akku/) – ähnliche Programme vergleichen oder eigene Erfahrungen teilen.
 
 
-## Neu in 1.6.2
-
-Optionale Leuchtwarnung mit frei wählbarer Pulsfarbe und Schwellenwert (1–90 %). Unter **Leuchtwarnung → Im Infobereich testen (30 s)** direkt ausprobieren. Keine zusätzlichen Bluetooth-Abfragen. Getrennte Geräte zeigen einen Strich, alte Werte sind im Mouseover gekennzeichnet. Glattere Symbole, kompaktere Einstellungen und verbesserte Einzelstart-Sperre.

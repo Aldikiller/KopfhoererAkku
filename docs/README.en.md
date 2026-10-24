@@ -1,24 +1,24 @@
 ﻿# Kopfhörer-Akku — Bluetooth battery monitor and audio switcher
 
-**Current version: 1.6.2**
+**Current version: 1.6.5**
 
-## New in 1.6.2
+## New in 1.6.5
 
-Optional low-battery pulse in the system tray with a custom color and a separate 1–90% threshold. Under Pulse warning, test the actual tray icon for 30 seconds and adjust the color live. Initially off; no extra Bluetooth queries.
+- Standard and Tiny widgets: two clickable icons, adjustable size, layout, fonts, colors and transparency. Tiny shows device names and status on hover; optional screen-edge snapping. Hide / show widget is available in the menu, with tray access retained while hidden.
 
-Disconnected headphones show a dash instead of a current percentage. Cached values are labeled as last known in the tooltip. Unknown connections do not show cached battery levels as current readings.
+- Per-headphone warnings with individual thresholds and pulse colors. Pulse warning: 1–90%, period 1–10 seconds, intensity 10–100%, or steady glow. The 30-second test uses the actual tray icon. Pause warnings for 30, 60 or 120 minutes. No extra Bluetooth queries.
 
-Smoother icons, a compact settings layout with a fully visible language selector, and improved protection against duplicate launches.
+- Three customizable shortcuts: toggle, activate headphone 1, activate headphone 2. Combine Ctrl, Alt, Shift and Win with A–Z. Initially disabled; unavailable combinations are reported.
 
-[Deutsch](README.de.md) · **English** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
+- Per-headphone volume memory is optional: set the initial target, then the app remembers the volume when leaving a device and restores it during one-click audio selection. Mute and microphone settings stay unchanged.
 
-A free, open-source Windows app by **Aldikiller**. Monitor up to two Bluetooth headphones in the system tray, a desktop widget, or both. Click the headphone you want to use to switch the Windows audio output.
+- Import PNG/ICO device images under Names & display → Choose icon. Five SVG and PNG examples are included in docs/symbols. SVG is editable source; PNG/ICO is imported. Tiny can show just the image. Tray images use higher contrast at small sizes; widget images retain their original colors.
 
-**Current version: 1.6.2. The app supports English.** German is the default; both languages are included in the same download, along with Spanish, French and Ukrainian.
+- Status messages distinguish not connected, unknown connection, Windows provides no battery level, and query failed. Cached values are never presented as a confirmed current measurement.
 
 ## Download
 
-**[Download installer](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.2-Setup.exe)** · **[Download portable ZIP](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.2-portable.zip)**
+**[Download installer](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/KopfhoererAkku-1.6.5-Setup.exe)** · **[Download portable ZIP](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/KopfhoererAkku-1.6.5-portable.zip)**
 
 [All releases and SHA-256 checksums](https://github.com/Aldikiller/KopfhoererAkku/releases/latest) · [English website](https://aldikiller.github.io/KopfhoererAkku/en.html) · [English wiki](https://github.com/Aldikiller/KopfhoererAkku/wiki/English)
 
@@ -69,9 +69,6 @@ Settings open in a simple view. Select **Advanced settings** for all controls. C
 
 The widget has independent size, position, opacity, fonts, spacing and layout settings. Choose tray, widget or both in display settings. For a clear background, set background opacity and frame thickness to zero. Overall opacity also affects text and symbols.
 
-## New in 1.6.2
-
-Optional low-battery pulse with a custom color and a separate 1–90% threshold. Use **Pulse warning → Test in system tray (30 s)** to try the actual tray icon and adjust the color before saving. No extra Bluetooth queries. Disconnected devices show a dash; cached values are labeled as last known in the tooltip. Smoother tray icons, improved settings layout, and duplicate-start protection are included.
 
 ## Warnings and limits
 

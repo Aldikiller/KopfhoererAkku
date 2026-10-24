@@ -1,16 +1,22 @@
 ﻿# Kopfhörer-Akku
 
-**Versión actual: 1.6.2**
+**Versión actual: 1.6.5**
 
-## Novedades de la versión 1.6.2
+## Novedades de la versión 1.6.5
 
-Aviso luminoso opcional en la bandeja del sistema, con color personalizable y umbral independiente del 1 al 90 %. En Aviso luminoso puedes probar el icono real durante 30 segundos y ajustar el color en directo. Está desactivado inicialmente y no añade consultas Bluetooth.
+- Widgets estándar y pequeño: dos iconos pulsables, tamaño, disposición, fuentes, colores y transparencia ajustables. La vista pequeña muestra el nombre y el estado al pasar el ratón; ajuste opcional a los bordes. Puedes ocultar y mostrar el widget desde el menú; se conserva un icono en la bandeja.
 
-Los auriculares desconectados muestran un guion en lugar de un porcentaje actual. Los valores guardados se identifican como el último nivel conocido al pasar el ratón. Si la conexión es desconocida, no se presenta un valor guardado como una lectura actual.
+- Avisos por auricular con umbral y color propios. Aviso luminoso: 1–90 %, periodo de 1–10 segundos, intensidad de 10–100 % o luz fija. Prueba de 30 segundos en el icono real. Pausa de avisos durante 30, 60 o 120 minutos, sin consultas Bluetooth adicionales.
 
-Iconos más suaves, ajustes compactos con el selector de idioma completamente visible y protección mejorada contra inicios duplicados.
+- Tres atajos personalizables: alternar, activar auriculares 1 y activar auriculares 2. Combina Ctrl, Alt, Mayús y Win con A–Z. Inicialmente desactivados; se informa de combinaciones no disponibles.
 
-## Selección de audio también desde el widget · 1.6.2
+- Memoria de volumen opcional por auricular: fija el primer nivel; después, la aplicación recuerda el volumen al dejar un dispositivo y lo restaura al seleccionar su salida. No cambia el silencio ni el micrófono.
+
+- Importa PNG/ICO en Nombres y pantalla → Elegir icono. Hay cinco ejemplos SVG y PNG en docs/symbols. SVG es la fuente editable; se importa PNG/ICO. El widget pequeño puede mostrar solo la imagen. Más contraste en la bandeja; el widget conserva los colores originales.
+
+- Los estados distinguen desconexión, conexión desconocida, ausencia de nivel de batería de Windows y error de consulta. Los valores guardados no se muestran como una medición actual confirmada.
+
+## Selección de audio también desde el widget
 
 Haz clic en el icono, el nombre o el porcentaje de los auriculares en el widget para seleccionar su salida de audio. Una marca verde indica la salida activa. Arrastrar mueve el widget sin cambiar el audio; el doble clic abre los ajustes. También funciona con la posición bloqueada. Comparte las asignaciones y la opción de selección rápida con los iconos de la bandeja.
 
