@@ -1,6 +1,16 @@
 ﻿# Kopfhörer-Akku
 
-## Selección de audio también desde el widget · 1.6.1
+**Versión actual: 1.6.2**
+
+## Novedades de la versión 1.6.2
+
+Aviso luminoso opcional en la bandeja del sistema, con color personalizable y umbral independiente del 1 al 90 %. En Aviso luminoso puedes probar el icono real durante 30 segundos y ajustar el color en directo. Está desactivado inicialmente y no añade consultas Bluetooth.
+
+Los auriculares desconectados muestran un guion en lugar de un porcentaje actual. Los valores guardados se identifican como el último nivel conocido al pasar el ratón. Si la conexión es desconocida, no se presenta un valor guardado como una lectura actual.
+
+Iconos más suaves, ajustes compactos con el selector de idioma completamente visible y protección mejorada contra inicios duplicados.
+
+## Selección de audio también desde el widget · 1.6.2
 
 Haz clic en el icono, el nombre o el porcentaje de los auriculares en el widget para seleccionar su salida de audio. Una marca verde indica la salida activa. Arrastrar mueve el widget sin cambiar el audio; el doble clic abre los ajustes. También funciona con la posición bloqueada. Comparte las asignaciones y la opción de selección rápida con los iconos de la bandeja.
 

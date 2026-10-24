@@ -1,5 +1,15 @@
 ﻿# Kopfhörer-Akku — Bluetooth battery monitor and audio switcher
 
+**Current version: 1.6.2**
+
+## New in 1.6.2
+
+Optional low-battery pulse in the system tray with a custom color and a separate 1–90% threshold. Under Pulse warning, test the actual tray icon for 30 seconds and adjust the color live. Initially off; no extra Bluetooth queries.
+
+Disconnected headphones show a dash instead of a current percentage. Cached values are labeled as last known in the tooltip. Unknown connections do not show cached battery levels as current readings.
+
+Smoother icons, a compact settings layout with a fully visible language selector, and improved protection against duplicate launches.
+
 [Deutsch](README.de.md) · **English** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
 
 A free, open-source Windows app by **Aldikiller**. Monitor up to two Bluetooth headphones in the system tray, a desktop widget, or both. Click the headphone you want to use to switch the Windows audio output.

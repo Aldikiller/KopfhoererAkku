@@ -1,5 +1,15 @@
 ﻿**[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
 
+**Aktuelle Version: 1.6.2**
+
+## Neu in 1.6.2
+
+Optionale Leuchtwarnung im Infobereich mit frei wählbarer Farbe und eigenem Schwellenwert von 1–90 %. Unter Leuchtwarnung kannst du das echte Symbol 30 Sekunden lang testen und die Farbe direkt anpassen. Die Funktion ist zunächst ausgeschaltet und löst keine zusätzlichen Bluetooth-Abfragen aus.
+
+Getrennte Kopfhörer zeigen einen Strich statt eines aktuellen Prozentwerts. Alte Werte sind im Mouseover als zuletzt bekannt gekennzeichnet. Unbekannte Verbindungen zeigen keinen gespeicherten Wert als aktuellen Akkustand.
+
+Geglättete Symbole, kompaktere Einstellungen mit vollständig sichtbarer Sprachauswahl und eine verbesserte Sperre gegen mehrfachen Programmstart.
+
 # Kopfhörer-Akku
 
 <img src="logo.png" width="96" height="96" alt="Kopfhörer-Akku Logo">

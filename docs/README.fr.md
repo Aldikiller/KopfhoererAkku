@@ -1,6 +1,16 @@
 ﻿# Kopfhörer-Akku
 
-## Sélection audio aussi dans le widget · 1.6.1
+**Version actuelle : 1.6.2**
+
+## Nouveautés de la version 1.6.2
+
+Alerte lumineuse facultative dans la zone de notification, avec couleur personnalisable et seuil indépendant de 1 à 90 %. Dans Alerte lumineuse, testez l’icône réelle pendant 30 secondes et ajustez la couleur en direct. Désactivée initialement ; aucune requête Bluetooth supplémentaire.
+
+Les casques déconnectés affichent un tiret au lieu d’un pourcentage actuel. Les valeurs mémorisées sont signalées comme le dernier niveau connu au survol. Si la connexion est inconnue, une valeur mémorisée n’est pas présentée comme une mesure actuelle.
+
+Icônes plus lisses, paramètres compacts avec un sélecteur de langue entièrement visible et meilleure protection contre les lancements multiples.
+
+## Sélection audio aussi dans le widget · 1.6.2
 
 Cliquez sur le symbole, le nom ou le pourcentage du casque dans le widget pour sélectionner sa sortie audio. Une coche verte indique la sortie active. Glisser déplace le widget sans changer le son ; un double clic ouvre les paramètres. La sélection fonctionne aussi lorsque la position est verrouillée. Le widget utilise les mêmes associations et le même réglage de sélection rapide que les icônes de notification.
 
