@@ -1,4 +1,4 @@
-# Kopfhörer-Akku
+﻿# Kopfhörer-Akku
 
 ## Вибір аудіо також у віджеті · 1.6.1
 

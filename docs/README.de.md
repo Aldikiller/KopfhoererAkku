@@ -1,4 +1,4 @@
-**[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
+﻿**[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
 
 # Kopfhörer-Akku
 
@@ -24,11 +24,11 @@ Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunik
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.2-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.2-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/SHA256SUMS.txt)
 
 Die aktuelle Version ist **1.6.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
@@ -151,3 +151,8 @@ Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Françai
 ## Auf AlternativeTo
 
 [Kopfhörer-Akku auf AlternativeTo ansehen](https://alternativeto.net/software/kopfhorer-akku/) – ähnliche Programme vergleichen oder eigene Erfahrungen teilen.
+
+
+## Neu in 1.6.2
+
+Optionale Leuchtwarnung mit frei wählbarer Pulsfarbe und Schwellenwert (1–90 %). Unter **Leuchtwarnung → Im Infobereich testen (30 s)** direkt ausprobieren. Keine zusätzlichen Bluetooth-Abfragen. Getrennte Geräte zeigen einen Strich, alte Werte sind im Mouseover gekennzeichnet. Glattere Symbole, kompaktere Einstellungen und verbesserte Einzelstart-Sperre.

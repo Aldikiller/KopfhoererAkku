@@ -1,17 +1,17 @@
-# Kopfhörer-Akku 1.6.1
+# Kopfhörer-Akku 1.6.2
 
-## Audioausgabe direkt im Widget wechseln
+- Optional low-battery pulse in the system tray, with a custom color and independent 1–90% threshold (default 20%, initially off).
+- Test the actual tray icon for 30 seconds and adjust the color live. Stop manually or close Settings to restore normal display. No additional Bluetooth queries.
+- Disconnected headphones show a dash; cached values are explicitly labeled as last known in the tooltip. Unknown connections do not show a cached percentage as current.
+- Smoother vector-based rendering at the Windows tray icon size and a compact settings layout with a fully visible language selector.
+- Duplicate-start protection also recognizes early prototype versions.
 
-Ein Klick auf Symbol, Namen oder Prozentwert des Kopfhörers im Desktop-Widget wählt dessen Audioausgabe. Das grüne Häkchen zeigt die aktive Ausgabe, auch bei ausgeblendeten Gerätesymbolen.
+## Deutsch
 
-- Ziehen verschiebt das Widget, ohne die Audioausgabe zu wechseln.
-- Doppelklick öffnet nur die Einstellungen.
-- Auswahl auch bei gesperrter Widget-Position.
-- Dieselben Zuordnungen und derselbe Schalter „Audio-Schnellauswahl“ wie im Infobereich.
-- Das Akkuintervall bleibt bei 30–300 Sekunden; bestehende Einstellungen bleiben erhalten.
+Leuchtwarnung mit eigener Farbe und Schwellenwert, 30-Sekunden-Test direkt im Infobereich, geglättete Symbole und übersichtlichere Einstellungen. Getrennte Kopfhörer zeigen keinen aktuellen Prozentwert. Verbesserte Sperre gegen mehrfachen Programmstart.
 
-Mikrofon und separates Kommunikationsgerät bleiben unverändert. Apps mit eigener fester Ausgabe können diese behalten. Downloads weiterhin unsigniert.
+## Downloads
 
-## English
+Setup.exe: installer. Portable ZIP: extract completely, then run. Quellcode ZIP: source code. SHA256SUMS.txt: checksums.
 
-Click a headphone icon, name or percentage in the desktop widget to switch its audio output. A green check shows the active output, even with device icons hidden. Dragging moves the widget without switching audio; double-click opens settings only. Selection also works with the position locked. The widget shares the tray mappings and Audio quick selection setting. Existing settings are preserved.
+Windows 10 build 19041+ / Windows 11, x64, .NET Framework 4.8. Free, MIT licensed. Downloads remain unsigned. Battery readings depend on Windows and device drivers.

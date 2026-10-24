@@ -1,4 +1,4 @@
-# Kopfhörer-Akku
+﻿# Kopfhörer-Akku
 
 ## Selección de audio también desde el widget · 1.6.1
 
