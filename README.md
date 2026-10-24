@@ -1,6 +1,6 @@
 # BleAirDock — Bluetooth battery monitor and audio switcher
 
-![BleAirDock](assets/logo.svg)
+![BleAirDock](https://raw.githubusercontent.com/Aldikiller/KopfhoererAkku/v1.7.0/assets/logo.svg)
 
 BleAirDock was previously called Kopfhörer-Akku. Version 1.7.0 introduces the new name and logo and retains the features of 1.6.5. Installer upgrades preserve settings and device assignments. Existing GitHub and update addresses remain valid.
 
@@ -101,3 +101,4 @@ Free and open source under the [MIT license](LICENSE), provided without warranty
 ## Find us on AlternativeTo
 
 [View BleAirDock on AlternativeTo](https://alternativeto.net/software/kopfhorer-akku/) — compare similar tools or share your experience.
+
