@@ -1,8 +1,12 @@
-﻿# Kopfhörer-Akku
+# BleAirDock
 
-**Versión actual: 1.6.5**
+![BleAirDock](../assets/logo.svg)
 
-## Novedades de la versión 1.6.5
+BleAirDock se llamaba Kopfhörer-Akku. La versión 1.7.0 incorpora el nuevo nombre y logotipo y conserva las funciones de 1.6.5. La actualización con el instalador conserva ajustes y asignaciones. Las direcciones de GitHub y actualizaciones siguen siendo válidas.
+
+**Versión actual: 1.7.0**
+
+## Novedades de la versión 1.7.0
 
 - Widgets estándar y pequeño: dos iconos pulsables, tamaño, disposición, fuentes, colores y transparencia ajustables. La vista pequeña muestra el nombre y el estado al pasar el ratón; ajuste opcional a los bordes. Puedes ocultar y mostrar el widget desde el menú; se conserva un icono en la bandeja.
 
@@ -71,4 +75,3 @@ Elimina la versión instalada desde Configuración de Windows → Aplicaciones. 
 Comparte el modelo de auriculares, las versiones de Windows y de la aplicación y los pasos para reproducir el problema. No publiques direcciones Bluetooth ni datos privados.
 
 MIT: [Código fuente](https://github.com/Aldikiller/KopfhoererAkku/blob/main/LICENSE)
-

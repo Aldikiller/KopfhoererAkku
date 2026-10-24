@@ -1,8 +1,12 @@
-﻿**[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
+**[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
 
-**Aktuelle Version: 1.6.5**
+![BleAirDock](../assets/logo.svg)
 
-## Neu in 1.6.5
+BleAirDock hieß bisher Kopfhörer-Akku. Version 1.7.0 bringt den neuen Namen und das neue Logo; die Funktionen aus 1.6.5 bleiben erhalten. Einstellungen und Gerätezuordnungen bleiben bei einem Installer-Update erhalten. Die bisherigen GitHub- und Update-Adressen bleiben gültig.
+
+**Aktuelle Version: 1.7.0**
+
+## Neu in 1.7.0
 
 - Standard- und Tiny-Widget: zwei anklickbare Symbole, Größe, Anordnung, Schriften, Farben und Transparenz einstellbar. Tiny zeigt Gerätenamen und Status per Mouseover; optionales Einrasten am Bildschirmrand. Widget ausblenden / anzeigen ist im Menü erreichbar; beim Ausblenden bleibt ein Tray-Symbol verfügbar.
 
@@ -16,9 +20,9 @@
 
 - Statusmeldungen unterscheiden Nicht verbunden, Verbindung unbekannt, Windows liefert keinen Akkustand und Abfrage fehlgeschlagen. Gespeicherte Werte werden nicht als aktuelle Messung ausgegeben.
 
-# Kopfhörer-Akku
+# BleAirDock
 
-<img src="logo.png" width="96" height="96" alt="Kopfhörer-Akku Logo">
+<img src="logo.png" width="96" height="96" alt="BleAirDock Logo">
 
 Ein kleines Windows-Tool, das den Akkustand von bis zu zwei Bluetooth-Kopfhörern neben der Uhr oder als Desktop-Widget anzeigt. So muss man nicht jedes Mal in den Windows-Einstellungen nachsehen.
 
@@ -40,11 +44,11 @@ Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunik
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/KopfhoererAkku-1.6.5-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.0/BleAirDock-1.7.0-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/KopfhoererAkku-1.6.5-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.0/BleAirDock-1.7.0-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.5/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.0/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.0/SHA256SUMS.txt)
 
 Die aktuelle Version ist **1.6.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
@@ -166,6 +170,4 @@ Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Françai
 
 ## Auf AlternativeTo
 
-[Kopfhörer-Akku auf AlternativeTo ansehen](https://alternativeto.net/software/kopfhorer-akku/) – ähnliche Programme vergleichen oder eigene Erfahrungen teilen.
-
-
+[BleAirDock auf AlternativeTo ansehen](https://alternativeto.net/software/kopfhorer-akku/) – ähnliche Programme vergleichen oder eigene Erfahrungen teilen.

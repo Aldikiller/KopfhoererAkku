@@ -1,39 +1,11 @@
-# Auf GitHub veröffentlichen
+# Publishing BleAirDock
 
-Vorgesehenes Konto: **Aldikiller**. Repository-Vorschlag: **KopfhoererAkku**.
-Diese Unterlagen bedeuten noch nicht, dass das Repository bereits online ist.
+The public repository stays at https://github.com/Aldikiller/KopfhoererAkku for compatibility with update checks in existing releases. The product is BleAirDock.
 
-1. Mit dem gewünschten Konto auf GitHub anmelden und ein **öffentliches**,
-   leeres Repository `KopfhoererAkku` erstellen. Keine vorgefertigte README oder
-   Lizenz hinzufügen; beides ist hier enthalten.
-2. Nur diesen Projektordner hochladen. Die persönliche Prototyp-Anwendung,
-   Geräteauswahl, Diagnoseprotokolle und andere Arbeitsordner nicht hochladen.
-3. Mit authentifizierter GitHub CLI alternativ im Projektordner ausführen:
+1. Update VERSION, assembly metadata, installer fallback version and all five language pages/readmes.
+2. Run build.ps1 -Installer -Iscc <official Inno Setup compiler>. Review self-tests and UI checks.
+3. Check the original logo in assets/logo.svg, derived icon assets and the About window.
+4. Commit the reviewed source and push main. After validation, tag v1.7.0 and push the tag.
+5. The tag workflow builds/tests on Windows, then publishes installer, portable ZIP, source ZIP and SHA256SUMS.txt with docs/RELEASE-NOTES.md.
 
-```powershell
-gh auth status
-gh repo create Aldikiller/KopfhoererAkku --public --source . --remote origin --push
-```
-
-4. Unter Actions den erfolgreichen Build prüfen. Anschließend versionieren:
-
-```powershell
-git tag v0.1.0-beta.1
-git push origin v0.1.0-beta.1
-```
-
-5. Der Workflow erstellt einen **unveröffentlichten Prerelease-Entwurf** mit
-   Setup, portabler ZIP und Prüfsummen. Den Testumfang prüfen, danach manuell
-   veröffentlichen. Alternativ die lokal gebauten Dateien an einen neuen
-   Release-Entwurf anhängen und `docs/RELEASE-NOTES.md` als Beschreibung verwenden.
-
-6. GitHub-Themen z. B. `windows`, `bluetooth`, `battery`, `headphones`, `system-tray`.
-   Private vulnerability reporting unter Security aktivieren, falls verfügbar.
-
-Die MIT-Lizenz gestattet auch Dritten kommerzielle Weiterverteilung. Wenn die
-Software dauerhaft ausschließlich nichtkommerziell nutzbar sein soll, passt
-das nicht zur hier gewählten MIT-Open-Source-Lizenz.
-
-Für eine spätere stabile Version: Praxistests abschließen und gegebenenfalls
-eine echte Codesignatur beschaffen. Es wird kein Zertifikat oder Schlüssel
-mitgeliefert und keine Vertrauenswürdigkeit durch eine Signatur vorgetäuscht.
+Keep installer AppId, legacy settings directory, mutex/event names and startup shortcut filename stable. Do not upload work folders, private device settings, credentials or diagnostic logs. Releases remain unsigned. MIT permits commercial redistribution even though the project itself is freeware.
