@@ -1,14 +1,14 @@
-# Kopfhörer-Akku — Bluetooth battery monitor and audio switcher
+﻿# Kopfhörer-Akku — Bluetooth battery monitor and audio switcher
 
 [Deutsch](docs/README.de.md) · **English** · [Español](docs/README.es.md) · [Français](docs/README.fr.md) · [Українська](docs/README.uk.md)
 
 A free, open-source Windows app by **Aldikiller**. Monitor up to two Bluetooth headphones in the system tray, a desktop widget, or both. Click the headphone you want to use to switch the Windows audio output.
 
-**Current version: 1.6.1. The app supports English.** German is the default; both languages are included in the same download, along with Spanish, French and Ukrainian.
+**Current version: 1.6.2. The app supports English.** German is the default; both languages are included in the same download, along with Spanish, French and Ukrainian.
 
 ## Download
 
-**[Download installer](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-Setup.exe)** · **[Download portable ZIP](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.1/KopfhoererAkku-1.6.1-portable.zip)**
+**[Download installer](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.2-Setup.exe)** · **[Download portable ZIP](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.6.2/KopfhoererAkku-1.6.2-portable.zip)**
 
 [All releases and SHA-256 checksums](https://github.com/Aldikiller/KopfhoererAkku/releases/latest) · [English website](https://aldikiller.github.io/KopfhoererAkku/en.html) · [English wiki](https://github.com/Aldikiller/KopfhoererAkku/wiki/English)
 
@@ -58,6 +58,10 @@ Battery checks default to 30 seconds and can be set from 30 to 300 seconds. No r
 Settings open in a simple view. Select **Advanced settings** for all controls. Change device labels, colors and symbols, fonts, battery size, corner radius and outline thickness. Choose a battery with a number, or a number with a symbol. The live preview shows changes before saving. Windows controls the outer size of tray icons.
 
 The widget has independent size, position, opacity, fonts, spacing and layout settings. Choose tray, widget or both in display settings. For a clear background, set background opacity and frame thickness to zero. Overall opacity also affects text and symbols.
+
+## New in 1.6.2
+
+Optional low-battery pulse with a custom color and a separate 1–90% threshold. Use **Pulse warning → Test in system tray (30 s)** to try the actual tray icon and adjust the color before saving. No extra Bluetooth queries. Disconnected devices show a dash; cached values are labeled as last known in the tooltip. Smoother tray icons, improved settings layout, and duplicate-start protection are included.
 
 ## Warnings and limits
 

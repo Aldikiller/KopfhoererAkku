@@ -1,3 +1,19 @@
+﻿# Kopfhörer-Akku 1.6.2
+
+- Getrennte Geräte zeigen einen Strich statt Prozent; unbekannte Verbindungen zeigen keine gespeicherte Prozentzahl als aktuellen Wert. Mouseover kennzeichnet alte Werte als zuletzt bekannt.
+- Allgemeine Einstellungen kompakter angeordnet; Sprachauswahl vollständig sichtbar und Reiter scrollbar.
+
+- Optionale Leuchtwarnung im Infobereich: langsames Pulsieren mit frei wählbarer Farbe bei einstellbarem Akkustand (1–90 %, Standard 20 %). Zunächst ausgeschaltet.
+- Testknopf zeigt die Pulsfarbe für 30 Sekunden am echten Tray-Symbol; Änderungen sind direkt sichtbar.
+- Symbole mit Supersampling und passender Windows-Symbolgröße, geglättete Vorschau.
+- Eigener Reiter mit animierter 15-%-Vorschau. Keine zusätzlichen Bluetooth-Abfragen. Nur bei bestätigter Verbindung und bekanntem Akkustand.
+- Verbesserte Einzelinstanz-Sperre erkennt auch frühe Projektversionen. Erneuter Start bleibt still.
+
+## English
+
+- Optional low-battery pulse in the system tray with a separate 1–90% threshold, default 20%, initially off. Customizable pulse color. Animated 15% preview; no extra battery queries.
+- Single-instance guard also detects early prototypes. Duplicate launches exit silently.
+
 # Kopfhörer-Akku 1.6.1
 
 ## Audioausgabe direkt im Widget wechseln
