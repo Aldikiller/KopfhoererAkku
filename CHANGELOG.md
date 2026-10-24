@@ -1,4 +1,32 @@
-﻿# Kopfhörer-Akku 1.6.2
+﻿# Kopfhörer-Akku 1.6.5
+
+- Widget vorübergehend über Menü oder Tray ausblenden und wieder anzeigen; ein Tray-Symbol bleibt erreichbar.
+- Klare Meldungen bei getrennter Verbindung, unbekanntem Status, fehlendem Windows-Akkuwert und Abfragefehlern.
+- Freiwillige Lautstärkespeicherung je Kopfhörer für Wechsel über die App; erster Zielwert wählbar, Stummschaltung unverändert.
+- Eigene PNG-/ICO-Gerätesymbole mit lokaler Kopie und Livevorschau; fünf SVG-/PNG-Vorlagen mitgeliefert. Tiny wahlweise nur mit Bildsymbol.
+
+# Kopfhörer-Akku 1.6.4
+
+- Eigene Benachrichtigungen, Warnschwellen, Leuchtwarnungen und Pulsfarben pro Kopfhörer. Alternativ allgemeine Einstellungen verwenden.
+- Pulsdauer 1–10 Sekunden und Leuchtstärke 10–100 %, alternativ dauerhaftes Leuchten.
+- Warnungen über das Tray-Menü für 30, 60 oder 120 Minuten pausieren und jederzeit fortsetzen. Die Pause gilt für Benachrichtigungen und Leuchten; ein manueller Leuchttest bleibt möglich. Die Pause endet beim Neustart.
+- Tiny-Widget: Mouseover zeigt Name, Verbindungsstatus und verfügbaren Akkustand.
+- Widget rastet optional an Bildschirmrändern ein; Einrastabstand einstellbar. Nach Änderungen der Bildschirmaufteilung wird die Position korrigiert.
+- Drei unabhängige Tastenkürzel: Wechseln, Kopfhörer 1 aktivieren, Kopfhörer 2 aktivieren. Eigene Zusatztasten und Buchstaben, Erkennung doppelter oder belegter Kombinationen.
+- Alle neuen Bedienelemente auf Deutsch, Englisch, Spanisch, Französisch und Ukrainisch.
+
+Globale Tastenkürzel und reale Hardwarewechsel müssen auf einem interaktiven Windows-Desktop geprüft werden. Export/Import ist nicht enthalten.
+
+# Kopfhörer-Akku 1.6.3
+
+- Frei definierbares globales Tastenkürzel für den Kopfhörerwechsel. Strg, Alt, Umschalt und Win kombinierbar, Buchstaben A–Z. Belegte Kürzel werden gemeldet. Zunächst ausgeschaltet.
+- Sprachabhängiger Vorschlag: Strg+Alt+K (DE), H (EN), A (ES), C (FR), Y/Н (UK). Gespeicherte Kürzel bleiben bei Sprachwechsel erhalten.
+
+- Neues Standard-Widget mit dunkler Fläche, runden Ecken und größerer Darstellung von Namen, Akkustand und Status.
+- Tiny-Vorlage: zwei anklickbare Akkusymbole nebeneinander, standardmäßig 40 Pixel. Größe, Anordnung, Farben und Transparenz bleiben einstellbar.
+- Vorlagen unter Anzeige & Widget. Bestehende Gestaltung bleibt erhalten, bis eine Vorlage ausgewählt wird.
+
+# Kopfhörer-Akku 1.6.2
 
 - Getrennte Geräte zeigen einen Strich statt Prozent; unbekannte Verbindungen zeigen keine gespeicherte Prozentzahl als aktuellen Wert. Mouseover kennzeichnet alte Werte als zuletzt bekannt.
 - Allgemeine Einstellungen kompakter angeordnet; Sprachauswahl vollständig sichtbar und Reiter scrollbar.
