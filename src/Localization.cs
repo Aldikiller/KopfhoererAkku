@@ -9,6 +9,8 @@ static class L {
  public static bool Supported(string value) { return Array.IndexOf(Codes,value)>=0; }
  public static bool English { get { return Language=="en"; } }
  static readonly Dictionary<string,string[]> SimpleWords=new Dictionary<string,string[]> {
+{"Neustart",new[]{"Restart","Reiniciar","Redémarrer","Перезапустити"}},
+{"Neustart fehlgeschlagen: ",new[]{"Restart failed: ","Error al reiniciar: ","Échec du redémarrage : ","Не вдалося перезапустити: "}},
 {"Widget ausblenden / anzeigen",new[]{"Hide / show widget","Ocultar / mostrar widget","Masquer / afficher le widget","Приховати / показати віджет"}},
 {"Nicht verbunden",new[]{"Not connected","No conectado","Non connecté","Не підключено"}},
 {"Windows liefert keinen Akkustand",new[]{"Windows provides no battery level","Windows no proporciona el nivel de batería","Windows ne fournit aucun niveau de batterie","Windows не надає рівень заряду"}},
