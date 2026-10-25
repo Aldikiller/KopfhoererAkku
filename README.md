@@ -1,18 +1,20 @@
 # BleAirDock — Bluetooth battery monitor and audio switcher
 
-New in 1.7.1: Restart from the context menu; About BleAirDock and update checks in Settings. Classic and modern Windows Bluetooth connection sources are combined. The widget and tray use the same display snapshot. The configured polling interval is retained.
+New in 1.8.0: a compact right-click menu with audio selection, widget visibility and further actions. The Controls tab groups audio mapping, shortcuts, volume and startup. Optional mouse-wheel volume control changes the assigned headphone by 2% per step over its tray icon or widget entry, without switching outputs. Optional full-screen hiding affects the widget’s monitor and restores it afterwards; manually hidden widgets stay hidden. Both new options are off by default.
+
+Since 1.7.1: Restart from the context menu; About BleAirDock and update checks in Settings. Classic and modern Windows Bluetooth connection sources are combined. The widget and tray use the same display snapshot. The configured polling interval is retained.
 
 ![BleAirDock](https://raw.githubusercontent.com/Aldikiller/KopfhoererAkku/v1.7.0/assets/logo.svg)
 
-BleAirDock was previously called Kopfhörer-Akku. Version 1.7.1 introduces the new name and logo and retains the features of 1.6.5. Installer upgrades preserve settings and device assignments. Existing GitHub and update addresses remain valid.
+BleAirDock was previously called Kopfhörer-Akku. Version 1.7.0 introduced the new name and logo and retains the features of 1.6.5. Installer upgrades preserve settings and device assignments. Existing GitHub and update addresses remain valid.
 
 [Deutsch](docs/README.de.md) · **English** · [Español](docs/README.es.md) · [Français](docs/README.fr.md) · [Українська](docs/README.uk.md)
 
 A free, open-source Windows app by **Aldikiller**. Monitor up to two Bluetooth headphones in the system tray, a desktop widget, or both. Click the headphone you want to use to switch the Windows audio output.
 
-**Current version: 1.7.1. The app supports English.** German is the default; both languages are included in the same download, along with Spanish, French and Ukrainian.
+**Current version: 1.8.0. The app supports English.** German is the default; both languages are included in the same download, along with Spanish, French and Ukrainian.
 
-## New in 1.7.1
+## New in 1.8.0
 
 - Standard and Tiny widgets: two clickable icons, adjustable size, layout, fonts, colors and transparency. Tiny shows device names and status on hover; optional screen-edge snapping. Hide / show widget is available in the menu, with tray access retained while hidden.
 
@@ -28,7 +30,7 @@ A free, open-source Windows app by **Aldikiller**. Monitor up to two Bluetooth h
 
 ## Download
 
-**[Download installer](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/BleAirDock-1.7.1-Setup.exe)** · **[Download portable ZIP](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/BleAirDock-1.7.1-portable.zip)**
+**[Download installer](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/BleAirDock-1.8.0-Setup.exe)** · **[Download portable ZIP](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/BleAirDock-1.8.0-portable.zip)**
 
 [All releases and SHA-256 checksums](https://github.com/Aldikiller/KopfhoererAkku/releases/latest) · [English website](https://aldikiller.github.io/KopfhoererAkku/en.html) · [English wiki](https://github.com/Aldikiller/KopfhoererAkku/wiki/English)
 
@@ -46,7 +48,7 @@ The interface changes immediately and remembers the choice after restarting. The
 
 ## Choose audio output with one click
 
-Click a tray battery icon, or the headphone icon, name or battery value in the widget. A green check marks the active Windows output. Unique matching devices are assigned automatically using their shared Windows device identity. If there is no unique match, right-click a tray icon, open **Quick audio selection**, select each output once and save. Existing manual assignments are preserved.
+Click a tray battery icon, or the headphone icon, name or battery value in the widget. A green check marks the active Windows output. Unique matching devices are assigned automatically using their shared Windows device identity. If there is no unique match, open **Settings → Controls → Quick audio selection**, select each output once and save. Existing manual assignments are preserved.
 
 ![Quick audio selection in English, version 1.6.1](docs/Audio-Selection-1.6.1-en.png)
 
@@ -63,7 +65,7 @@ Switching changes the normal Windows audio output. The microphone and separate c
 3. Select up to two devices in the app and click **Apply**. If duplicate entries appear, choose the one showing a battery value.
 4. If the tray icons are hidden, look under **^** next to the clock and drag them into view.
 
-The installer selects startup with Windows by default. You can change this in the right-click menu. The portable edition stores settings beside the app.
+The installer selects startup with Windows by default. You can change this under Settings → Controls. The portable edition stores settings beside the app.
 
 ## Overview and battery checks
 

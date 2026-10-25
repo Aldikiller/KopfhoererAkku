@@ -34,3 +34,8 @@ Bestätigung im normalen Browser. Beim Browseraufruf gelten dessen Einstellungen
 ## Audio-Schnellauswahl
 
 Das Tool liest lokale Windows-Audioausgänge und Gerätekennungen zur Zuordnung. Gespeicherte Zuordnungen bleiben auf dem Rechner. Gerätekennungen werden nicht an GitHub gesendet. Ein Klick auf ein zugeordnetes Akkusymbol ändert die normale Windows-Audioausgabe.
+
+
+## Optional mouse-wheel control (1.8.0)
+
+When enabled, a local Windows mouse hook detects wheel input over BleAirDock device icons or widget entries. It does not record mouse movements or transmit input. Wheel events elsewhere pass through. Disabling the option removes the hook. Full-screen detection checks the foreground window bounds locally once per second and does not add Bluetooth queries.
