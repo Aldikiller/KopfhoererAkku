@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,7 +44,7 @@ partial class Tray {
   foreach(string language in L.Codes) {
    L.Language=language;
    using(var menu=Menu()) {
-    var labels=menu.Items.Cast<ToolStripItem>().Select(x=>x.Text).ToArray();
+    var labels=MenuLabels(menu.Items).ToArray();
     if(labels.Count(x=>x==L.T("Neustart"))!=1 || labels.Contains(L.T("Nach Updates suchen …")) || labels.Contains(L.T("Über BleAirDock …")))throw new Exception("Tray maintenance menu: "+language);
    }
    Options();
@@ -60,7 +60,7 @@ partial class Tray {
    settingsForm.Close();
   }
   L.Language="de";settings.Widget.Mode=DisplayMode.Beides;Render();
-  if(widget.ContextMenuStrip.Items.Cast<ToolStripItem>().Count(x=>x.Text==L.T("Neustart"))!=1)throw new Exception("Widget restart menu");
+  if(MenuLabels(widget.ContextMenuStrip.Items).Count(x=>x==L.T("Neustart"))!=1)throw new Exception("Widget restart menu");
   // Exercise connected, disconnected and invalidated readings on both surfaces.
   foreach(bool? connected in new bool?[]{true,false,null}) {
    devices[0].Connected=connected;devices[0].Battery=90;readings.Observe(devices,DateTime.UtcNow);Render();

@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +9,19 @@ static class L {
  public static bool Supported(string value) { return Array.IndexOf(Codes,value)>=0; }
  public static bool English { get { return Language=="en"; } }
  static readonly Dictionary<string,string[]> SimpleWords=new Dictionary<string,string[]> {
+{"Bedienung",new[]{"Controls","Controles","Commandes","Керування"}},
+{"Audio und Bedienung",new[]{"Audio and controls","Audio y controles","Audio et commandes","Аудіо та керування"}},
+{"Audioausgabe",new[]{"Audio output","Salida de audio","Sortie audio","Аудіовихід"}},
+{"Weitere Aktionen",new[]{"More actions","Más acciones","Autres actions","Інші дії"}},
+{"Widget anzeigen",new[]{"Show widget","Mostrar widget","Afficher le widget","Показати віджет"}},
+{"Widget ausblenden",new[]{"Hide widget","Ocultar widget","Masquer le widget","Приховати віджет"}},
+{"Lautstärke",new[]{"Volume","Volumen","Volume","Гучність"}},
+{"Lautstärke per Mausrad über dem Gerätesymbol",new[]{"Adjust volume with the wheel over a device icon","Ajustar el volumen con la rueda sobre el icono del dispositivo","Régler le volume avec la molette sur une icône d’appareil","Змінювати гучність коліщатком над значком пристрою"}},
+{"Widget bei Vollbild automatisch ausblenden",new[]{"Automatically hide widget in full screen","Ocultar el widget automáticamente en pantalla completa","Masquer automatiquement le widget en plein écran","Автоматично приховувати віджет у повноекранному режимі"}},
+{"Optional, zunächst aus. Ein Mausradschritt ändert nur den zugeordneten Ausgang um 2 %. Kein Wechsel der Audioausgabe.",new[]{"Optional, off by default. Each wheel step changes only the assigned output by 2%. Audio output does not switch.","Opcional, desactivado inicialmente. Cada paso cambia solo la salida asignada un 2 %. No cambia la salida de audio.","Facultatif, désactivé par défaut. Chaque cran modifie uniquement la sortie associée de 2 %. La sortie audio ne change pas.","Необов’язково, початково вимкнено. Один крок змінює лише призначений вихід на 2 %. Аудіовихід не перемикається."}},
+{"Nur auf dem Bildschirm des Widgets. Nach Vollbild wird es wieder angezeigt; manuelles Ausblenden bleibt bestehen.",new[]{"Only on the widget’s screen. It returns after full screen; manually hidden widgets stay hidden.","Solo en la pantalla del widget. Reaparece al salir de pantalla completa; la ocultación manual se mantiene.","Uniquement sur l’écran du widget. Il réapparaît ensuite ; un masquage manuel est conservé.","Лише на екрані віджета. Після повноекранного режиму він повертається; ручне приховування зберігається."}},
+{"Mausradsteuerung konnte nicht aktiviert werden.",new[]{"Mouse wheel control could not be enabled.","No se pudo activar el control con la rueda.","Impossible d’activer la commande par molette.","Не вдалося ввімкнути керування коліщатком."}},
+
 {"Neustart",new[]{"Restart","Reiniciar","Redémarrer","Перезапустити"}},
 {"Neustart fehlgeschlagen: ",new[]{"Restart failed: ","Error al reiniciar: ","Échec du redémarrage : ","Не вдалося перезапустити: "}},
 {"Widget ausblenden / anzeigen",new[]{"Hide / show widget","Ocultar / mostrar widget","Masquer / afficher le widget","Приховати / показати віджет"}},

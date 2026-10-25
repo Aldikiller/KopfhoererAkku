@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Aldikiller
 using System;
 using System.Collections.Generic;
@@ -22,6 +22,7 @@ class DeviceProfile {
  public Color Color { get { return ColorTranslator.FromHtml(ColorHex); } }
 }
 class Settings {
+ public bool WheelVolume=false;
  public string Language="de";
  public WidgetOptions Widget=new WidgetOptions();
  public FontFamily FontFamily() { try { var f=new FontFamily(FontName); if(f.IsStyleAvailable(FontStyle.Bold)) return f; f.Dispose(); } catch(ArgumentException) {} return new FontFamily("Segoe UI"); }
@@ -44,6 +45,7 @@ class Settings {
   var x=new Settings(); if(!File.Exists(file)) return x;
   foreach(var line in File.ReadAllLines(file)) {
    int split=line.IndexOf('='); if(split<1) continue; string key=line.Substring(0,split),value=line.Substring(split+1); int n; bool b;
+   if(key=="WheelVolume" && bool.TryParse(value,out b)) x.WheelVolume=b;
    if(key=="QuickAudio" && bool.TryParse(value,out b)) x.QuickAudio=b;
    if(key=="Language" && L.Supported(value)) x.Language=value;
    if(key.StartsWith("Widget.",StringComparison.Ordinal)) x.Widget.Read(key.Substring(7),value);
@@ -101,6 +103,7 @@ class Settings {
  public static string CleanMarker(string value) { if(string.IsNullOrWhiteSpace(value)) return "A"; var e=System.Globalization.StringInfo.GetTextElementEnumerator(value.Trim()); return e.MoveNext() ? (string)e.Current : "A"; }
  public void Save(string file) {
   var lines=new List<string>{"HotkeyOne="+HotkeyOne,"HotkeyTwo="+HotkeyTwo,"HotkeyOneModifiers="+HotkeyOneModifiers,"HotkeyTwoModifiers="+HotkeyTwoModifiers,"HotkeyOneKey="+HotkeyOneKey,"HotkeyTwoKey="+HotkeyTwoKey,"PulsePeriod="+PulsePeriod,"PulseStrength="+PulseStrength,"PulseSteady="+PulseSteady,"HotkeyEnabled="+HotkeyEnabled,"HotkeyModifiers="+HotkeyModifiers,"HotkeyKey="+HotkeyKey,"PulseColor="+PulseColor,"PulseLow="+PulseLow,"PulseThreshold="+PulseThreshold,"QuickAudio="+QuickAudio,"Language="+Language,"Warnings="+Warnings,"Threshold="+Threshold,"Interval="+Interval,"CheckAtStartup="+CheckAtStartup,"NumbersOnly="+NumbersOnly,"FontName="+Encode(FontName),"TextSize="+TextSize,"BatteryShape="+BatteryShape,"TextColor="+TextColor,"BatteryRadius="+BatteryRadius,"BatteryStroke="+BatteryStroke,"BatteryWidth="+BatteryWidth,"BatteryHeight="+BatteryHeight};
+  lines.Add("WheelVolume="+WheelVolume);
   lines.AddRange(Widget.Lines());
   foreach(var item in Profiles.OrderBy(x=>x.Key,StringComparer.OrdinalIgnoreCase)) { string prefix="Device."+Encode(item.Key)+"."; lines.Add(prefix+"WarningOverride="+item.Value.WarningOverride);lines.Add(prefix+"DeviceWarnings="+item.Value.DeviceWarnings);lines.Add(prefix+"DevicePulse="+item.Value.DevicePulse);lines.Add(prefix+"WarningThreshold="+item.Value.WarningThreshold);lines.Add(prefix+"PulseThreshold="+item.Value.PulseThreshold);lines.Add(prefix+"PulseColor="+item.Value.PulseColor);lines.Add(prefix+"RememberVolume="+item.Value.RememberVolume);lines.Add(prefix+"SavedVolume="+item.Value.SavedVolume);lines.Add(prefix+"IconFile="+Encode(item.Value.IconFile));lines.Add(prefix+"AudioId="+Encode(item.Value.AudioId)); lines.Add(prefix+"Name="+Encode(item.Value.Name)); lines.Add(prefix+"Color="+item.Value.ColorHex); lines.Add(prefix+"Symbol="+item.Value.Symbol); lines.Add(prefix+"Marker="+Encode(item.Value.Marker)); }
   Directory.CreateDirectory(Path.GetDirectoryName(file)); string temp=file+"."+Guid.NewGuid().ToString("N")+".tmp";

@@ -1,4 +1,4 @@
-﻿// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +19,7 @@ class InstalledFontNames : StringConverter {
  public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext c) { var names=new List<string>(); foreach(var f in FontFamily.Families) { names.Add(f.Name); f.Dispose(); } return new StandardValuesCollection(names); }
 }
 class WidgetOptions {
+ [Browsable(false)] public bool HideFullscreen {get;set;}
  [LocalizedCategory("1. Anzeige"),LocalizedName("Tiny: Bildsymbol ohne Akku")] public bool TinyImageOnly {get;set;}
  [LocalizedCategory("1. Anzeige"),LocalizedName("Am Bildschirmrand einrasten")] public bool Snap {get;set;}
  [LocalizedCategory("2. Größe und Position"),LocalizedName("Einrastabstand (Pixel)")] public int SnapDistance {get;set;}
@@ -55,9 +56,9 @@ class WidgetOptions {
  public void ApplyPreset(bool tiny) {
   var preset=new WidgetOptions();
   if(tiny) { preset.Tiny=true; preset.Width=112; preset.Height=56; preset.Padding=6; preset.Gap=8; preset.IconSize=40; preset.Horizontal=true; preset.Radius=14; preset.Names=false; preset.Status=false; }
-  var mode=Mode; var x=X; var y=Y; var locked=Locked; var topmost=Topmost;
+  var hideFullscreen=HideFullscreen; var mode=Mode; var x=X; var y=Y; var locked=Locked; var topmost=Topmost;
   foreach(var property in GetType().GetProperties()) property.SetValue(this,property.GetValue(preset,null),null);
-  Mode=mode; X=x; Y=y; Locked=locked; Topmost=topmost;
+  HideFullscreen=hideFullscreen; Mode=mode; X=x; Y=y; Locked=locked; Topmost=topmost;
  }
  public WidgetOptions Copy() { return (WidgetOptions)MemberwiseClone(); }
  static int Clamp(int x,int lo,int hi) { return Math.Max(lo,Math.Min(hi,x)); }
@@ -110,9 +111,10 @@ class BatteryWidget : Form {
 
  protected override CreateParams CreateParams { get { var p=base.CreateParams; p.ExStyle|=0x80000|0x80; return p; } }
  protected override bool ShowWithoutActivation {get {return true;}}
- public BatteryWidget(Action open,Action pick,Action quit,Action<Point> onMove,Action<int> onAudio=null,Action<ContextMenuStrip> configureMenu=null) { moved=onMove;chooseAudio=onAudio; Microsoft.Win32.SystemEvents.DisplaySettingsChanged+=DisplaysChanged;clickTimer.Tick+=(s,e)=>CommitClick(); FormBorderStyle=FormBorderStyle.None; ShowInTaskbar=false; StartPosition=FormStartPosition.Manual; Text="BleAirDock Widget"; var menu=new ContextMenuStrip(); if(configureMenu!=null)configureMenu(menu); menu.Items.Add(L.T("Einstellungen …"),null,(s,e)=>open()); menu.Items.Add(L.T("Geräte auswählen …"),null,(s,e)=>pick()); menu.Items.Add(L.T("Beenden"),null,(s,e)=>quit()); ContextMenuStrip=menu; DoubleClick+=(s,e)=>{CancelClick();open();}; }
+ public BatteryWidget(Action open,Action pick,Action quit,Action<Point> onMove,Action<int> onAudio=null,Action<ContextMenuStrip> configureMenu=null) { moved=onMove;chooseAudio=onAudio; Microsoft.Win32.SystemEvents.DisplaySettingsChanged+=DisplaysChanged;clickTimer.Tick+=(s,e)=>CommitClick(); FormBorderStyle=FormBorderStyle.None; ShowInTaskbar=false; StartPosition=FormStartPosition.Manual; Text="BleAirDock Widget"; var menu=new ContextMenuStrip(); if(configureMenu!=null){configureMenu(menu);menu.Opening+=(s,e)=>{foreach(ToolStripItem old in menu.Items.Cast<ToolStripItem>().ToArray())old.Dispose();menu.Items.Clear();configureMenu(menu);};} else { menu.Items.Add(L.T("Einstellungen …"),null,(s,e)=>open()); menu.Items.Add(L.T("Geräte auswählen …"),null,(s,e)=>pick()); menu.Items.Add(L.T("Beenden"),null,(s,e)=>quit()); } ContextMenuStrip=menu; DoubleClick+=(s,e)=>{CancelClick();open();}; }
  public void UpdateContent(WidgetOptions value,Settings settings,IList<WidgetItem> items) { options=value;contentSettings=settings;tooltipItems=items;tooltipSlot=-1;itemCount=items.Count;quickAudio=settings.QuickAudio; TopMost=value.Topmost; var desired=new Rectangle(value.X,value.Y,value.Width,value.Height); if(value.X==-32000 || !Screen.AllScreens.Any(s=>Rectangle.Intersect(s.WorkingArea,desired).Width>=60 && Rectangle.Intersect(s.WorkingArea,desired).Height>=40)) { var area=Screen.PrimaryScreen.WorkingArea; desired.Location=new Point(area.Left+Math.Max(0,(area.Width-value.Width)/2),area.Top+Math.Max(0,(area.Height-value.Height)/2)); } if(!gesture.Pressed) { var screen=Screen.FromRectangle(desired).WorkingArea; desired.Location=FitPosition(desired.Location,desired.Size,screen,0); Location=desired.Location; Size=desired.Size; } if(!Visible) Show(); using(var bitmap=WidgetDrawing.Render(value,settings,items)) Present(bitmap,(byte)(value.Opacity*255/100)); }
  void DisplaysChanged(object sender,EventArgs args) { if(IsDisposed || !IsHandleCreated)return; try { BeginInvoke((Action)(()=> { if(!IsDisposed && options!=null)UpdateContent(options,contentSettings,tooltipItems); })); } catch(InvalidOperationException) {} }
+ internal int WheelSlot(Point screen) { return options==null || !Visible ? -1 : WidgetDrawing.Hit(options,itemCount,PointToClient(screen)); }
  internal static string Tooltip(WidgetItem item) { return item.Name+" · "+(item.Status ?? L.T("Status unbekannt"))+" · "+(item.Connected==true && item.Battery.HasValue ? item.Battery+" %" : "–"); }
  internal static Point FitPosition(Point point,Size size,Rectangle area,int snap) {
   int maxX=Math.Max(area.Left,area.Right-size.Width),maxY=Math.Max(area.Top,area.Bottom-size.Height);
