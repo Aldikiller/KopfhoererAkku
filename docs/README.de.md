@@ -1,5 +1,7 @@
 **[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
 
+BleAirDock ist eine kostenlose Windows-App, die den Akkustand von bis zu zwei Bluetooth-Kopfhörern im Infobereich oder als Desktop-Widget anzeigt. Mit einem Klick wechselst du zwischen deinen Kopfhörern; einstellbare Akkuwarnungen erinnern dich ans Aufladen. Aussehen und Bedienung lassen sich individuell anpassen – ohne Werbung, ohne Registrierung und mit Unterstützung für fünf Sprachen.
+
 Neu in 1.8.0: ein kompaktes Rechtsklickmenü mit Audioauswahl, Widget-Sichtbarkeit und weiteren Aktionen. Unter Bedienung sind Audiozuordnung, Tastenkürzel, Lautstärke und Autostart gebündelt. Die optionale Mausradsteuerung ändert den zugeordneten Kopfhörer um 2 % pro Schritt über dessen Tray-Symbol oder Widget-Eintrag, ohne die Audioausgabe zu wechseln. Optional wird das Widget bei Vollbild auf seinem Bildschirm ausgeblendet und danach wiederhergestellt. Manuell ausgeblendete Widgets bleiben verborgen. Beide neuen Optionen sind zunächst ausgeschaltet.
 
 Seit 1.7.1: Neustart im Rechtsklickmenü; Über BleAirDock und die Update-Suche in den Einstellungen. Klassische und moderne Windows-Bluetooth-Verbindungsdaten werden gemeinsam ausgewertet. Widget und Infobereich verwenden denselben Anzeigestand. Das eingestellte Abfrageintervall bleibt bestehen.

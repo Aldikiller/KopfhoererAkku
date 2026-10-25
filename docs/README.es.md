@@ -1,5 +1,7 @@
 # BleAirDock
 
+BleAirDock es una aplicación gratuita para Windows que muestra la batería de hasta dos auriculares Bluetooth en la bandeja del sistema o en un widget de escritorio. Cambia entre tus auriculares con un clic y configura avisos de batería baja para recordar cuándo cargarlos. Personaliza el aspecto y los controles, sin anuncios, sin registro y con soporte para cinco idiomas.
+
 Novedades de 1.8.0: menú contextual compacto con selección de audio, visibilidad del widget y más acciones. Controles reúne asignaciones de audio, atajos, volumen e inicio automático. La rueda opcional cambia el volumen del auricular asignado un 2 % por paso sobre su icono o entrada del widget, sin cambiar la salida. El widget puede ocultarse en pantalla completa en su monitor y reaparecer después; la ocultación manual se mantiene. Las dos opciones están desactivadas inicialmente.
 
 Novedades de 1.8.0: reinicio desde el menú contextual; Acerca de BleAirDock y búsqueda de actualizaciones en Ajustes. Se combinan las fuentes de conexión Bluetooth clásicas y modernas de Windows. El widget y la bandeja usan el mismo estado. Se conserva el intervalo configurado.
