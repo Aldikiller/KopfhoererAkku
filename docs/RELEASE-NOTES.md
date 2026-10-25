@@ -1,15 +1,14 @@
-# BleAirDock 1.7.0
+# BleAirDock 1.7.1
 
-Kopfhörer-Akku is now **BleAirDock**. Same free, open-source Windows app, with the approved orange/graphite logo.
-
-- New branding in the app, About window, installer, documentation and all five website languages.
-- Download `BleAirDock-1.7.0-Setup.exe` or the portable ZIP.
-- Installer identity, settings directory, audio assignments and single-instance protection remain compatible. Existing update URLs remain valid.
-- Portable users: extract into the previous portable folder to retain `Einstellungen`; start BleAirDock.exe.
-- Features from 1.6.5 remain included. Older screenshots are marked by their original version.
-
-Unsigned Windows x64 freeware, MIT license. No paid certificate or Microsoft Store account required.
+- Add Restart to the tray and widget context menus. The replacement process waits for the original process to exit before starting, retaining single-instance behavior.
+- Move About BleAirDock into Settings, available in both simple and advanced views. Keep update checks in Settings and remove the tray update entry.
+- Combine classic and modern Windows Bluetooth connection sources on each regular scan. A positive report for the same Bluetooth address is no longer hidden by a disconnected report from the other source.
+- Use one display snapshot for tray and widget. Missing or disconnected battery values remain unavailable; no fabricated percentages.
+- Clearer built-in device symbols: larger headphones with solid ear pads, filled musical notes and stronger light/dark outlines. Transparent gaps are retained.
+- All five languages updated. Existing settings, polling interval and audio mappings retained.
 
 ## Deutsch
 
-Kopfhörer-Akku heißt jetzt **BleAirDock**. Neuer Name und neues Logo, Funktionen aus 1.6.5 bleiben enthalten. Beim Installer-Update bleiben Einstellungen und Zuordnungen bestehen. Portable: in den bisherigen Ordner entpacken, `Einstellungen` behalten und BleAirDock.exe starten. Die bisherige Repository-Adresse bleibt für alte Update-Abfragen erhalten.
+Neustart ist im Rechtsklickmenü von Infobereich und Widget verfügbar. Über BleAirDock und die Update-Suche befinden sich in den Einstellungen. Die Verbindungserkennung berücksichtigt beide Windows-Bluetooth-Quellen; Widget und Infobereich erhalten denselben Anzeigestand. Die Abfrage läuft weiter im eingestellten Intervall.
+
+The original hardware report still needs a real-device retest. Automated tests cover conflicting Windows connection sources, UI menus, five languages, tray/widget states, pulse restoration and restart process handoff. Downloads remain unsigned.

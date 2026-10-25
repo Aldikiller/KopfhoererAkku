@@ -1,12 +1,14 @@
 **[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
 
+Neu in 1.7.1: Neustart im Rechtsklickmenü; Über BleAirDock und die Update-Suche in den Einstellungen. Klassische und moderne Windows-Bluetooth-Verbindungsdaten werden gemeinsam ausgewertet. Widget und Infobereich verwenden denselben Anzeigestand. Das eingestellte Abfrageintervall bleibt bestehen.
+
 ![BleAirDock](../assets/logo.svg)
 
-BleAirDock hieß bisher Kopfhörer-Akku. Version 1.7.0 bringt den neuen Namen und das neue Logo; die Funktionen aus 1.6.5 bleiben erhalten. Einstellungen und Gerätezuordnungen bleiben bei einem Installer-Update erhalten. Die bisherigen GitHub- und Update-Adressen bleiben gültig.
+BleAirDock hieß bisher Kopfhörer-Akku. Version 1.7.1 bringt den neuen Namen und das neue Logo; die Funktionen aus 1.6.5 bleiben erhalten. Einstellungen und Gerätezuordnungen bleiben bei einem Installer-Update erhalten. Die bisherigen GitHub- und Update-Adressen bleiben gültig.
 
-**Aktuelle Version: 1.7.0**
+**Aktuelle Version: 1.7.1**
 
-## Neu in 1.7.0
+## Neu in 1.7.1
 
 - Standard- und Tiny-Widget: zwei anklickbare Symbole, Größe, Anordnung, Schriften, Farben und Transparenz einstellbar. Tiny zeigt Gerätenamen und Status per Mouseover; optionales Einrasten am Bildschirmrand. Widget ausblenden / anzeigen ist im Menü erreichbar; beim Ausblenden bleibt ein Tray-Symbol verfügbar.
 
@@ -44,11 +46,11 @@ Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunik
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.0/BleAirDock-1.7.0-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/BleAirDock-1.7.1-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.0/BleAirDock-1.7.0-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/BleAirDock-1.7.1-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.0/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.0/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/SHA256SUMS.txt)
 
 Die aktuelle Version ist **1.6.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 

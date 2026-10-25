@@ -1,12 +1,14 @@
 # BleAirDock
 
+Nouveautés de 1.7.1 : redémarrage dans le menu contextuel ; À propos de BleAirDock et recherche de mises à jour dans les paramètres. Les sources Bluetooth classiques et modernes de Windows sont combinées. Le widget et la zone de notification utilisent le même état. La fréquence configurée est conservée.
+
 ![BleAirDock](../assets/logo.svg)
 
-BleAirDock portait le nom Kopfhörer-Akku. La version 1.7.0 apporte le nouveau nom et logo et conserve les fonctions de 1.6.5. La mise à jour avec le programme d’installation conserve les paramètres et associations. Les adresses GitHub et de mise à jour restent valides.
+BleAirDock portait le nom Kopfhörer-Akku. La version 1.7.1 apporte le nouveau nom et logo et conserve les fonctions de 1.6.5. La mise à jour avec le programme d’installation conserve les paramètres et associations. Les adresses GitHub et de mise à jour restent valides.
 
-**Version actuelle : 1.7.0**
+**Version actuelle : 1.7.1**
 
-## Nouveautés de la version 1.7.0
+## Nouveautés de la version 1.7.1
 
 - Widgets standard et mini : deux icônes cliquables, taille, disposition, polices, couleurs et transparence réglables. Le mini-widget affiche le nom et l’état au survol ; alignement facultatif sur les bords. Masquez ou affichez le widget depuis le menu ; une icône de notification reste accessible.
 
