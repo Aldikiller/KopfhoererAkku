@@ -1,14 +1,16 @@
 **[English](../README.md)** · **Deutsch** · [Español](README.es.md) · [Français](README.fr.md) · [Українська](README.uk.md)
 
-Neu in 1.7.1: Neustart im Rechtsklickmenü; Über BleAirDock und die Update-Suche in den Einstellungen. Klassische und moderne Windows-Bluetooth-Verbindungsdaten werden gemeinsam ausgewertet. Widget und Infobereich verwenden denselben Anzeigestand. Das eingestellte Abfrageintervall bleibt bestehen.
+Neu in 1.8.0: ein kompaktes Rechtsklickmenü mit Audioauswahl, Widget-Sichtbarkeit und weiteren Aktionen. Unter Bedienung sind Audiozuordnung, Tastenkürzel, Lautstärke und Autostart gebündelt. Die optionale Mausradsteuerung ändert den zugeordneten Kopfhörer um 2 % pro Schritt über dessen Tray-Symbol oder Widget-Eintrag, ohne die Audioausgabe zu wechseln. Optional wird das Widget bei Vollbild auf seinem Bildschirm ausgeblendet und danach wiederhergestellt. Manuell ausgeblendete Widgets bleiben verborgen. Beide neuen Optionen sind zunächst ausgeschaltet.
+
+Seit 1.7.1: Neustart im Rechtsklickmenü; Über BleAirDock und die Update-Suche in den Einstellungen. Klassische und moderne Windows-Bluetooth-Verbindungsdaten werden gemeinsam ausgewertet. Widget und Infobereich verwenden denselben Anzeigestand. Das eingestellte Abfrageintervall bleibt bestehen.
 
 ![BleAirDock](../assets/logo.svg)
 
-BleAirDock hieß bisher Kopfhörer-Akku. Version 1.7.1 bringt den neuen Namen und das neue Logo; die Funktionen aus 1.6.5 bleiben erhalten. Einstellungen und Gerätezuordnungen bleiben bei einem Installer-Update erhalten. Die bisherigen GitHub- und Update-Adressen bleiben gültig.
+BleAirDock hieß bisher Kopfhörer-Akku. Version 1.8.0 bringt den neuen Namen und das neue Logo; die Funktionen aus 1.6.5 bleiben erhalten. Einstellungen und Gerätezuordnungen bleiben bei einem Installer-Update erhalten. Die bisherigen GitHub- und Update-Adressen bleiben gültig.
 
-**Aktuelle Version: 1.7.1**
+**Aktuelle Version: 1.8.0**
 
-## Neu in 1.7.1
+## Neu in 1.8.0
 
 - Standard- und Tiny-Widget: zwei anklickbare Symbole, Größe, Anordnung, Schriften, Farben und Transparenz einstellbar. Tiny zeigt Gerätenamen und Status per Mouseover; optionales Einrasten am Bildschirmrand. Widget ausblenden / anzeigen ist im Menü erreichbar; beim Ausblenden bleibt ein Tray-Symbol verfügbar.
 
@@ -40,17 +42,17 @@ Kostenlos und Open Source. Von **Aldikiller**.
 
 Beispielansicht: links aktiv, rechts nicht aktiv; daneben die kleinen Infobereich-Symbole.
 
-Ein Doppelklick öffnet die Einstellungen. Die Geräteübersicht und die Zuordnung erreichst du per Rechtsklick. Wer die Direktwahl nicht verwenden möchte, kann sie abschalten.
+Ein Doppelklick öffnet die Einstellungen. Die Geräteübersicht erreichst du unter Rechtsklick → Weitere Aktionen; die Zuordnung unter Einstellungen → Bedienung → Audio-Schnellauswahl. Wer die Direktwahl nicht verwenden möchte, kann sie abschalten.
 
 Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunikationsgerät bleiben unverändert. Apps mit fest gewähltem Ausgang können ihre eigene Auswahl behalten. [Anleitung zur Direktwahl](AUDIO-QUICKSTART.md).
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/BleAirDock-1.7.1-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/BleAirDock-1.8.0-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/BleAirDock-1.7.1-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/BleAirDock-1.8.0-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.7.1/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/SHA256SUMS.txt)
 
 Die aktuelle Version ist **1.6.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
@@ -88,7 +90,7 @@ Unter **Updates** kannst du nach neuen Versionen suchen und die GitHub-Downloads
 
 Unter **Allgemein** kannst du die Akkuwarnung und das Abfrageintervall ändern. Mit **Test** lässt sich die Windows-Benachrichtigung ausprobieren.
 
-Per Rechtsklick kannst du andere Geräte auswählen, den Autostart ein- oder ausschalten und das Programm beenden. Im Installer ist der Autostart vorausgewählt.
+Unter Rechtsklick → Weitere Aktionen kannst du andere Geräte auswählen. Den Autostart findest du unter Einstellungen → Bedienung; Beenden bleibt direkt im Rechtsklickmenü. Im Installer ist der Autostart vorausgewählt.
 
 ## Einfache und erweiterte Einstellungen
 

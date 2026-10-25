@@ -1,9 +1,9 @@
 # Audio-Schnellauswahl · Version 1.6.1
 
 1. Beide Kopfhörer mit Windows verbinden.
-2. Im Rechtsklick-Menü eines Akkusymbols **Audio-Schnellauswahl** öffnen. Der Knopf steht auch unten im Einstellungsfenster.
+2. **Einstellungen → Bedienung → Audio-Schnellauswahl** öffnen.
 3. Eindeutige aktive Ausgänge werden über die gemeinsame Windows-Gerätekennung automatisch zugeordnet und gespeichert. Eigene Anzeigenamen sind dafür nicht maßgeblich. Falls mehrere Ausgänge passen oder die Kennung fehlt, die passende Ausgabe einmal auswählen und speichern. Vorhandene Zuordnungen bleiben erhalten.
-4. Ein Klick auf das jeweilige Akkusymbol schaltet die Standardausgabe für normale Audio-/Medienwiedergabe um. Die aktive Ausgabe bekommt einen grünen Kreis mit weißem Häkchen. Doppelklick öffnet weiter die Einstellungen; die Geräteübersicht bleibt im Rechtsklick-Menü erreichbar.
+4. Ein Klick auf das jeweilige Akkusymbol schaltet die Standardausgabe für normale Audio-/Medienwiedergabe um. Die aktive Ausgabe bekommt einen grünen Kreis mit weißem Häkchen. Doppelklick öffnet weiter die Einstellungen; die Geräteübersicht bleibt unter Rechtsklick → Weitere Aktionen erreichbar.
 
 Die Ein-Klick-Umschaltung lässt sich im selben Fenster abschalten. Dann öffnet der Einzelklick wie bisher die Übersicht. Dort gibt es pro Kopfhörer zusätzlich **Ton hier wiedergeben**.
 

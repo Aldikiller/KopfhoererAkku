@@ -1,14 +1,16 @@
 # BleAirDock
 
-Novedades de 1.7.1: reinicio desde el menú contextual; Acerca de BleAirDock y búsqueda de actualizaciones en Ajustes. Se combinan las fuentes de conexión Bluetooth clásicas y modernas de Windows. El widget y la bandeja usan el mismo estado. Se conserva el intervalo configurado.
+Novedades de 1.8.0: menú contextual compacto con selección de audio, visibilidad del widget y más acciones. Controles reúne asignaciones de audio, atajos, volumen e inicio automático. La rueda opcional cambia el volumen del auricular asignado un 2 % por paso sobre su icono o entrada del widget, sin cambiar la salida. El widget puede ocultarse en pantalla completa en su monitor y reaparecer después; la ocultación manual se mantiene. Las dos opciones están desactivadas inicialmente.
+
+Novedades de 1.8.0: reinicio desde el menú contextual; Acerca de BleAirDock y búsqueda de actualizaciones en Ajustes. Se combinan las fuentes de conexión Bluetooth clásicas y modernas de Windows. El widget y la bandeja usan el mismo estado. Se conserva el intervalo configurado.
 
 ![BleAirDock](../assets/logo.svg)
 
-BleAirDock se llamaba Kopfhörer-Akku. La versión 1.7.1 incorpora el nuevo nombre y logotipo y conserva las funciones de 1.6.5. La actualización con el instalador conserva ajustes y asignaciones. Las direcciones de GitHub y actualizaciones siguen siendo válidas.
+BleAirDock se llamaba Kopfhörer-Akku. La versión 1.8.0 incorpora el nuevo nombre y logotipo y conserva las funciones de 1.6.5. La actualización con el instalador conserva ajustes y asignaciones. Las direcciones de GitHub y actualizaciones siguen siendo válidas.
 
-**Versión actual: 1.7.1**
+**Versión actual: 1.8.0**
 
-## Novedades de la versión 1.7.1
+## Novedades de la versión 1.8.0
 
 - Widgets estándar y pequeño: dos iconos pulsables, tamaño, disposición, fuentes, colores y transparencia ajustables. La vista pequeña muestra el nombre y el estado al pasar el ratón; ajuste opcional a los bordes. Puedes ocultar y mostrar el widget desde el menú; se conserva un icono en la bandeja.
 

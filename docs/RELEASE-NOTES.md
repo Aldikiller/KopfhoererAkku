@@ -1,14 +1,11 @@
-# BleAirDock 1.7.1
+# BleAirDock 1.8.0
 
-- Add Restart to the tray and widget context menus. The replacement process waits for the original process to exit before starting, retaining single-instance behavior.
-- Move About BleAirDock into Settings, available in both simple and advanced views. Keep update checks in Settings and remove the tray update entry.
-- Combine classic and modern Windows Bluetooth connection sources on each regular scan. A positive report for the same Bluetooth address is no longer hidden by a disconnected report from the other source.
-- Use one display snapshot for tray and widget. Missing or disconnected battery values remain unavailable; no fabricated percentages.
-- Clearer built-in device symbols: larger headphones with solid ear pads, filled musical notes and stronger light/dark outlines. Transparent gaps are retained.
-- All five languages updated. Existing settings, polling interval and audio mappings retained.
+New in 1.8.0: a compact right-click menu with audio selection, widget visibility and further actions. The Controls tab groups audio mapping, shortcuts, volume and startup. Optional mouse-wheel volume control changes the assigned headphone by 2% per step over its tray icon or widget entry, without switching outputs. Optional full-screen hiding affects the widget’s monitor and restores it afterwards; manually hidden widgets stay hidden. Both new options are off by default.
 
 ## Deutsch
 
-Neustart ist im Rechtsklickmenü von Infobereich und Widget verfügbar. Über BleAirDock und die Update-Suche befinden sich in den Einstellungen. Die Verbindungserkennung berücksichtigt beide Windows-Bluetooth-Quellen; Widget und Infobereich erhalten denselben Anzeigestand. Die Abfrage läuft weiter im eingestellten Intervall.
+Neu in 1.8.0: ein kompaktes Rechtsklickmenü mit Audioauswahl, Widget-Sichtbarkeit und weiteren Aktionen. Unter Bedienung sind Audiozuordnung, Tastenkürzel, Lautstärke und Autostart gebündelt. Die optionale Mausradsteuerung ändert den zugeordneten Kopfhörer um 2 % pro Schritt über dessen Tray-Symbol oder Widget-Eintrag, ohne die Audioausgabe zu wechseln. Optional wird das Widget bei Vollbild auf seinem Bildschirm ausgeblendet und danach wiederhergestellt. Manuell ausgeblendete Widgets bleiben verborgen. Beide neuen Optionen sind zunächst ausgeschaltet.
 
-The original hardware report still needs a real-device retest. Automated tests cover conflicting Windows connection sources, UI menus, five languages, tray/widget states, pulse restoration and restart process handoff. Downloads remain unsigned.
+The documentation, demo media and editable symbols remain included. Requires Windows 10 build 19041 or newer / Windows 11, x64, .NET Framework 4.8. Downloads remain unsigned.
+
+Validation: automated build and UI tests passed. The maintainer reports the local version tested successfully on 25 October 2026.
