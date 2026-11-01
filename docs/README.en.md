@@ -2,9 +2,9 @@
 
 BleAirDock is a free Windows app that shows the battery levels of up to two Bluetooth headphones in the system tray or a desktop widget. Switch between your headphones with one click, and use adjustable low-battery alerts to remind you to recharge. Customize the appearance and controls, with no ads, no registration and support for five languages.
 
-[![Watch the short demo](social-preview-de.png)](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/BleAirDock-1.8.0-demo-de.mp4)
+[![Watch the short demo](video-poster-en.png)](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/BleAirDock-1.8.0-demo-en.mp4)
 
-**[Watch the short demo](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/BleAirDock-1.8.0-demo-de.mp4)** · 28 seconds, German captions, no audio. Feature demonstration with example devices and battery levels.
+**[Watch the short demo](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/BleAirDock-1.8.0-demo-en.mp4)** · 28 seconds, English captions, no audio. Feature demonstration with example devices and battery levels.
 
 New in 1.8.0: a compact right-click menu with audio selection, widget visibility and further actions. The Controls tab groups audio mapping, shortcuts, volume and startup. Optional mouse-wheel volume control changes the assigned headphone by 2% per step over its tray icon or widget entry, without switching outputs. Optional full-screen hiding affects the widget’s monitor and restores it afterwards; manually hidden widgets stay hidden. Both new options are off by default.
 

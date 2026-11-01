@@ -2,9 +2,9 @@
 
 BleAirDock est une application Windows gratuite qui affiche le niveau de batterie de deux casques Bluetooth au maximum dans la zone de notification ou un widget de bureau. Passez d’un casque à l’autre en un clic et configurez des alertes de batterie faible pour penser à les recharger. Personnalisez l’apparence et les commandes, sans publicité, sans inscription et avec cinq langues disponibles.
 
-[![Voir la démonstration](social-preview-de.png)](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/BleAirDock-1.8.0-demo-de.mp4)
+[![Voir la démonstration](video-poster-fr.png)](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/BleAirDock-1.8.0-demo-fr.mp4)
 
-**[Voir la démonstration](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/BleAirDock-1.8.0-demo-de.mp4)** · 28 secondes, textes en allemand, sans son. Démonstration avec appareils et niveaux de batterie fictifs.
+**[Voir la démonstration](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/BleAirDock-1.8.0-demo-fr.mp4)** · 28 secondes, textes en français, sans son. Démonstration avec appareils et niveaux de batterie fictifs.
 
 Nouveautés de 1.8.0 : menu contextuel compact avec sélection audio, visibilité du widget et autres actions. Commandes regroupe les sorties audio, raccourcis, volume et démarrage automatique. La molette facultative modifie le volume du casque associé de 2 % par cran sur son icône ou son entrée du widget, sans changer de sortie. Le widget peut se masquer en plein écran sur son moniteur, puis réapparaître ; un masquage manuel est conservé. Les deux options sont désactivées par défaut.
 
