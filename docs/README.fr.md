@@ -1,6 +1,6 @@
 # BleAirDock
 
-**[Voir sur YouTube (en anglais)](https://youtu.be/7LX0nM1umsI)**
+**[Voir sur YouTube (en français)](https://youtu.be/Hvoq1J8q6eM)**
 
 BleAirDock est une application Windows gratuite qui affiche le niveau de batterie de deux casques Bluetooth au maximum dans la zone de notification ou un widget de bureau. Passez d’un casque à l’autre en un clic et configurez des alertes de batterie faible pour penser à les recharger. Personnalisez l’apparence et les commandes, sans publicité, sans inscription et avec cinq langues disponibles.
 
