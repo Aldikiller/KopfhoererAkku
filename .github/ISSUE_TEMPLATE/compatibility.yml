@@ -19,7 +19,7 @@ body:
     id: app
     attributes:
       label: App-Version / App version
-      placeholder: z. B. / e.g. 1.4.0
+      placeholder: z. B. / e.g. 1.8.0
     validations:
       required: true
   - type: input
@@ -47,10 +47,13 @@ body:
       label: Getestet und beobachtet / Tests and observations
       description: Bitte pro Punkt Ergebnis oder „nicht getestet“ angeben. Give the result or say “not tested” for each item.
       value: |
-        Erste Verbindung / Initial connection:
-        Aus- und Einschalten / Reconnect:
-        Nach Standby / Resume from sleep:
-        Zwei Geräte, falls vorhanden / Two devices, if available:
+        Akkuanzeige im Infobereich / Tray battery display: nicht getestet / not tested
+        Akkuanzeige im Widget / Widget battery display: nicht getestet / not tested
+        Aus- und Einschalten / Reconnect: nicht getestet / not tested
+        Nach Standby / Resume from sleep: nicht getestet / not tested
+        Audio-Direktwahl / One-click audio switching: nicht getestet / not tested
+        Audiozuordnung automatisch oder manuell / Automatic or manual audio mapping: nicht getestet / not tested
+        Zwei Geräte, falls vorhanden / Two devices, if available: nicht getestet / not tested
         Zeigt Windows selbst einen Akkuwert? / Does Windows show a battery value?:
     validations:
       required: true
@@ -59,3 +62,4 @@ body:
     attributes:
       label: Weitere Angaben / Additional details
       description: Optional Bluetooth-Adapter, Treiberversion oder Schritte zum Nachstellen. Optional adapter, driver version or reproduction steps. Keine persönlichen Kennungen / No personal IDs.
+
