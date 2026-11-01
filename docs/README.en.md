@@ -1,5 +1,7 @@
 # BleAirDock — Bluetooth battery monitor and audio switcher
 
+**[Watch on YouTube (English)](https://youtu.be/7LX0nM1umsI)**
+
 BleAirDock is a free Windows app that shows the battery levels of up to two Bluetooth headphones in the system tray or a desktop widget. Switch between your headphones with one click, and use adjustable low-battery alerts to remind you to recharge. Customize the appearance and controls, with no ads, no registration and support for five languages.
 
 [![Watch the short demo](video-poster-en.png)](https://github.com/Aldikiller/KopfhoererAkku/blob/main/docs/BleAirDock-1.8.0-demo-en.mp4)
