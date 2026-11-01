@@ -1,33 +1,36 @@
-# Getestete Kopfhörer / Tested headphones
+# Headphone compatibility / Kopfhörer-Kompatibilität
 
-Das Tool liest Akkuwerte, die Windows und der Bluetooth-Treiber bereitstellen. Ein erfolgreicher Test gilt für die jeweilige Kombination aus Gerät, Windows und Treiber. Er garantiert nicht, dass jede Variante desselben Modells funktioniert.
+BleAirDock uses the battery information provided by Windows and its Bluetooth driver. Results apply to the tested combination of headphones, Windows and driver; they do not guarantee support for every device variant.
 
-| Kopfhörer | Bisherige Rückmeldung | Windows / Treiber | Quelle |
-| --- | --- | --- | --- |
-| JBL Live 770NC | Akkuwert und Verbindung funktionieren; vom Herausgeber im Alltag verwendet | Genaue Versionen nicht dokumentiert | Rückmeldung des Herausgebers |
-| JLab Rewind 2 | Akkuwert und Verbindung funktionieren; vom Herausgeber im Alltag verwendet | Genaue Versionen nicht dokumentiert | Rückmeldung des Herausgebers |
+| Model | Battery level | Connection status | One-click audio switching | Test details / source |
+| --- | --- | --- | --- | --- |
+| JBL Live 770NC | Reported working | Reported working | No separate per-model record | Publisher's everyday use; exact Windows and driver versions not recorded |
+| JLab Rewind 2 | Reported working | Reported working | No separate per-model record | Publisher's everyday use; exact Windows and driver versions not recorded |
 
-Stand: 18. Oktober 2026. Der Herausgeber hat nach dem Test von Version 1.4.0 gemeldet, dass alles zu funktionieren scheint. Einzeln dokumentierte Testprotokolle je Gerät und Windows-Version liegen dafür nicht vor.
+Documentation updated: 1 November 2026, current release 1.8.0. These are existing reports, not new tests performed today. The publisher has also reported successful general tests of later versions, but no detailed test matrix per model is available.
 
-Andere Modelle sind bisher **nicht bestätigt**. Das bedeutet nicht, dass sie nicht funktionieren. Linker/rechter Ohrhörer und Ladecase werden nicht grundsätzlich getrennt unterstützt.
+Other models are **not yet confirmed**, rather than known to be incompatible. Separate left/right earbud and charging-case readings are not generally supported.
 
-## Eigenes Modell melden
+## Report your headphones
 
-[Kompatibilitätsmeldung öffnen](https://github.com/Aldikiller/KopfhoererAkku/issues/new?template=compatibility.yml)
+[Open the compatibility form](https://github.com/Aldikiller/KopfhoererAkku/issues/new?template=compatibility.yml). Working, partly working and failing models are all useful. A GitHub account is needed to submit a report; no account is needed to use BleAirDock.
 
-Bitte Modell, App-Version, Windows-Version und dein Ergebnis angeben. Hilfreich sind diese kurzen Tests:
+Include the full model name, app version and Windows version. Report each feature separately:
 
-1. Kopfhörer verbinden: Werden Name und Akkuwert angezeigt?
-2. Ausschalten und erneut verbinden: Stimmt die Verbindung in der Geräteübersicht?
-3. Windows in Standby versetzen und fortsetzen: Kommt die Anzeige zurück?
-4. Falls zwei Geräte vorhanden sind: Funktionieren beide Anzeigen unabhängig?
+1. Battery level in the tray and widget. If missing, does Windows itself show a value?
+2. Connection status after turning the headphones off and back on.
+3. Display recovery after sleep.
+4. One-click audio switching, including automatic or manual output mapping.
+5. Both devices independently, if you use two headphones.
 
-Nicht durchgeführte Tests bitte als solche angeben. Bei fehlenden Akkuwerten ergänzen, ob Windows selbst einen Wert zeigt. Windows kann Daten zwischenspeichern; eine erfolgreiche Abfrage ist keine bestätigte neue Messung am Kopfhörer.
+Mark anything you did not test as **not tested**. A cached battery value or successful Windows query does not establish a fresh measurement by the headphones. No diagnostic log is required. Do not publish Bluetooth addresses, device IDs, product IDs or unredacted logs.
 
-Keine Bluetooth-Adressen, Gerätekennungen oder unbereinigten Diagnoseprotokolle veröffentlichen. Für diese Meldung ist kein Protokoll erforderlich.
+Community reports will be added with a link to the original issue. Please distinguish reports from independent verification; conflicting results should retain their Windows/driver context.
 
-## English
+## Deutsch
 
-The owner has reported working battery levels and connection status with **JBL Live 770NC** and **JLab Rewind 2**. Exact Windows and driver versions were not documented. Version 1.4.0 received a positive general test report, without separate per-device test records. Other models are unconfirmed, rather than known to be incompatible.
+Die Akkuanzeige und der Verbindungsstatus wurden für **JBL Live 770NC** und **JLab Rewind 2** als funktionierend gemeldet. Genaue Windows- und Treiberversionen fehlen. Für den Audiowechsel liegt kein getrennt dokumentiertes Ergebnis je Modell vor. Andere Kopfhörer sind damit nicht als inkompatibel eingestuft, sondern bisher unbestätigt.
 
-[Report your model](https://github.com/Aldikiller/KopfhoererAkku/issues/new?template=compatibility.yml), including the app and Windows versions. Check initial connection, reconnect and resume from sleep; mark any tests you did not perform. If a battery value is missing, tell us whether Windows itself displays one. Windows may cache readings. Do not post Bluetooth addresses, device IDs or unredacted logs. No log is required.
+[Eigenes Modell melden](https://github.com/Aldikiller/KopfhoererAkku/issues/new?template=compatibility.yml): Bitte Modell, App- und Windows-Version nennen. Akkuanzeige in Infobereich und Widget, erneutes Verbinden, Rückkehr aus Standby und Audio-Direktwahl einzeln prüfen. Bei zwei Kopfhörern beide unabhängig testen. Nicht durchgeführte Tests als **nicht getestet** kennzeichnen.
+
+Die Liste wurde am 1. November 2026 für den Dokumentationsstand 1.8.0 überarbeitet; das Datum bedeutet keinen neuen Gerätetest. Angaben gelten für die jeweilige Kombination aus Kopfhörer, Windows und Treiber. Gespeicherte Akkuwerte können veraltet sein. Keine Bluetooth-Adressen, Gerätekennungen, Produkt-IDs oder unbereinigten Protokolle veröffentlichen. Ein Protokoll ist nicht erforderlich.
