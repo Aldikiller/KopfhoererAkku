@@ -87,3 +87,8 @@ Supprimez la version installée via Paramètres Windows → Applications. Les pa
 Indiquez le modèle du casque, les versions de Windows et de l’application et les étapes du problème. Ne publiez pas d’adresses Bluetooth ni de données privées.
 
 MIT: [Code source](https://github.com/Aldikiller/KopfhoererAkku/blob/main/LICENSE)
+
+
+## 1.8.1
+
+Corrige l’actualisation de la batterie après une reconnexion Bluetooth, une sortie de veille et le déverrouillage. Les événements déclenchent une lecture immédiate puis cinq vérifications espacées de deux secondes. Des vérifications ont aussi lieu au démarrage pendant l’initialisation Bluetooth. La zone de notification et le widget partagent les mêmes données. Les valeurs dépendent de Windows et du pilote.

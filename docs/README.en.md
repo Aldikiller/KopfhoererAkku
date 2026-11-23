@@ -34,7 +34,7 @@ BleAirDock was previously called Kopfhörer-Akku. Version 1.7.0 introduced the n
 
 ## Download
 
-**[Download installer](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/BleAirDock-1.8.0-Setup.exe)** · **[Download portable ZIP](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/BleAirDock-1.8.0-portable.zip)**
+**[Download installer](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.1/BleAirDock-1.8.1-Setup.exe)** · **[Download portable ZIP](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.1/BleAirDock-1.8.1-portable.zip)**
 
 [All releases and SHA-256 checksums](https://github.com/Aldikiller/KopfhoererAkku/releases/latest) · [English website](https://aldikiller.github.io/KopfhoererAkku/en.html) · [English wiki](https://github.com/Aldikiller/KopfhoererAkku/wiki/English)
 
@@ -109,3 +109,8 @@ Free and open source under the [MIT license](../LICENSE), provided without warra
 ## Find us on AlternativeTo
 
 [View BleAirDock on AlternativeTo](https://alternativeto.net/software/kopfhorer-akku/) — compare similar tools or share your experience.
+
+
+## 1.8.1
+
+Fixes battery refresh after Bluetooth reconnection, wake and session unlock. Device events trigger an immediate scan and five follow-up checks at two-second intervals. Startup retries while Windows initializes Bluetooth. Tray and widget share the same display snapshot. Battery availability depends on Windows and the device driver.

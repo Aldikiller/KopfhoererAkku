@@ -56,11 +56,11 @@ Geändert wird die normale Windows-Audioausgabe. Mikrofon und separates Kommunik
 
 ## Download
 
-**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/BleAirDock-1.8.0-Setup.exe)** – mit Installation und Deinstallation.
+**[Installer herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.1/BleAirDock-1.8.1-Setup.exe)** – mit Installation und Deinstallation.
 
-**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/BleAirDock-1.8.0-portable.zip)** – entpacken und ohne Installation starten.
+**[Portable ZIP herunterladen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.1/BleAirDock-1.8.1-portable.zip)** – entpacken und ohne Installation starten.
 
-[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.0/SHA256SUMS.txt)
+[Alle Downloads](https://github.com/Aldikiller/KopfhoererAkku/releases) · [Quellcode](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.1/KopfhoererAkku-1.6.1-Quellcode.zip) · [Prüfsummen](https://github.com/Aldikiller/KopfhoererAkku/releases/download/v1.8.1/SHA256SUMS.txt)
 
 Die aktuelle Version ist **1.6.1**. Du brauchst Windows 10 ab Version 2004 oder Windows 11, jeweils in 64 Bit, und .NET Framework 4.8.
 
@@ -183,3 +183,8 @@ Unter Einstellungen → Allgemein kannst du Deutsch, English, Español, Françai
 ## Auf AlternativeTo
 
 [BleAirDock auf AlternativeTo ansehen](https://alternativeto.net/software/kopfhorer-akku/) – ähnliche Programme vergleichen oder eigene Erfahrungen teilen.
+
+
+## 1.8.1
+
+Behebt die Akkuaktualisierung nach Bluetooth-Wiederverbindung, Aufwachen und Entsperren. Geräteereignisse starten sofort eine Abfrage und fünf Nachprüfungen im Zwei-Sekunden-Abstand. Auch beim Start wird während der Bluetooth-Initialisierung nachgeprüft. Tray und Widget verwenden denselben Anzeigestand. Akkuwerte hängen von Windows und dem Gerätetreiber ab.

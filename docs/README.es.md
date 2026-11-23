@@ -87,3 +87,8 @@ Elimina la versión instalada desde Configuración de Windows → Aplicaciones. 
 Comparte el modelo de auriculares, las versiones de Windows y de la aplicación y los pasos para reproducir el problema. No publiques direcciones Bluetooth ni datos privados.
 
 MIT: [Código fuente](https://github.com/Aldikiller/KopfhoererAkku/blob/main/LICENSE)
+
+
+## 1.8.1
+
+Corrige la actualización de batería al reconectar Bluetooth, reanudar y desbloquear. Los eventos inician una consulta inmediata y cinco comprobaciones cada dos segundos. También se reintenta al iniciar mientras Windows inicializa Bluetooth. La bandeja y el widget comparten los mismos datos. Los valores dependen de Windows y del controlador.

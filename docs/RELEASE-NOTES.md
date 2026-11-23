@@ -1,11 +1,23 @@
-# BleAirDock 1.8.0
+# BleAirDock 1.8.1
 
-New in 1.8.0: a compact right-click menu with audio selection, widget visibility and further actions. The Controls tab groups audio mapping, shortcuts, volume and startup. Optional mouse-wheel volume control changes the assigned headphone by 2% per step over its tray icon or widget entry, without switching outputs. Optional full-screen hiding affects the widget’s monitor and restores it afterwards; manually hidden widgets stay hidden. Both new options are off by default.
+## English
+
+Fixes battery refresh after Bluetooth reconnection, wake and session unlock. Device events trigger an immediate scan and five follow-up checks at two-second intervals. Startup retries while Windows initializes Bluetooth. Tray and widget share the same display snapshot. Battery availability depends on Windows and the device driver.
 
 ## Deutsch
 
-Neu in 1.8.0: ein kompaktes Rechtsklickmenü mit Audioauswahl, Widget-Sichtbarkeit und weiteren Aktionen. Unter Bedienung sind Audiozuordnung, Tastenkürzel, Lautstärke und Autostart gebündelt. Die optionale Mausradsteuerung ändert den zugeordneten Kopfhörer um 2 % pro Schritt über dessen Tray-Symbol oder Widget-Eintrag, ohne die Audioausgabe zu wechseln. Optional wird das Widget bei Vollbild auf seinem Bildschirm ausgeblendet und danach wiederhergestellt. Manuell ausgeblendete Widgets bleiben verborgen. Beide neuen Optionen sind zunächst ausgeschaltet.
+Behebt die Akkuaktualisierung nach Bluetooth-Wiederverbindung, Aufwachen und Entsperren. Geräteereignisse starten sofort eine Abfrage und fünf Nachprüfungen im Zwei-Sekunden-Abstand. Auch beim Start wird während der Bluetooth-Initialisierung nachgeprüft. Tray und Widget verwenden denselben Anzeigestand. Akkuwerte hängen von Windows und dem Gerätetreiber ab.
 
-The documentation, demo media and editable symbols remain included. Requires Windows 10 build 19041 or newer / Windows 11, x64, .NET Framework 4.8. Downloads remain unsigned.
+## Español
 
-Validation: automated build and UI tests passed. The maintainer reports the local version tested successfully on 25 October 2026.
+Corrige la actualización de batería al reconectar Bluetooth, reanudar y desbloquear. Los eventos inician una consulta inmediata y cinco comprobaciones cada dos segundos. También se reintenta al iniciar mientras Windows inicializa Bluetooth. La bandeja y el widget comparten los mismos datos. Los valores dependen de Windows y del controlador.
+
+## Français
+
+Corrige l’actualisation de la batterie après une reconnexion Bluetooth, une sortie de veille et le déverrouillage. Les événements déclenchent une lecture immédiate puis cinq vérifications espacées de deux secondes. Des vérifications ont aussi lieu au démarrage pendant l’initialisation Bluetooth. La zone de notification et le widget partagent les mêmes données. Les valeurs dépendent de Windows et du pilote.
+
+## Українська
+
+Виправлено оновлення заряду після повторного підключення Bluetooth, виходу зі сну та розблокування. Події запускають негайне опитування та п’ять перевірок з інтервалом дві секунди. Перевірки повторюються й під час запуску Bluetooth у Windows. Трей і віджет використовують спільні дані. Значення залежать від Windows і драйвера.
+
+Validation: build, built-in self-tests and tray/widget maintenance checks passed. A physical headset reconnect has not yet been verified.
