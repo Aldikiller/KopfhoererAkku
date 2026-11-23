@@ -18,13 +18,13 @@ using System.Text.RegularExpressions;
 [assembly: AssemblyDescription("Bluetooth-Akkuanzeige im Windows-Infobereich")]
 [assembly: AssemblyCompany("Aldikiller")]
 [assembly: AssemblyProduct("BleAirDock")]
-[assembly: AssemblyVersion("1.8.0.0")]
-[assembly: AssemblyFileVersion("1.8.0.0")]
-[assembly: AssemblyInformationalVersion("1.8.0")]
+[assembly: AssemblyVersion("1.8.1.0")]
+[assembly: AssemblyFileVersion("1.8.1.0")]
+[assembly: AssemblyInformationalVersion("1.8.1")]
 [assembly: AssemblyCopyright("Copyright © 2026 Aldikiller")]
 
 static class AppPaths {
- public const string Version="1.8.0";
+ public const string Version="1.8.1";
  public const string MutexName="Local\\KopfhoererAkku.Release.Tray";
  public const string StopEventName="Local\\KopfhoererAkku.Release.Stop";
  public static readonly string Base=AppDomain.CurrentDomain.BaseDirectory;

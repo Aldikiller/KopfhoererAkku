@@ -17,7 +17,7 @@ partial class Tray {
 
  Form overview;Action updateOverview;System.Windows.Forms.Timer clickDelay;DateTime ignoreClickUntil;
  void StartObservers() {
-  dispatcher=new Control();var handle=dispatcher.Handle;StartAudioEvents();
+  dispatcher=new Control();var handle=dispatcher.Handle;StartAudioEvents();ScheduleRecovery();
   SystemEvents.PowerModeChanged+=PowerChanged;SystemEvents.SessionSwitch+=SessionChanged;
   try {
    watcher=DeviceInformation.CreateWatcher("System.Devices.Aep.ProtocolId:=\"{e0cbf06c-cd8b-4647-bb8a-263b43f0f974}\" OR System.Devices.Aep.ProtocolId:=\"{bb7bb05e-5972-42b5-94fc-76eaa7084d49}\"",new[]{"System.Devices.Aep.IsConnected","System.Devices.Aep.DeviceAddress"},DeviceInformationKind.AssociationEndpoint);
@@ -26,20 +26,35 @@ partial class Tray {
  }
  void PowerChanged(object sender,PowerModeChangedEventArgs args) {if(args.Mode==PowerModes.Resume) QueueRecovery();}
  void SessionChanged(object sender,SessionSwitchEventArgs args) {if(args.Reason==SessionSwitchReason.SessionUnlock || args.Reason==SessionSwitchReason.RemoteConnect || args.Reason==SessionSwitchReason.ConsoleConnect)QueueRecovery();}
- void WatcherEnumerated(DeviceWatcher sender,object args) {watcherReady=true;}
+ void WatcherEnumerated(DeviceWatcher sender,object args) {watcherReady=true;QueueRecovery();}
  bool IsSelectedEndpoint(string id){string address;if(!watcherAddresses.TryGetValue(id,out address) || address.Length!=12)return false;return selected.Any(deviceId=>Regex.Matches(deviceId,@"(?i)(?<![0-9a-f])[0-9a-f]{12}(?![0-9a-f])").Cast<Match>().Any(match=>string.Equals(match.Value,address,StringComparison.OrdinalIgnoreCase)));}
  void WatcherAdded(DeviceWatcher sender,DeviceInformation args) {object address;if(args.Properties.TryGetValue("System.Devices.Aep.DeviceAddress",out address))watcherAddresses[args.Id]=Convert.ToString(address).Replace(":","").Replace("-","");if(watcherReady && IsSelectedEndpoint(args.Id))QueueRecovery();}
  void WatcherUpdated(DeviceWatcher sender,DeviceInformationUpdate args) {if(watcherReady && args.Properties.ContainsKey("System.Devices.Aep.IsConnected") && IsSelectedEndpoint(args.Id))QueueRecovery();}
  void WatcherRemoved(DeviceWatcher sender,DeviceInformationUpdate args) {if(watcherReady && IsSelectedEndpoint(args.Id))QueueRecovery();string removed;watcherAddresses.TryRemove(args.Id,out removed);}
  void QueueRecovery() {
   var target=dispatcher;if(target==null || target.IsDisposed)return;
-  try {target.BeginInvoke((Action)(()=>{if(exiting)return;readings.Invalidate(selected);Render();if(updateOverview!=null)updateOverview();}));}catch(InvalidOperationException){}
+  try {target.BeginInvoke((Action)(()=>{if(exiting)return;readings.Invalidate(selected);Render();if(updateOverview!=null)updateOverview();ScheduleRecovery();Refresh();}));}catch(InvalidOperationException){}
+ }
+ System.Windows.Forms.Timer recoveryTimer;
+ int recoveryAttempts;
+ void ScheduleRecovery() {
+  recoveryAttempts=0;
+  if(recoveryTimer==null) {
+   recoveryTimer=new System.Windows.Forms.Timer{Interval=2000};
+   recoveryTimer.Tick+=(sender,args)=> {
+    if(exiting){recoveryTimer.Stop();return;}
+    Refresh();
+    if(++recoveryAttempts>=5)recoveryTimer.Stop();
+   };
+  }
+  recoveryTimer.Stop();recoveryTimer.Start();
  }
  void StopWatcher() {
   watcherReady=false;watcherAddresses.Clear();if(watcher==null)return;
   try {watcher.Added-=WatcherAdded;watcher.Updated-=WatcherUpdated;watcher.Removed-=WatcherRemoved;watcher.EnumerationCompleted-=WatcherEnumerated;if(watcher.Status==DeviceWatcherStatus.Started || watcher.Status==DeviceWatcherStatus.EnumerationCompleted)watcher.Stop();}catch{}watcher=null;
  }
  void StopObservers() {
+  if(recoveryTimer!=null){recoveryTimer.Dispose();recoveryTimer=null;}
   SystemEvents.PowerModeChanged-=PowerChanged;SystemEvents.SessionSwitch-=SessionChanged;StopWatcher();
   if(audioEvents!=null){audioEvents.Dispose();audioEvents=null;}
   if(dispatcher!=null){dispatcher.Dispose();dispatcher=null;}if(clickDelay!=null)clickDelay.Dispose();if(overview!=null)overview.Close();
